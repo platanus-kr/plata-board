@@ -12,7 +12,7 @@ public class UserTest {
         user.setId(1L);
         user.setUsername("Spring");
         user.setPassword("password");
-        user.setEMail("platanus.kr@gmail.com");
+        user.setEmail("platanus.kr@gmail.com");
         assertEquals(user.getUsername(), "Spring");
     }
 }
