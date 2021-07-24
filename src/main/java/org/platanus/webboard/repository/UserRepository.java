@@ -1,25 +1,22 @@
 package org.platanus.webboard.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
+@RequiredArgsConstructor
 public class UserRepository {
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public UserRepository(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -65,7 +62,7 @@ public class UserRepository {
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("select * form users", userRowMapper());
+        return jdbcTemplate.query("select * from users", userRowMapper());
     }
 
 

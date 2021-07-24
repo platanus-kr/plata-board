@@ -1,9 +1,9 @@
 package org.platanus.webboard.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.User;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -16,48 +16,49 @@ public class UserRepositoryTest {
     public static final DataSource dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
             .addScript("classpath:db/schema.sql")
             .build();
-    UserRepository repository;
-    User user;
 
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    UserRepository repository = new UserRepository(jdbcTemplate);
+    User user;
 
     @BeforeEach
     public void beforeEach() {
-        repository = new UserRepository(dataSource);
-
         user = new User();
         user.setUsername("platanus");
         user.setEmail("platanus.kr@gmail.com");
         user.setPassword("aaa");
         user.setNickname("PLA");
-        repository.save(user);
-    }
-
-    @AfterEach
-    public void afterEach() {
-        repository.delete(user);
     }
 
     @Test
     public void save() {
+        repository.save(user);
         User result = repository.findById(user.getId()).get();
         assertEquals(user, result);
+        repository.delete(user);
     }
 
     @Test
     public void findByUsername() {
+        repository.save(user);
         User result = repository.findByUsername(user.getUsername()).get();
         assertEquals(user, result);
+        repository.delete(user);
     }
 
     @Test
     public void findByNickname() {
+        repository.save(user);
         User result = repository.findByNickname(user.getNickname()).get();
         assertEquals(user, result);
+        repository.delete(user);
     }
 
     @Test
     public void findByEmail() {
+        repository.save(user);
         User result = repository.findByEmail(user.getEmail()).get();
         assertEquals(user, result);
+        repository.delete(user);
     }
 }
