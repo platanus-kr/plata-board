@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Article {
     private long id;
     private long boardId;
+    private String title;
     private String content;
     private long authorId;
     private LocalDateTime createdDate;

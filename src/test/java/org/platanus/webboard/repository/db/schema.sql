@@ -1,11 +1,9 @@
--- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
-
 -- boards Table Create SQL
 CREATE TABLE boards
 (
     `ID`          INT NOT NULL AUTO_INCREMENT,
     `NAME`        VARCHAR(255) NULL,
-    `DISCRIPTION` VARCHAR(255) NULL,
+    `DESCRIPTION` VARCHAR(255) NULL,
     CONSTRAINT PK_boards PRIMARY KEY (ID)
 );
 
@@ -32,6 +30,7 @@ CREATE TABLE articles
     `CREATED_DATE`  DATETIME NULL,
     `MODIFIED_DATE` DATETIME NULL,
     `DELETED`       TINYINT NULL,
+    `TITLE`         VARCHAR(255) NULL,
     CONSTRAINT PK_articles PRIMARY KEY (ID)
 );
 
