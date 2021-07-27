@@ -5,6 +5,7 @@ import org.platanus.webboard.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public Article save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -47,10 +49,35 @@ public class ArticleRepository {
                 article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
     }
 
+    public int saveDeleted(Article article) {
+        return jdbcTemplate.update(
+                "update articles set DELETED = ? WHERE ID = ?",
+                article.isDeleted(), article.getId());
+    }
+
     public Optional<Article> findById(long id) {
         List<Article> result = jdbcTemplate
                 .query("select * from articles where id = ?", articleRowMapper(), id);
         return result.stream().findAny();
+    }
+
+    public List<Article> findByAuthorId(long id) {
+        return jdbcTemplate.query("select * from articles where author_id = ?", articleRowMapper(), id);
+    }
+
+    public List<Article> findByTitle(String title) {
+        return jdbcTemplate.query("select * from articles where title like ?", articleRowMapper(), "%" + title + "%");
+    }
+
+    public List<Article> findByContent(String content) {
+        return jdbcTemplate.query("select * from articles where content like ?", articleRowMapper(), "%" + content + "%");
+    }
+
+    public List<Article> findByTitleAndContent(String title, String content) {
+        return jdbcTemplate
+                .query("select * from articles where title like ? or content like ?",
+                        articleRowMapper(),
+                        "%" + title + "%", "%" + content + "%");
     }
 
     public RowMapper<Article> articleRowMapper() {
