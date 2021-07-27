@@ -34,6 +34,10 @@ public class BoardRepository {
         return jdbcTemplate.query("select * from boards", boardRowMapper());
     }
 
+    public int delete(Board board) {
+        return jdbcTemplate.update("delete from boards where id = ?", board.getId());
+    }
+
     private RowMapper<Board> boardRowMapper() {
         return (rs, rowNum) -> {
             Board board = new Board();
