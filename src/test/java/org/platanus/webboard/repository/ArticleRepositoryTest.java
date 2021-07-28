@@ -1,13 +1,11 @@
 package org.platanus.webboard.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -24,8 +22,7 @@ public class ArticleRepositoryTest {
             .build();
 
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-    NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    ArticleRepository articleRepository = new ArticleRepository(jdbcTemplate, namedJdbcTemplate);
+    ArticleRepository articleRepository = new ArticleRepository(jdbcTemplate);
     BoardRepository boardRepository = new BoardRepository(jdbcTemplate);
     UserRepository userRepository = new UserRepository(jdbcTemplate);
     Article article;
@@ -37,12 +34,14 @@ public class ArticleRepositoryTest {
     public void beforeEach() {
         board = new Board();
         board.setName("test");
+        boardRepository.save(board);
 
         user = new User();
         user.setUsername("platanus");
         user.setEmail("platanus.kr@gmail.com");
         user.setPassword("aaa");
         user.setNickname("PLA");
+        userRepository.save(user);
 
         article = new Article();
         article.setBoardId(1L);
@@ -58,14 +57,6 @@ public class ArticleRepositoryTest {
         modifiedArticle.setContent("수정된 내용 입니다.");
         modifiedArticle.setModifiedDate(LocalDateTime.now());
 
-        boardRepository.save(board);
-        userRepository.save(user);
-    }
-
-    @AfterEach
-    public void afterEach() {
-//        userRepository.delete(user);
-//        boardRepository.delete(board);
     }
 
     @Test
@@ -92,13 +83,15 @@ public class ArticleRepositoryTest {
         dup_article.setBoardId(1L);
         dup_article.setTitle("제목입니다.");
         dup_article.setContent("글내용 입니다");
-        dup_article.setAuthorId(1L);
+        dup_article.setAuthorId(article.getId());
         dup_article.setCreatedDate(LocalDateTime.now());
         dup_article.setModifiedDate(LocalDateTime.now());
         dup_article.setDeleted(false);
         articleRepository.save(dup_article);
         List<Article> articles = articleRepository.findByTitle("제목");
         assertEquals(articles.size(), 2);
+        articleRepository.delete(article);
+        articleRepository.delete(dup_article);
     }
 
     @Test
@@ -106,6 +99,7 @@ public class ArticleRepositoryTest {
         articleRepository.save(article);
         List<Article> articles = articleRepository.findByContent("내용");
         assertEquals(articles.size(), 1);
+        articleRepository.delete(article);
     }
 
     @Test
@@ -113,6 +107,7 @@ public class ArticleRepositoryTest {
         articleRepository.save(article);
         List<Article> articles = articleRepository.findByTitleAndContent("제목", "내용");
         assertEquals(articles.size(), 1);
+        articleRepository.delete(article);
     }
 
     @Test
@@ -120,15 +115,16 @@ public class ArticleRepositoryTest {
         articleRepository.save(article);
         List<Article> articles = articleRepository.findByAuthorId(article.getAuthorId());
         assertEquals(articles.size(), 1);
+        articleRepository.delete(article);
     }
 
     @Test
-    public void saveDeleted() {
+    public void updateDeleteFlag() {
         articleRepository.save(article);
         article.setDeleted(true);
-        int result = articleRepository.saveDeleted(article);
-        System.out.println(articleRepository.findById(1));
+        int result = articleRepository.updateDeleteFlag(article);
         assertEquals(result, 1);
+        articleRepository.delete(article);
     }
 
 
