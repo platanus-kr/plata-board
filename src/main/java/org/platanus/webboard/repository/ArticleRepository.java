@@ -5,7 +5,6 @@ import org.platanus.webboard.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public Article save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -49,7 +47,7 @@ public class ArticleRepository {
                 article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
     }
 
-    public int saveDeleted(Article article) {
+    public int updateDeleteFlag(Article article) {
         return jdbcTemplate.update(
                 "update articles set DELETED = ? WHERE ID = ?",
                 article.isDeleted(), article.getId());
