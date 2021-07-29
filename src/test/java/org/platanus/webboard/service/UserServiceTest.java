@@ -60,6 +60,20 @@ public class UserServiceTest {
     }
 
     @Test
+    public void findRevokedUser() throws Exception {
+        try {
+            service.join(user);
+            service.revoke(user);
+            User getUser = service.findById(user.getId());
+            fail();
+            service.delete(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            service.delete(user);
+        }
+    }
+
+    @Test
     public void findById() {
         try {
             service.join(user);

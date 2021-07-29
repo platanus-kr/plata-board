@@ -46,28 +46,28 @@ public class UserService {
 
     public User findById(long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty())
+        if (user.isEmpty() || user.get().isDeleted())
             throw new IllegalArgumentException("없는 회원 입니다.");
         return user.get();
     }
 
     public User findByUsername(String username) throws Exception {
         Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty())
+        if (user.isEmpty() || user.get().isDeleted())
             throw new IllegalArgumentException("없는 회원 입니다.");
         return user.get();
     }
 
     public User findByNickname(String nickname) throws Exception {
         Optional<User> user = userRepository.findByNickname(nickname);
-        if (user.isEmpty())
+        if (user.isEmpty() || user.get().isDeleted())
             throw new IllegalArgumentException("없는 회원 입니다.");
         return user.get();
     }
 
     public User findByEmail(String email) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty())
+        if (user.isEmpty() || user.get().isDeleted())
             throw new IllegalArgumentException("없는 회원 입니다.");
         return user.get();
 
