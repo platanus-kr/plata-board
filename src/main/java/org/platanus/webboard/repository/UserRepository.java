@@ -27,6 +27,7 @@ public class UserRepository {
         parameters.put("password", user.getPassword());
         parameters.put("nickname", user.getNickname());
         parameters.put("email", user.getEmail());
+        parameters.put("deleted", user.isDeleted());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setId(key.longValue());
@@ -35,6 +36,12 @@ public class UserRepository {
 
     public int delete(User user) {
         return jdbcTemplate.update("delete from users where id = ?", user.getId());
+    }
+
+    public int updateDeleteFlag(User user) {
+        return jdbcTemplate.update(
+                "update users set DELETED = ? where ID = ?",
+                user.isDeleted(), user.getId());
     }
 
     public Optional<User> findById(long id) {
@@ -74,6 +81,7 @@ public class UserRepository {
             user.setPassword(rs.getString("password"));
             user.setNickname(rs.getString("nickname"));
             user.setEmail(rs.getString("email"));
+            user.setDeleted(rs.getBoolean(("deleted")));
             return user;
         };
     }
