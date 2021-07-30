@@ -14,8 +14,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public Board save(@RequestBody Board board) {
-        return boardService.save(board);
+    public Board save(@RequestBody Board board) throws Exception {
+        return boardService.create(board);
     }
 
     @GetMapping
