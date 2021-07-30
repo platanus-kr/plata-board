@@ -15,7 +15,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ArticleServiceTest<article> {
@@ -31,7 +33,7 @@ public class ArticleServiceTest<article> {
     private static BoardRepository boardRepository;
     private static ArticleRepository articleRepository;
     private static ArticleService articleService;
-    Article article;
+    Article a1, a2, a3, a4;
     private static JdbcTemplate jdbcTemplate;
 
 
@@ -64,25 +66,148 @@ public class ArticleServiceTest<article> {
     }
 
     @BeforeEach
-    public void beforeEach() throws Exception {
-        article = new Article();
-        article.setDeleted(false);
-        article.setBoardId(1L);
-        article.setAuthorId(1L);
-        article.setTitle("제목입니다.");
-        article.setContent("내용입니다.");
-        article.setCreatedDate(LocalDateTime.now());
-        article.setModifiedDate(LocalDateTime.now());
+    public void beforeEach() {
+        a1 = new Article();
+        a1.setDeleted(false);
+        a1.setBoardId(1L);
+        a1.setAuthorId(1L);
+        a1.setTitle("제목입니다.");
+        a1.setContent("내용입니다.");
+        a1.setCreatedDate(LocalDateTime.now());
+        a1.setModifiedDate(LocalDateTime.now());
+
+
+        a2 = new Article();
+        a2.setDeleted(false);
+        a2.setBoardId(1L);
+        a2.setAuthorId(1L);
+        a2.setTitle("제목입니다.");
+        a2.setContent("내용입니다.");
+        a2.setCreatedDate(LocalDateTime.now());
+        a2.setModifiedDate(LocalDateTime.now());
+
+
+        a3 = new Article();
+        a3.setDeleted(false);
+        a3.setBoardId(1L);
+        a3.setAuthorId(1L);
+        a3.setTitle("제목입니다.");
+        a3.setContent("내용입니다.");
+        a3.setCreatedDate(LocalDateTime.now());
+        a3.setModifiedDate(LocalDateTime.now());
+
+
+        a4 = new Article();
+        a4.setDeleted(false);
+        a4.setBoardId(1L);
+        a4.setAuthorId(1L);
+        a4.setTitle("제목입니다.");
+        a4.setContent("내용입니다.");
+        a4.setCreatedDate(LocalDateTime.now());
+        a4.setModifiedDate(LocalDateTime.now());
+
+
     }
 
     @Test
     public void write() {
         try {
-            articleService.write(article);
+            Article writeArticle = articleService.write(a1);
+            assertEquals(writeArticle.getId(), articleService.findArticleById(writeArticle.getId()).getId());
+            articleService.delete(writeArticle);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             fail();
         }
     }
 
+    @Test
+    public void update() {
+        try {
+            Article writeArticle = articleService.write(a1);
+            Article targetArticle = articleService.findArticleById(writeArticle.getId());
+            targetArticle.setTitle("변경된 제목입니다.");
+            articleService.update(targetArticle);
+            assertEquals(articleService.findArticleById(writeArticle.getId()).getTitle(), targetArticle.getTitle());
+            articleService.delete(writeArticle);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void updateDeleteFlag() {
+        try {
+            Article writeArticle = articleService.write(a1);
+            Article targetArticle = articleService.findArticleById(writeArticle.getId());
+            articleService.updateDeleteFlag(targetArticle);
+            assertEquals(articleService.isDeleted(articleRepository.findById(writeArticle.getId()).get()), true);
+            articleService.delete(writeArticle);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void findAllArticles() {
+        try {
+            Article a1w = articleService.write(a1);
+            Article a2w = articleService.write(a2);
+            Article a3w = articleService.write(a3);
+            Article a4w = articleService.write(a4);
+            articleService.updateDeleteFlag(a4w);
+            List<Article> articles = articleService.findAllArticles();
+            assertEquals(articles.size(), 3);
+            articleService.delete(a1w);
+            articleService.delete(a2w);
+            articleService.delete(a3w);
+            articleService.delete(a4w);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void findAllDeletedArticles() {
+        try {
+            Article a1w = articleService.write(a1);
+            Article a2w = articleService.write(a2);
+            Article a3w = articleService.write(a3);
+            Article a4w = articleService.write(a4);
+            articleService.updateDeleteFlag(a4w);
+            List<Article> articles = articleService.findAllDeletedArticles();
+            assertEquals(articles.size(), 1);
+            articleService.delete(a1w);
+            articleService.delete(a2w);
+            articleService.delete(a3w);
+            articleService.delete(a4w);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void findArticlesByBoardId() {
+        try {
+            Article a1w = articleService.write(a1);
+            Article a2w = articleService.write(a2);
+            Article a3w = articleService.write(a3);
+            Article a4w = articleService.write(a4);
+            articleService.updateDeleteFlag(a4w);
+            List<Article> articles = articleService.findArticlesByBoardId(a1w.getBoardId());
+            assertEquals(articles.size(), 3);
+            articleService.delete(a1w);
+            articleService.delete(a2w);
+            articleService.delete(a3w);
+            articleService.delete(a4w);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            fail();
+        }
+    }
 }
