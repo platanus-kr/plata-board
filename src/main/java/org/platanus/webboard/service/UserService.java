@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,10 +38,10 @@ public class UserService {
         userRepository.updateDeleteFlag(user);
     }
 
+    // todo: 사용자를 지울 때 작성 글과 코멘트 전부를 삭제되도록 할 것
     public void delete(User user) throws Exception {
         if (!user.isDeleted())
             throw new IllegalArgumentException("탈퇴되지 않은 회원 입니다.");
-//        여기에 글이랑 코멘트 다 지우는 작업 들어가야 할 것.
         userRepository.delete(user);
     }
 
@@ -70,6 +71,9 @@ public class UserService {
         if (user.isEmpty() || user.get().isDeleted())
             throw new IllegalArgumentException("없는 회원 입니다.");
         return user.get();
+    }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

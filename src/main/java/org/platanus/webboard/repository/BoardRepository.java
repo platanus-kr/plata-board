@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,6 +37,22 @@ public class BoardRepository {
 
     public int delete(Board board) {
         return jdbcTemplate.update("delete from boards where id = ?", board.getId());
+    }
+
+    public int update(Board board) {
+        return jdbcTemplate.update("update boards set NAME = ?, DESCRIPTION = ?  WHERE ID = ?", board.getName(), board.getDescription(), board.getId());
+    }
+
+    public Optional<Board> findById(long id) {
+        List<Board> result = jdbcTemplate
+                .query("select * from boards where id = ?", boardRowMapper(), id);
+        return result.stream().findAny();
+    }
+
+    public Optional<Board> findByName(String name) {
+        List<Board> result = jdbcTemplate
+                .query("select * from boards where name = ?", boardRowMapper(), name);
+        return result.stream().findAny();
     }
 
     private RowMapper<Board> boardRowMapper() {
