@@ -59,6 +59,14 @@ public class ArticleRepository {
         return result.stream().findAny();
     }
 
+    public List<Article> findByBoardId(long id) {
+        return jdbcTemplate.query("select * from articles where board_id = ? ", articleRowMapper(), id);
+    }
+
+    public List<Article> findAll() {
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
+    }
+
     public List<Article> findByAuthorId(long id) {
         return jdbcTemplate.query("select * from articles where author_id = ?", articleRowMapper(), id);
     }
