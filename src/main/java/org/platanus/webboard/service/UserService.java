@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public void revoke(User user) throws Exception {
-        if (user.isDeleted())
+        if (userRepository.findById(user.getId()).get().isDeleted())
             throw new IllegalArgumentException("이미 탈퇴한 회원입니다");
         user.setDeleted(true);
         userRepository.updateDeleteFlag(user);
