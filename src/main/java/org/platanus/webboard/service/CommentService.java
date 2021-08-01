@@ -5,6 +5,7 @@ import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +18,15 @@ public class CommentService {
 
     public Comment write(Comment comment) throws Exception {
         articleService.findById(comment.getArticleId());
+        comment.setCreatedDate(LocalDateTime.now());
+        comment.setModifiedDate(LocalDateTime.now());
+        comment.setDeleted(false);
         return commentRepository.save(comment);
     }
 
     public Comment update(Comment comment) throws Exception {
+        comment.setCreatedDate(findById(comment.getId()).getCreatedDate());
+        comment.setModifiedDate(LocalDateTime.now());
         Optional<Comment> getComment = commentRepository.findById(comment.getId());
         if (getComment.isEmpty())
             throw new IllegalArgumentException("없는 댓글 입니다.");

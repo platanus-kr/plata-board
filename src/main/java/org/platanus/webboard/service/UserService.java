@@ -28,6 +28,7 @@ public class UserService {
         MessageDigest md = MessageDigest.getInstance(("SHA-256"));
         md.update(user.getPassword().getBytes());
         user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
+        user.setDeleted(false);
         return userRepository.save(user);
     }
 

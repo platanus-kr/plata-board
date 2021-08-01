@@ -14,7 +14,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,8 +72,6 @@ public class ArticleServiceTest {
         a1.setAuthorId(1L);
         a1.setTitle("제목입니다.");
         a1.setContent("내용입니다.");
-        a1.setCreatedDate(LocalDateTime.now());
-        a1.setModifiedDate(LocalDateTime.now());
 
         a2 = new Article();
         a2.setDeleted(false);
@@ -82,8 +79,6 @@ public class ArticleServiceTest {
         a2.setAuthorId(1L);
         a2.setTitle("제목입니다.");
         a2.setContent("내용입니다.");
-        a2.setCreatedDate(LocalDateTime.now());
-        a2.setModifiedDate(LocalDateTime.now());
 
         a3 = new Article();
         a3.setDeleted(false);
@@ -91,8 +86,6 @@ public class ArticleServiceTest {
         a3.setAuthorId(1L);
         a3.setTitle("제목입니다.");
         a3.setContent("내용입니다.");
-        a3.setCreatedDate(LocalDateTime.now());
-        a3.setModifiedDate(LocalDateTime.now());
 
         a4 = new Article();
         a4.setDeleted(false);
@@ -100,8 +93,6 @@ public class ArticleServiceTest {
         a4.setAuthorId(1L);
         a4.setTitle("제목입니다.");
         a4.setContent("내용입니다.");
-        a4.setCreatedDate(LocalDateTime.now());
-        a4.setModifiedDate(LocalDateTime.now());
 
 
     }
