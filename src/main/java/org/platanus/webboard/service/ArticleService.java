@@ -63,7 +63,7 @@ public class ArticleService {
         return returnArticles;
     }
 
-    public Article findArticleById(long id) throws Exception {
+    public Article findById(long id) throws Exception {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty() || article.get().isDeleted())
             throw new IllegalArgumentException("없는 게시물 입니다.");

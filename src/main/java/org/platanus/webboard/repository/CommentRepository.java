@@ -66,6 +66,10 @@ public class CommentRepository {
         return jdbcTemplate.query("select * from comments where content like ?", commentRowMapper(), "%" + content + "%");
     }
 
+    public List<Comment> findAll() {
+        return jdbcTemplate.query("select * from comments", commentRowMapper());
+    }
+
 
     public RowMapper<Comment> commentRowMapper() {
         return (rs, rowNum) -> {
