@@ -5,6 +5,7 @@ import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +18,15 @@ public class ArticleService {
 
     public Article write(Article article) throws Exception {
         boardService.findById(article.getBoardId());
+        article.setCreatedDate(LocalDateTime.now());
+        article.setModifiedDate(LocalDateTime.now());
+        article.setDeleted(false);
         return articleRepository.save(article);
     }
 
     public Article update(Article article) throws Exception {
+        article.setCreatedDate(findById(article.getId()).getCreatedDate());
+        article.setModifiedDate(LocalDateTime.now());
         Optional<Article> getArticle = articleRepository.findById(article.getId());
         if (getArticle.isEmpty())
             throw new IllegalArgumentException("없는 게시물 입니다.");
@@ -61,6 +67,12 @@ public class ArticleService {
         List<Article> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> returnArticles.add(a));
         return returnArticles;
+    }
+
+    public Article findArticleByBoardId(long boardId, long id) throws Exception {
+        boardService.findById(boardId);
+        Article returnArticle = findById(id);
+        return returnArticle;
     }
 
     public Article findById(long id) throws Exception {
