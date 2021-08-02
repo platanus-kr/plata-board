@@ -2,6 +2,7 @@ package org.platanus.webboard.service;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.dto.ArticleListDto;
 import org.platanus.webboard.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final BoardService boardService;
+    private final UserService userService;
 
     public Article write(Article article) throws Exception {
         boardService.findById(article.getBoardId());
@@ -48,24 +50,54 @@ public class ArticleService {
             throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
     }
 
-    public List<Article> findAllArticles() {
+    public List<ArticleListDto> findAllArticles() {
         List<Article> articles = articleRepository.findAll();
-        List<Article> returnArticles = new ArrayList<>();
-        articles.stream().filter(a -> !a.isDeleted()).forEach(a -> returnArticles.add(a));
+        return getArticleListDtos(articles);
+    }
+
+    public List<ArticleListDto> findAllDeletedArticles() {
+        List<Article> articles = articleRepository.findAll();
+        List<ArticleListDto> returnArticles = new ArrayList<>();
+        articles.stream().filter(a -> a.isDeleted()).forEach(a -> {
+            try {
+                ArticleListDto dto = new ArticleListDto();
+                dto.setId(a.getId());
+                dto.setBoardId(a.getBoardId());
+                dto.setTitle(a.getTitle());
+                dto.setAuthorId(a.getAuthorId());
+                dto.setAuthorNickname(userService.findById(a.getAuthorId()).getNickname());
+                dto.setCreatedDate(a.getCreatedDate());
+                dto.setDeleted(a.isDeleted());
+                returnArticles.add(dto);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
         return returnArticles;
     }
 
-    public List<Article> findAllDeletedArticles() {
-        List<Article> articles = articleRepository.findAll();
-        List<Article> returnArticles = new ArrayList<>();
-        articles.stream().filter(a -> a.isDeleted()).forEach(a -> returnArticles.add(a));
-        return returnArticles;
-    }
-
-    public List<Article> findArticlesByBoardId(long boardId) {
+    public List<ArticleListDto> findArticlesByBoardId(long boardId) {
         List<Article> articles = articleRepository.findByBoardId(boardId);
-        List<Article> returnArticles = new ArrayList<>();
-        articles.stream().filter(a -> !a.isDeleted()).forEach(a -> returnArticles.add(a));
+        return getArticleListDtos(articles);
+    }
+
+    private List<ArticleListDto> getArticleListDtos(List<Article> articles) {
+        List<ArticleListDto> returnArticles = new ArrayList<>();
+        articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
+            try {
+                ArticleListDto dto = new ArticleListDto();
+                dto.setId(a.getId());
+                dto.setBoardId(a.getBoardId());
+                dto.setTitle(a.getTitle());
+                dto.setAuthorId(a.getAuthorId());
+                dto.setAuthorNickname(userService.findById(a.getAuthorId()).getNickname());
+                dto.setCreatedDate(a.getCreatedDate());
+                dto.setDeleted(a.isDeleted());
+                returnArticles.add(dto);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
         return returnArticles;
     }
 

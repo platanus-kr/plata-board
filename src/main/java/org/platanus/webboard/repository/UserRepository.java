@@ -72,6 +72,8 @@ public class UserRepository {
         return jdbcTemplate.query("select * from users", userRowMapper());
     }
 
+    //todo: 데이터베이스 클리어를 위한 코드 작성 (테스트코드용)
+
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {

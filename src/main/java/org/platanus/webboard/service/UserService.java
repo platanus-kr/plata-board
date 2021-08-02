@@ -5,8 +5,6 @@ import org.platanus.webboard.domain.User;
 import org.platanus.webboard.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +23,9 @@ public class UserService {
         if (userRepository.findByEmail((user.getEmail())).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
         }
-        MessageDigest md = MessageDigest.getInstance(("SHA-256"));
-        md.update(user.getPassword().getBytes());
-        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
+//        MessageDigest md = MessageDigest.getInstance(("SHA-256"));
+//        md.update(user.getPassword().getBytes());
+//        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
         user.setDeleted(false);
         return userRepository.save(user);
     }

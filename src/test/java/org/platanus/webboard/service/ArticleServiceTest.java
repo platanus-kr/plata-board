@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.User;
+import org.platanus.webboard.dto.ArticleListDto;
 import org.platanus.webboard.repository.ArticleRepository;
 import org.platanus.webboard.repository.BoardRepository;
 import org.platanus.webboard.repository.UserRepository;
@@ -146,7 +147,7 @@ public class ArticleServiceTest {
             Article a3w = articleService.write(a3);
             Article a4w = articleService.write(a4);
             articleService.updateDeleteFlag(a4w);
-            List<Article> articles = articleService.findAllArticles();
+            List<ArticleListDto> articles = articleService.findAllArticles();
             assertEquals(articles.size(), 3);
             articleService.delete(a1w);
             articleService.delete(a2w);
@@ -167,7 +168,7 @@ public class ArticleServiceTest {
             Article a3w = articleService.write(a3);
             Article a4w = articleService.write(a4);
             articleService.updateDeleteFlag(a4w);
-            List<Article> articles = articleService.findAllDeletedArticles();
+            List<ArticleListDto> articles = articleService.findAllDeletedArticles();
             assertEquals(articles.size(), 1);
             articleService.delete(a1w);
             articleService.delete(a2w);
@@ -187,7 +188,7 @@ public class ArticleServiceTest {
             Article a3w = articleService.write(a3);
             Article a4w = articleService.write(a4);
             articleService.updateDeleteFlag(a4w);
-            List<Article> articles = articleService.findArticlesByBoardId(a1w.getBoardId());
+            List<ArticleListDto> articles = articleService.findArticlesByBoardId(a1w.getBoardId());
             assertEquals(articles.size(), 3);
             articleService.delete(a1w);
             articleService.delete(a2w);
