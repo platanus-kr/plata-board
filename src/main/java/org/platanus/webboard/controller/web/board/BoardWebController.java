@@ -63,14 +63,6 @@ public class BoardWebController {
         return "redirect:/board/{id}";
     }
 
-    @GetMapping(value = "/{boardId}/article/{articleId}/modify")
-    public String articleModify(@PathVariable("boardId") long boardId,
-                                @PathVariable("articleId") long articleId, Model model) throws Exception {
-        
-        return "board/boardModify";
-
-    }
-
     @GetMapping(value = "/{boardId}/article/{articleId}")
     public String view(@PathVariable("boardId") long boardId,
                        @PathVariable("articleId") long articleId, Model model) throws Exception {
@@ -108,10 +100,43 @@ public class BoardWebController {
         String boardName = boardService.findById(boardId).getName();
 
         model.addAttribute("board_id", boardId);
+        model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", articleResponse);
         model.addAttribute("comments", commentsResponse);
         return "board/boardView";
+    }
+
+    @PostMapping(value = "/{boardId}/article/{articleId}/modify")
+    public String articleModify(@PathVariable("boardId") long boardId,
+                                @PathVariable("articleId") long articleId,
+                                @ModelAttribute("article") ArticleWriteDto articleRequest) throws Exception {
+
+        Article article = articleService.findById(articleId);
+        article.setTitle(articleRequest.getTitle());
+        article.setContent(articleRequest.getContent());
+
+        articleService.update(article);
+
+        return "redirect:/board/{boardId}/article/{articleId}";
+
+    }
+
+    @GetMapping(value = "/{boardId}/article/{articleId}/modify")
+    public String articleModifyView(@PathVariable("boardId") long boardId,
+                                    @PathVariable("articleId") long articleId, Model model) throws Exception {
+        ArticleViewDto articleResponse = new ArticleViewDto();
+        Article article = articleService.findById(articleId);
+        articleResponse.setTitle(article.getTitle());
+        articleResponse.setContent(article.getContent());
+        String boardName = boardService.findById(boardId).getName();
+
+        model.addAttribute("board_id", boardId);
+        model.addAttribute("article_id", articleId);
+        model.addAttribute("board_name", boardName);
+        model.addAttribute("article", articleResponse);
+        return "board/boardModify";
+
     }
 
     @PostMapping(value = "/{boardId}/article/{articleId}")
