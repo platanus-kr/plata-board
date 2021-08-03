@@ -59,7 +59,7 @@ public class CommentServiceTest {
         userService = new UserService(userRepository);
 
         articleRepository = new ArticleRepository(jdbcTemplate);
-        articleService = new ArticleService(articleRepository, boardService);
+        articleService = new ArticleService(articleRepository, boardService, userService);
         article = new Article();
         article.setDeleted(false);
         article.setBoardId(1L);
@@ -217,6 +217,6 @@ public class CommentServiceTest {
             fail();
         }
     }
-    
+
 
 }

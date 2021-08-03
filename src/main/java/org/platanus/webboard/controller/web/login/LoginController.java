@@ -22,7 +22,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("login") UserDto login) {
-        return "/login/loginForm";
+        return "login/loginForm";
     }
 
     @PostMapping("/login")
@@ -34,7 +34,7 @@ public class LoginController {
             loginUser = loginService.login(login.getUsername(), login.getPassword());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "/login/loginForm";
+            return "login/loginForm";
         }
 
         HttpSession session = request.getSession(true);
