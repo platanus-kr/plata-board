@@ -30,6 +30,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User update(User user) throws Exception {
+        if (userRepository.update(user) == 1)
+            return userRepository.findById(user.getId()).get();
+        else
+            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+    }
+
     public void revoke(User user) throws Exception {
         if (userRepository.findById(user.getId()).get().isDeleted())
             throw new IllegalArgumentException("이미 탈퇴한 회원입니다");

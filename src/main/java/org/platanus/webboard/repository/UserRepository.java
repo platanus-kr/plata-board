@@ -38,6 +38,11 @@ public class UserRepository {
         return jdbcTemplate.update("delete from users where id = ?", user.getId());
     }
 
+    public int update(User user) {
+        return jdbcTemplate.update("update users set USERNAME =?, PASSWORD = ?, NICKNAME = ?, EMAIL = ? where ID = ?",
+                user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), user.getId());
+    }
+
     public int updateDeleteFlag(User user) {
         return jdbcTemplate.update(
                 "update users set DELETED = ? where ID = ?",

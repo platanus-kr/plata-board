@@ -18,14 +18,28 @@
                th:href="@{|/board/1|}" role="button">
                 게시판 입장
             </a>
-            <a class="btn btn-primary btn-floating m-1"
-               th:href="@{|/login|}" role="button">
-                로그인
-            </a>
-            <a class="btn btn-primary btn-floating m-1"
-               th:href="@{|/user/join|}" role="button">
-                회원가입
-            </a>
+            <div th:if="${user == null}">
+                <a class="btn btn-primary btn-floating m-1"
+                   th:href="@{|/login|}" role="button">
+                    로그인
+                </a>
+                <a class="btn btn-primary btn-floating m-1"
+                   th:href="@{|/user/join|}" role="button">
+                    회원가입
+                </a>
+            </div>
+            <div th:if="${user != null}">
+                <a class="btn btn-primary btn-floating m-1"
+                   th:href="@{|/user/modify|}" role="button">
+                    정보 수정
+                </a>
+                <a class="btn btn-primary btn-floating m-1"
+                   th:href="@{|/logout|}" role="button">
+                    로그아웃
+                </a>
+            </div>
+
+
         </div>
 
     </div>
