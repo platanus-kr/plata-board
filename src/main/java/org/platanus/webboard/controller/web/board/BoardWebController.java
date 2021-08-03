@@ -142,7 +142,6 @@ public class BoardWebController {
     @PostMapping(value = "/{boardId}/article/{articleId}")
     public String commentWrite(@PathVariable("boardId") long boardId, @PathVariable("articleId") long articleId,
                                @ModelAttribute("comment") String commentRequest) {
-        System.out.println(commentRequest);
         Comment comment = new Comment();
         comment.setArticleId(articleId);
         // todo: 로그인 기능 구현해서 꼭 채우기
