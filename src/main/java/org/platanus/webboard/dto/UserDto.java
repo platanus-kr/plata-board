@@ -1,9 +1,10 @@
-package org.platanus.webboard.controller.web.login;
+package org.platanus.webboard.dto;
 
 import lombok.Data;
 
 @Data
-public class Login {
+public class UserDto {
     private String username;
+    private String nickname;
     private String password;
 }
