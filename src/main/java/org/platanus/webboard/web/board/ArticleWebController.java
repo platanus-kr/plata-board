@@ -28,29 +28,12 @@ public class ArticleWebController {
     @GetMapping(value = "/{articleId}")
     public String view(@PathVariable("articleId") long articleId, Model model,
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) throws Exception {
-        ArticleViewDto articleResponse = new ArticleViewDto();
-        List<CommentViewDto> commentsResponse = new ArrayList<>();
         Article article = articleService.findById(articleId);
-        articleResponse.setBoardId(article.getBoardId());
-        articleResponse.setId(article.getId());
-        articleResponse.setTitle(article.getTitle());
-        articleResponse.setContent(article.getContent());
-        articleResponse.setAuthorId(article.getAuthorId());
-        articleResponse.setAuthorNickname(userService.findById(article.getAuthorId()).getNickname());
-        articleResponse.setCreatedDate(article.getCreatedDate());
-        articleResponse.setModifiedDate(article.getModifiedDate());
-        List<Comment> comments = commentService.findCommentsByArticleId(articleId);
-        comments.stream().forEach(c -> {
+        String authorNickname = userService.findById(article.getAuthorId()).getNickname();
+        List<CommentViewDto> commentsResponse = new ArrayList<>();
+        commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
             try {
-                CommentViewDto commentResponse = new CommentViewDto();
-                commentResponse.setId(c.getId());
-                commentResponse.setArticleId(c.getArticleId());
-                commentResponse.setContent(c.getContent());
-                commentResponse.setAuthorId(c.getAuthorId());
-                commentResponse.setAuthorNickname(userService.findById(c.getAuthorId()).getNickname());
-                commentResponse.setCreatedDate(c.getCreatedDate());
-                commentResponse.setModifiedDate(c.getModifiedDate());
-                commentsResponse.add(commentResponse);
+                commentsResponse.add(CommentViewDto.from(c, authorNickname));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -61,7 +44,7 @@ public class ArticleWebController {
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
-        model.addAttribute("article", articleResponse);
+        model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
         model.addAttribute("comments", commentsResponse);
         return "board/boardView";
     }
@@ -74,16 +57,13 @@ public class ArticleWebController {
             System.out.println("글쓴이가 아닙니다.");
             return "redirect:/article/{articleId}";
         }
-        ArticleViewDto articleResponse = new ArticleViewDto();
         Article article = articleService.findById(articleId);
-        articleResponse.setTitle(article.getTitle());
-        articleResponse.setContent(article.getContent());
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
-        model.addAttribute("article", articleResponse);
+        model.addAttribute("article", ArticleViewDto.fromModify(article));
         return "board/boardModify";
     }
 
