@@ -16,9 +16,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
 
     public Comment save(Comment comment) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("comments").usingGeneratedKeyColumns("id");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("article_id", comment.getArticleId());

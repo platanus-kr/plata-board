@@ -16,9 +16,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
 
     public Article save(Article article) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("board_id", article.getBoardId());
