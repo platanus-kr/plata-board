@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert jdbcInsert;
+    private SimpleJdbcInsert jdbcInsert;
+
+    @PostConstruct
+    public void init() {
+        jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("comments").usingGeneratedKeyColumns("id");
+    }
 
     public Comment save(Comment comment) {
-        jdbcInsert.withTableName("comments").usingGeneratedKeyColumns("id");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("article_id", comment.getArticleId());
         parameters.put("content", comment.getContent());

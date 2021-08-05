@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert jdbcInsert;
+    private SimpleJdbcInsert jdbcInsert;
+
+    @PostConstruct
+    public void init() {
+        jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("boards").usingGeneratedKeyColumns("id");
+    }
 
     public Board save(Board board) {
-        jdbcInsert.withTableName("boards").usingGeneratedKeyColumns("id");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", board.getName());
         parameters.put("description", board.getDescription());
