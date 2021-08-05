@@ -42,18 +42,15 @@ public class BoardApiController {
         return articleService.findById(id);
     }
 
-//    @GetMapping(value = "/api/board/{boardId}/article/{articleId}")
-//    public Article getArticle(@PathVariable("boardId") long boardId, @PathVariable("articleId") long articleId) throws Exception {
-//        return articleService.findArticleByBoardId(boardId, articleId);
-//    }
-
     @PostMapping(value = "/article/{id}")
-    public Article writeArticle(@PathVariable("id") long id, @RequestBody Article article) throws Exception {
+    public Article writeArticle(@PathVariable("id") long id,
+                                @RequestBody Article article) throws Exception {
         return articleService.write(article);
     }
 
     @PutMapping(value = "/article/{id}")
-    public Article updateArticle(@PathVariable("id") long id, @RequestBody Article article) throws Exception {
+    public Article updateArticle(@PathVariable("id") long id,
+                                 @RequestBody Article article) throws Exception {
         return articleService.update(article);
     }
 
@@ -68,18 +65,21 @@ public class BoardApiController {
     }
 
     @GetMapping(value = "/article/{articleId}/comment/{commentId}")
-    public Comment getComment(@PathVariable("articleId") long articleId, @PathVariable("commentId") long commentId) throws Exception {
+    public Comment getComment(@PathVariable("articleId") long articleId,
+                              @PathVariable("commentId") long commentId) throws Exception {
         return commentService.findById(commentId);
     }
 
     @PostMapping(value = "/article/{id}/comment")
-    public Comment writeComment(@PathVariable("id") long id, @RequestBody Comment comment) throws Exception {
+    public Comment writeComment(@PathVariable("id") long id,
+                                @RequestBody Comment comment) throws Exception {
         comment.setArticleId(id);
         return commentService.write(comment);
     }
 
     @PutMapping(value = "/comment/{id}")
-    public Comment updateComment(@PathVariable("id") long id, @RequestBody Comment comment) throws Exception {
+    public Comment updateComment(@PathVariable("id") long id,
+                                 @RequestBody Comment comment) throws Exception {
         return commentService.update(comment);
     }
 

@@ -119,5 +119,4 @@ public class ArticleService {
         Article returnArticle = articleRepository.findById(article.getId()).get();
         return returnArticle.isDeleted();
     }
-
 }

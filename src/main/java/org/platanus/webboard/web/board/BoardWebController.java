@@ -74,7 +74,6 @@ public class BoardWebController {
                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) throws Exception {
         ArticleViewDto articleResponse = new ArticleViewDto();
         List<CommentViewDto> commentsResponse = new ArrayList<>();
-
         Article article = articleService.findById(articleId);
         articleResponse.setBoardId(article.getBoardId());
         articleResponse.setId(article.getId());
@@ -84,7 +83,6 @@ public class BoardWebController {
         articleResponse.setAuthorNickname(userService.findById(article.getAuthorId()).getNickname());
         articleResponse.setCreatedDate(article.getCreatedDate());
         articleResponse.setModifiedDate(article.getModifiedDate());
-
         List<Comment> comments = commentService.findCommentsByArticleId(articleId);
         comments.stream().forEach(c -> {
             try {
@@ -100,11 +98,8 @@ public class BoardWebController {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
         });
-
         String boardName = boardService.findById(boardId).getName();
-
         model.addAttribute("user", user);
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
@@ -123,14 +118,11 @@ public class BoardWebController {
             System.out.println("글쓴이가 아닙니다.");
             return "redirect:/board/{boardId}/article/{articleId}";
         }
-
-
         ArticleViewDto articleResponse = new ArticleViewDto();
         Article article = articleService.findById(articleId);
         articleResponse.setTitle(article.getTitle());
         articleResponse.setContent(article.getContent());
         String boardName = boardService.findById(boardId).getName();
-
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
@@ -142,13 +134,10 @@ public class BoardWebController {
     public String articleModify(@PathVariable("boardId") long boardId,
                                 @PathVariable("articleId") long articleId,
                                 @ModelAttribute("article") ArticleWriteDto articleRequest) throws Exception {
-
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
-
         articleService.update(article);
-
         return "redirect:/board/{boardId}/article/{articleId}";
 
     }
@@ -162,12 +151,10 @@ public class BoardWebController {
             System.out.println("빈 값이 있습니다.");
             return "redirect:/board/{boardId}/article/{articleId}";
         }
-
         Comment comment = new Comment();
         comment.setArticleId(articleId);
         comment.setAuthorId(user.getId());
         comment.setContent(commentRequest);
-
         try {
             commentService.write(comment);
         } catch (Exception e) {
@@ -175,6 +162,4 @@ public class BoardWebController {
         }
         return "redirect:/board/{boardId}/article/{articleId}";
     }
-
-
 }

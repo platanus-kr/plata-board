@@ -20,64 +20,60 @@ public class UserRepository {
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("users").usingGeneratedKeyColumns("id");
-
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUsername());
         parameters.put("password", user.getPassword());
         parameters.put("nickname", user.getNickname());
         parameters.put("email", user.getEmail());
         parameters.put("deleted", user.isDeleted());
-
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setId(key.longValue());
         return user;
     }
 
     public int delete(User user) {
-        return jdbcTemplate.update("delete from users where id = ?", user.getId());
+        return jdbcTemplate.update("delete from USERS where ID = ?", user.getId());
     }
 
     public int update(User user) {
-        return jdbcTemplate.update("update users set USERNAME =?, PASSWORD = ?, NICKNAME = ?, EMAIL = ? where ID = ?",
-                user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), user.getId());
+        return jdbcTemplate
+                .update("update users set USERNAME =?, PASSWORD = ?, NICKNAME = ?, EMAIL = ? where ID = ?",
+                        user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), user.getId());
     }
 
     public int updateDeleteFlag(User user) {
         return jdbcTemplate.update(
-                "update users set DELETED = ? where ID = ?",
+                "update USERS set DELETED = ? where ID = ?",
                 user.isDeleted(), user.getId());
     }
 
     public Optional<User> findById(long id) {
         List<User> result = jdbcTemplate
-                .query("select * from users where id = ?", userRowMapper(), id);
+                .query("select * from USERS where ID = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
 
     public Optional<User> findByUsername(String username) {
         List<User> result = jdbcTemplate
-                .query("select * from users where username = ?", userRowMapper(), username);
+                .query("select * from USERS where USERNAME = ?", userRowMapper(), username);
         return result.stream().findAny();
     }
 
     public Optional<User> findByEmail(String email) {
         List<User> result = jdbcTemplate
-                .query("select * from users where email = ?", userRowMapper(), email);
+                .query("select * from USERS where EMAIL = ?", userRowMapper(), email);
         return result.stream().findAny();
     }
 
     public Optional<User> findByNickname(String nickname) {
         List<User> result = jdbcTemplate
-                .query("select * from users where nickname = ?", userRowMapper(), nickname);
+                .query("select * from USERS where NICKNAME = ?", userRowMapper(), nickname);
         return result.stream().findAny();
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from users", userRowMapper());
+        return jdbcTemplate.query("select * from USERS", userRowMapper());
     }
-
-    //todo: 데이터베이스 클리어를 위한 코드 작성 (테스트코드용)
-
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
@@ -91,5 +87,4 @@ public class UserRepository {
             return user;
         };
     }
-
 }
