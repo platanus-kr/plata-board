@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequiredArgsConstructor
 public class LoginWebController {
-
     private final LoginService loginService;
 
     @GetMapping("/login")
@@ -35,12 +34,9 @@ public class LoginWebController {
             System.out.println(e.getMessage());
             return "login/loginForm";
         }
-
         HttpSession session = request.getSession(true);
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
-
         return "redirect:" + redirectURL;
-
     }
 
     @GetMapping("/logout")

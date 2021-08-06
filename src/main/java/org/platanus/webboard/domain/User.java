@@ -10,5 +10,4 @@ public class User {
     private String nickname;
     private String email;
     private boolean deleted;
-
 }

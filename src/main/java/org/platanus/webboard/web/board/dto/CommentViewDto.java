@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board.dto;
 
 import lombok.Data;
+import org.platanus.webboard.domain.Comment;
 
 import java.time.LocalDateTime;
 
@@ -13,4 +14,16 @@ public class CommentViewDto {
     private String authorNickname;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+
+    public static CommentViewDto from(Comment c, String authorNickname) {
+        CommentViewDto commentResponse = new CommentViewDto();
+        commentResponse.setId(c.getId());
+        commentResponse.setArticleId(c.getArticleId());
+        commentResponse.setContent(c.getContent());
+        commentResponse.setAuthorId(c.getAuthorId());
+        commentResponse.setAuthorNickname(authorNickname);
+        commentResponse.setCreatedDate(c.getCreatedDate());
+        commentResponse.setModifiedDate(c.getModifiedDate());
+        return commentResponse;
+    }
 }

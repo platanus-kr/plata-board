@@ -14,5 +14,4 @@ public class Article {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private boolean deleted;
-
 }

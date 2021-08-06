@@ -18,13 +18,13 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-//    public Board update(Board board) throws Exception {
-//        if (boardRepository.findById(board.getId()).isEmpty())
-//            throw new IllegalArgumentException("존재하지 않는 게시판 입니다.");
-//        if (boardRepository.update(board) == 0)
-//            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
-//        return board;
-//    }
+    public Board update(Board board) throws Exception {
+        if (boardRepository.findById(board.getId()).isEmpty())
+            throw new IllegalArgumentException("존재하지 않는 게시판 입니다.");
+        if (boardRepository.update(board) == 0)
+            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        return board;
+    }
 
     // todo: 게시판을 지울 떄 작성 글과 코멘트 전부를 삭제되도록 할 것
     public void delete(Board board) throws Exception {
