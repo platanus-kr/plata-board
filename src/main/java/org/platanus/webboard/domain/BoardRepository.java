@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -34,28 +35,25 @@ public class BoardRepository {
         return board;
     }
 
-    public List<Board> findAll() {
-        return jdbcTemplate.query("select * from BOARDS", boardRowMapper());
-    }
-
     public int delete(Board board) {
-        return jdbcTemplate.update("delete from BOARDS where ID = ?", board.getId());
+        return jdbcTemplate.update(QueryConst.BOARD_DELETE, board.getId());
     }
 
     public int update(Board board) {
-        return jdbcTemplate.update("update BOARDS set NAME = ?, DESCRIPTION = ?  where ID = ?",
-                board.getName(), board.getDescription(), board.getId());
+        return jdbcTemplate.update(QueryConst.BOARD_UPDATE, board.getName(), board.getDescription(), board.getId());
+    }
+
+    public List<Board> findAll() {
+        return jdbcTemplate.query(QueryConst.BOARD_FIND_ALL, boardRowMapper());
     }
 
     public Optional<Board> findById(long id) {
-        List<Board> result = jdbcTemplate
-                .query("select * from BOARDS where ID = ?", boardRowMapper(), id);
+        List<Board> result = jdbcTemplate.query(QueryConst.BOARD_FIND_BY_ID, boardRowMapper(), id);
         return result.stream().findAny();
     }
 
     public Optional<Board> findByName(String name) {
-        List<Board> result = jdbcTemplate
-                .query("select * from BOARDS where NAME = ?", boardRowMapper(), name);
+        List<Board> result = jdbcTemplate.query(QueryConst.BOARD_FIND_BY_NAME, boardRowMapper(), name);
         return result.stream().findAny();
     }
 

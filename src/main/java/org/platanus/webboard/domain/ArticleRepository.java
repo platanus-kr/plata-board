@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -40,55 +41,52 @@ public class ArticleRepository {
     }
 
     public int delete(Article article) {
-        return jdbcTemplate.update("delete from ARTICLES where ID = ?", article.getId());
+        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE, article.getId());
     }
 
     public int update(Article article) {
-        return jdbcTemplate.update(
-                "update ARTICLES set TITLE = ?, CONTENT = ?, MODIFIED_DATE = ? where ID = ?",
+        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE,
                 article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
     }
 
     public int updateDeleteFlag(Article article) {
-        return jdbcTemplate.update(
-                "update ARTICLES set DELETED = ? where ID = ?",
-                article.isDeleted(), article.getId());
+        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_DELETE_FLAG, article.isDeleted(), article.getId());
     }
 
     public Optional<Article> findById(long id) {
-        List<Article> result = jdbcTemplate
-                .query("select * from ARTICLES where ID = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_ID, articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Article> findByBoardId(long id) {
-        return jdbcTemplate.query("select * from ARTICLES where BOARD_ID = ? ", articleRowMapper(), id);
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID, articleRowMapper(), id);
     }
 
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from ARTICLES", articleRowMapper());
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_ALL, articleRowMapper());
     }
 
     public List<Article> findByAuthorId(long id) {
-        return jdbcTemplate.query("select * from ARTICLES where AUTHOR_ID = ?", articleRowMapper(), id);
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_AUTHOR_ID, articleRowMapper(), id);
     }
 
     public List<Article> findByTitle(String title) {
-        return jdbcTemplate
-                .query("select * from ARTICLES where TITLE like ?",
-                        articleRowMapper(), "%" + title + "%");
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE,
+                articleRowMapper(), likeWrapper(title));
     }
 
     public List<Article> findByContent(String content) {
         return jdbcTemplate
-                .query("select * from ARTICLES where CONTENT like ?",
-                        articleRowMapper(), "%" + content + "%");
+                .query(QueryConst.ARTICLE_FIND_BY_CONTENT, articleRowMapper(), likeWrapper(content));
     }
 
     public List<Article> findByTitleAndContent(String title, String content) {
-        return jdbcTemplate
-                .query("select * from ARTICLES where title like ? or CONTENT like ?",
-                        articleRowMapper(), "%" + title + "%", "%" + content + "%");
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE_AND_CONTENT,
+                articleRowMapper(), likeWrapper(title), likeWrapper(content));
+    }
+
+    public String likeWrapper(String string) {
+        return "%" + string + "%";
     }
 
     public RowMapper<Article> articleRowMapper() {

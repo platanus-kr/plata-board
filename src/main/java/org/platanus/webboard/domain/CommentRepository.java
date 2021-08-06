@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,41 +40,34 @@ public class CommentRepository {
     }
 
     public int delete(Comment comment) {
-        return jdbcTemplate.update("delete from COMMENTS where ID = ?", comment.getId());
+        return jdbcTemplate.update(QueryConst.COMMENT_DELETE, comment.getId());
     }
 
     public int update(Comment comment) {
-        return jdbcTemplate.update(
-                "update COMMENTS set CONTENT = ?, MODIFIED_DATE=? where ID = ?",
+        return jdbcTemplate.update(QueryConst.COMMENT_UPDATE,
                 comment.getContent(), comment.getModifiedDate(), comment.getId());
     }
 
     public int updateDeleteFlag(Comment comment) {
-        return jdbcTemplate.update(
-                "update COMMENTS set DELETED = ? where ID = ?",
-                comment.isDeleted(), comment.getId());
+        return jdbcTemplate.update(QueryConst.COMMENT_UPDATE_DELETE_FLAG, comment.isDeleted(), comment.getId());
     }
 
     public Optional<Comment> findById(long id) {
-        List<Comment> result = jdbcTemplate
-                .query("select * from COMMENTS where ID = ?", commentRowMapper(), id);
+        List<Comment> result = jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ID, commentRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Comment> findByArticleId(long id) {
-        return jdbcTemplate.query("select * from COMMENTS where ARTICLE_ID = ?", commentRowMapper(), id);
+        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
     }
 
-
     public List<Comment> findByContent(String content) {
-        return jdbcTemplate.query("select * from COMMENTS where CONTENT like ?",
-                commentRowMapper(), "%" + content + "%");
+        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_CONTENT, commentRowMapper(), "%" + content + "%");
     }
 
     public List<Comment> findAll() {
-        return jdbcTemplate.query("select * from COMMENTS", commentRowMapper());
+        return jdbcTemplate.query(QueryConst.COMMENT_FIND_ALL, commentRowMapper());
     }
-
 
     public RowMapper<Comment> commentRowMapper() {
         return (rs, rowNum) -> {
