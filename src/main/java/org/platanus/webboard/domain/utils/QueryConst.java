@@ -7,6 +7,7 @@ public class QueryConst {
     public static final String BOARD_FIND_ALL = "select * from BOARDS";
     public static final String BOARD_FIND_BY_ID = "select * from BOARDS where ID = ?";
     public static final String BOARD_FIND_BY_NAME = "select * from BOARDS where NAME = ?";
+    public static final String BOARD_ALL_DELETE = "delete from BOARDS";
     public static final String ARTICLE_DELETE = "delete from ARTICLES where ID = ?";
     public static final String ARTICLE_UPDATE = "update ARTICLES set TITLE = ?, CONTENT = ?, MODIFIED_DATE = ? where ID = ?";
     public static final String ARTICLE_UPDATE_DELETE_FLAG = "update ARTICLES set DELETED = ? where ID = ?";
