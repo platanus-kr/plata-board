@@ -75,6 +75,10 @@ public class UserRepository {
         return jdbcTemplate.query(QueryConst.USER_FIND_ALL, userRowMapper());
     }
 
+    public void allDelete() {
+        jdbcTemplate.update(QueryConst.USER_ALL_DELETE);
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();
