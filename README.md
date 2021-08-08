@@ -89,10 +89,10 @@ java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar --spring.config.location=classp
 GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
 ```
-WEBBOARD_HOST :
-WEBBOARD_PORT :
-WEBBOARD_ID :
-WEBBOARD_KEY :
+WEBBOARD_HOST : 호스트의 주소
+WEBBOARD_PORT : 호스트의 SSH 포트
+WEBBOARD_ID : 호스트의 계정
+WEBBOARD_KEY : 호스트의 SSH KEY
 ```
 
 ## 사용된 기술셋
