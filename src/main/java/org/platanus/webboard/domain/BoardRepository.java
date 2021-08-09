@@ -57,6 +57,10 @@ public class BoardRepository {
         return result.stream().findAny();
     }
 
+    public void allDelete() {
+        jdbcTemplate.update(QueryConst.BOARD_ALL_DELETE);
+    }
+
     private RowMapper<Board> boardRowMapper() {
         return (rs, rowNum) -> {
             Board board = new Board();

@@ -7,6 +7,7 @@ public class QueryConst {
     public static final String BOARD_FIND_ALL = "select * from BOARDS";
     public static final String BOARD_FIND_BY_ID = "select * from BOARDS where ID = ?";
     public static final String BOARD_FIND_BY_NAME = "select * from BOARDS where NAME = ?";
+    public static final String BOARD_ALL_DELETE = "delete from BOARDS";
     public static final String ARTICLE_DELETE = "delete from ARTICLES where ID = ?";
     public static final String ARTICLE_UPDATE = "update ARTICLES set TITLE = ?, CONTENT = ?, MODIFIED_DATE = ? where ID = ?";
     public static final String ARTICLE_UPDATE_DELETE_FLAG = "update ARTICLES set DELETED = ? where ID = ?";
@@ -17,6 +18,7 @@ public class QueryConst {
     public static final String ARTICLE_FIND_BY_TITLE = "select * from ARTICLES where TITLE like ?";
     public static final String ARTICLE_FIND_BY_CONTENT = "select * from ARTICLES where CONTENT like ?";
     public static final String ARTICLE_FIND_BY_TITLE_AND_CONTENT = "select * from ARTICLES where TITLE like ? or CONTENT like ?";
+    public static final String ARTICLE_ALL_DELETE = "delete from ARTICLES";
     public static final String COMMENT_DELETE = "delete from COMMENTS where ID = ?";
     public static final String COMMENT_UPDATE = "update COMMENTS set CONTENT = ?, MODIFIED_DATE=? where ID = ?";
     public static final String COMMENT_UPDATE_DELETE_FLAG = "update COMMENTS set DELETED = ? where ID = ?";
@@ -32,4 +34,5 @@ public class QueryConst {
     public static final String USER_FIND_BY_EMAIL = "select * from USERS where EMAIL = ?";
     public static final String USER_FIND_BY_NICKNAME = "select * from USERS where NICKNAME = ?";
     public static final String USER_FIND_ALL = "select * from USERS";
+    public static final String USER_ALL_DELETE = "delete from USERS";
 }
