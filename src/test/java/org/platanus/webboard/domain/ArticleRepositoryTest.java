@@ -38,14 +38,14 @@ public class ArticleRepositoryTest {
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
         board = new Board();
-        board.setName("board01");
+        board.setName("board21");
         board.setDescription("description");
         board = boardRepository.save(board);
         user = new User();
-        user.setUsername("user01");
+        user.setUsername("user21");
         user.setPassword("aaa");
-        user.setNickname("user01");
-        user.setEmail("user1@gmail.com");
+        user.setNickname("user21");
+        user.setEmail("user21@gmail.com");
         user.setDeleted(false);
         user = userRepository.save(user);
     }

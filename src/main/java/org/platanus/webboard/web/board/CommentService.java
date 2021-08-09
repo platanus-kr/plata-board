@@ -35,12 +35,13 @@ public class CommentService {
         return comment;
     }
 
-    public void updateDeleteFlag(Comment comment) throws Exception {
+    public boolean updateDeleteFlag(Comment comment) throws Exception {
         if (commentRepository.findById(comment.getId()).get().isDeleted())
             throw new IllegalArgumentException("이미 삭제된 댓글 입니다.");
         comment.setDeleted(true);
         if (commentRepository.updateDeleteFlag(comment) != 1)
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        return true;
     }
 
     public void delete(Comment comment) throws Exception {

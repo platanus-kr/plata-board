@@ -48,14 +48,14 @@ public class ArticleServiceTest {
         articleService = new ArticleService(articleRepository, boardService, userService);
         try {
             board = new Board();
-            board.setName("board01");
+            board.setName("board31");
             board.setDescription("description");
             board = boardService.create(board);
             user = new User();
-            user.setUsername("user01");
+            user.setUsername("user31");
             user.setPassword("aaa");
-            user.setNickname("user01");
-            user.setEmail("user1@gmail.com");
+            user.setNickname("user31");
+            user.setEmail("user31@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
         } catch (Exception e) {
