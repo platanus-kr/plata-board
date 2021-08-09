@@ -1,6 +1,5 @@
 package org.platanus.webboard.web.board;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.platanus.webboard.domain.BoardRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Transactional
 public class BoardServiceTest {
 
     private static BoardRepository boardRepository;
@@ -34,10 +35,10 @@ public class BoardServiceTest {
         boardService = new BoardService(boardRepository);
     }
 
-    @AfterAll
-    static void afterAll() {
-        boardRepository.allDelete();
-    }
+//    @AfterAll
+//    static void afterAll() {
+//        boardRepository.allDelete();
+//    }
 
     @BeforeEach
     public void beforeEach() {

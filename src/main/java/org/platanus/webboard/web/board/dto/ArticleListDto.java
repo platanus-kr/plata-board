@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board.dto;
 
 import lombok.Data;
+import org.platanus.webboard.domain.Article;
 
 import java.time.LocalDateTime;
 
@@ -13,4 +14,18 @@ public class ArticleListDto {
     private String authorNickname;
     private LocalDateTime createdDate;
     private boolean deleted;
+
+    public static ArticleListDto from(Article a, String authorNickname) {
+        ArticleListDto dto = new ArticleListDto();
+        dto.setId(a.getId());
+        dto.setBoardId(a.getBoardId());
+        dto.setTitle(a.getTitle());
+        dto.setAuthorId(a.getAuthorId());
+        dto.setAuthorNickname(authorNickname);
+        dto.setCreatedDate(a.getCreatedDate());
+        dto.setDeleted(a.isDeleted());
+        return dto;
+
+    }
+
 }

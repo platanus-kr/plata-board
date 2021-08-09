@@ -38,17 +38,19 @@ public class ArticleService {
         return article;
     }
 
-    public void updateDeleteFlag(Article article) throws Exception {
+    public boolean updateDeleteFlag(Article article) throws Exception {
         if (articleRepository.findById(article.getId()).get().isDeleted())
             throw new IllegalArgumentException("이미 삭제된 게시물 입니다.");
         article.setDeleted(true);
         if (articleRepository.updateDeleteFlag(article) != 1)
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        return true;
     }
 
-    public void delete(Article article) throws Exception {
+    public boolean delete(Article article) throws Exception {
         if (articleRepository.delete(article) != 1)
             throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
+        return true;
     }
 
     public List<ArticleListDto> findAllArticles() {
@@ -61,15 +63,8 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> a.isDeleted()).forEach(a -> {
             try {
-                ArticleListDto dto = new ArticleListDto();
-                dto.setId(a.getId());
-                dto.setBoardId(a.getBoardId());
-                dto.setTitle(a.getTitle());
-                dto.setAuthorId(a.getAuthorId());
-                dto.setAuthorNickname(userService.findById(a.getAuthorId()).getNickname());
-                dto.setCreatedDate(a.getCreatedDate());
-                dto.setDeleted(a.isDeleted());
-                returnArticles.add(dto);
+                returnArticles.add(ArticleListDto
+                        .from(a, userService.findById(a.getAuthorId()).getNickname()));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -86,15 +81,8 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
             try {
-                ArticleListDto dto = new ArticleListDto();
-                dto.setId(a.getId());
-                dto.setBoardId(a.getBoardId());
-                dto.setTitle(a.getTitle());
-                dto.setAuthorId(a.getAuthorId());
-                dto.setAuthorNickname(userService.findById(a.getAuthorId()).getNickname());
-                dto.setCreatedDate(a.getCreatedDate());
-                dto.setDeleted(a.isDeleted());
-                returnArticles.add(dto);
+                returnArticles.add(ArticleListDto
+                        .from(a, userService.findById(a.getAuthorId()).getNickname()));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

@@ -71,8 +71,7 @@ public class ArticleRepository {
     }
 
     public List<Article> findByTitle(String title) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE,
-                articleRowMapper(), likeWrapper(title));
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE, articleRowMapper(), likeWrapper(title));
     }
 
     public List<Article> findByContent(String content) {
@@ -83,6 +82,10 @@ public class ArticleRepository {
     public List<Article> findByTitleAndContent(String title, String content) {
         return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE_AND_CONTENT,
                 articleRowMapper(), likeWrapper(title), likeWrapper(content));
+    }
+
+    public void allDelete() {
+        jdbcTemplate.update(QueryConst.ARTICLE_ALL_DELETE);
     }
 
     public String likeWrapper(String string) {

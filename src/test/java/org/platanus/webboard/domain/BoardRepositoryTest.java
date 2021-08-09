@@ -1,18 +1,18 @@
 package org.platanus.webboard.domain;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Transactional
 public class BoardRepositoryTest {
 
     private static BoardRepository boardRepository;
@@ -29,12 +29,12 @@ public class BoardRepositoryTest {
         boardRepository.init();
     }
 
-    @AfterAll
-    static void afterAll() {
-        boardRepository.allDelete();
-        List<Board> findBoards = boardRepository.findAll();
-        assertEquals(findBoards.size(), 0);
-    }
+//    @AfterAll
+//    static void afterAll() {
+//        boardRepository.allDelete();
+//        List<Board> findBoards = boardRepository.findAll();
+//        assertEquals(findBoards.size(), 0);
+//    }
 
     @BeforeEach
     public void beforeEach() {

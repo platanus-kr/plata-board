@@ -1,6 +1,5 @@
 package org.platanus.webboard.web.user;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.platanus.webboard.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Transactional
 public class UserServiceTest {
 
     private static UserRepository userRepository;
@@ -34,10 +35,10 @@ public class UserServiceTest {
         userService = new UserService(userRepository);
     }
 
-    @AfterAll
-    static void afterAll() {
-        userRepository.allDelete();
-    }
+//    @AfterAll
+//    static void afterAll() {
+//        userRepository.allDelete();
+//    }
 
     @BeforeEach
     public void beforeEach() {
@@ -47,10 +48,10 @@ public class UserServiceTest {
     @Test
     public void join() {
         try {
-            user.setUsername("user01");
+            user.setUsername("user11");
             user.setPassword("aaa");
-            user.setNickname("user01");
-            user.setEmail("user1@gmail.com");
+            user.setNickname("user11");
+            user.setEmail("user11@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             assertEquals(userService.findById(user.getId()).getId(), user.getId());
