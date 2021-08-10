@@ -12,7 +12,8 @@ public class QueryConst {
     public static final String ARTICLE_UPDATE = "update ARTICLES set TITLE = ?, CONTENT = ?, MODIFIED_DATE = ? where ID = ?";
     public static final String ARTICLE_UPDATE_DELETE_FLAG = "update ARTICLES set DELETED = ? where ID = ?";
     public static final String ARTICLE_FIND_BY_ID = "select * from ARTICLES where ID = ?";
-    public static final String ARTICLE_FIND_BY_BOARD_ID = "select * from ARTICLES where BOARD_ID = ?";
+    public static final String ARTICLE_FIND_BY_BOARD_ID = "select * from ARTICLES where BOARD_ID = ? order by ID desc";
+    public static final String ARTICLE_FIND_BY_BOARD_ID_PAGE = "select * from ARTICLES where BOARD_ID = ? order by ID desc limit ? offset ?";
     public static final String ARTICLE_FIND_ALL = "select * from ARTICLES";
     public static final String ARTICLE_FIND_BY_AUTHOR_ID = "select * from ARTICLES where AUTHOR_ID = ?";
     public static final String ARTICLE_FIND_BY_TITLE = "select * from ARTICLES where TITLE like ?";

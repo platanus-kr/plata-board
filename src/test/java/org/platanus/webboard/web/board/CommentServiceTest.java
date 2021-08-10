@@ -47,7 +47,7 @@ public class CommentServiceTest {
         userService = new UserService(userRepository);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, boardService, userService);
+        articleService = new ArticleService(articleRepository, commentRepository, boardService, userService);
         commentRepository = new CommentRepository(jdbcTemplate);
         commentRepository.init();
         commentService = new CommentService(commentRepository, articleService);

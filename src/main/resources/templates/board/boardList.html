@@ -31,6 +31,34 @@
             </tr>
             </tbody>
         </table>
+        <nav th:with="
+                  maxPage=${5},
+                  start=${(articles.number/maxPage)*maxPage + 1},
+                  end=(${(articles.totalPages == 0) ? 1 : (start + (maxPage - 1) < articles.totalPages ? start + (maxPage - 1) : articles.totalPages)})"
+             aria-label="Page navigation">
+            <ul class=" pagination justify-content-center">
+                <li th:if="${start > 1}" class="page-item">
+                    <a class="page-link" th:href="@{'/board/' + ${board_id}(page=1)}" th:text="'<<'"></a>
+                </li>
+                <li th:if="${start > 1}" class="page-item">
+                    <a class="page-link" th:href="@{'/board/' + ${board_id}(page=${start - 1})}" th:text="'<'"></a>
+                </li>
+                <li class="page-item"
+                    th:each="offset: ${#numbers.sequence(start, end)}"
+                    th:classappend="${offset == articles.number + 1} ? 'active'">
+                    <a class="page-link" th:href="@{'/board/' + ${board_id}(page=${offset})}"
+                       th:text="${offset}"></a>
+                </li>
+                <li th:if="${end < articles.totalPages}" class="page-item">
+                    <a class="page-link" th:href="@{'/board/' + ${board_id}(page=${start + maxPage})}"
+                       th:text="'>'"></a>
+                </li>
+                <li th:if="${end < articles.totalPages}" class="page-item">
+                    <a class="page-link" th:href="@{'/board/' + ${board_id}(page=${articles.totalPages})}"
+                       th:text="'>>'"></a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <div class="board_button">
         <a class="btn btn-primary btn-floating m-1"

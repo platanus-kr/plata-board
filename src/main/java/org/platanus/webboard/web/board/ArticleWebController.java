@@ -75,7 +75,6 @@ public class ArticleWebController {
         article.setContent(articleRequest.getContent());
         articleService.update(article);
         return "redirect:/article/{articleId}";
-
     }
 
     @PostMapping(value = "/{articleId}")
