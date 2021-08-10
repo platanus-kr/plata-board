@@ -2,6 +2,7 @@ package org.platanus.webboard.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.utils.QueryConst;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -62,6 +63,12 @@ public class ArticleRepository {
         return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID, articleRowMapper(), id);
     }
 
+    public List<Article> findByBoardIdPagination(Pageable page, long boardId) {
+//        Sort.Order order = !page.getSort().isEmpty() ? page.getSort().toList().get(0) : Sort.Order.by("ID");
+        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID_PAGE,
+                articleRowMapper(), boardId, page.getPageSize(), page.getOffset());
+    }
+
     public List<Article> findAll() {
         return jdbcTemplate.query(QueryConst.ARTICLE_FIND_ALL, articleRowMapper());
     }
@@ -86,6 +93,10 @@ public class ArticleRepository {
 
     public void allDelete() {
         jdbcTemplate.update(QueryConst.ARTICLE_ALL_DELETE);
+    }
+
+    public int count(long boardId) {
+        return jdbcTemplate.queryForObject("select count(*) from ARTICLES where board_id =?", Integer.class, boardId);
     }
 
     public String likeWrapper(String string) {

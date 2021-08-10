@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.*;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.user.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -26,7 +27,9 @@ public class ArticleServiceTest {
     private static UserService userService;
     private static ArticleRepository articleRepository;
     private static ArticleService articleService;
+    private static CommentRepository commentRepository;
     private static Board board;
+    private static Board boardForPage;
     private static User user;
     private Article article;
 
@@ -43,14 +46,19 @@ public class ArticleServiceTest {
         userRepository = new UserRepository(jdbcTemplate);
         userRepository.init();
         userService = new UserService(userRepository);
+        commentRepository = new CommentRepository(jdbcTemplate);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, boardService, userService);
+        articleService = new ArticleService(articleRepository, commentRepository, boardService, userService);
         try {
             board = new Board();
             board.setName("board31");
             board.setDescription("description");
             board = boardService.create(board);
+            boardForPage = new Board();
+            boardForPage.setName("boardForPage");
+            boardForPage.setDescription("-");
+            boardForPage = boardService.create(boardForPage);
             user = new User();
             user.setUsername("user31");
             user.setPassword("aaa");
@@ -228,5 +236,27 @@ public class ArticleServiceTest {
             System.out.println(e.getMessage());
             fail();
         }
+    }
+
+    @Test
+    public void findArticlesByBoardIdPage() {
+        article.setTitle("제목입니다");
+        article.setBoardId(boardForPage.getId());
+        article.setAuthorId(user.getId());
+        article.setContent("내용입니다");
+        for (int i = 0; i < 100; i++) {
+            try {
+                article.setTitle(i + "번째 제목입니다");
+                articleService.write(article);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        Page<ArticleListDto> articles = articleService.findPageOfArticlesByBoardId(boardForPage.getId(), 0);
+        articles.stream().forEach(a -> System.out.println(a.getTitle()));
+        System.out.println(articles.getTotalPages());
+        System.out.println(articles.getTotalElements());
+        System.out.println(articles.getNumberOfElements());
+
     }
 }

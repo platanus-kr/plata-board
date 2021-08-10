@@ -3,6 +3,7 @@ package org.platanus.webboard.domain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -21,6 +22,7 @@ public class ArticleRepositoryTest {
     private static UserRepository userRepository;
     private static ArticleRepository articleRepository;
     private static Board board;
+    private static Board boardForCount;
     private static User user;
     private Article article;
 
@@ -41,6 +43,10 @@ public class ArticleRepositoryTest {
         board.setName("board21");
         board.setDescription("description");
         board = boardRepository.save(board);
+        boardForCount = new Board();
+        boardForCount.setName("boardForCount");
+        boardForCount.setDescription("-");
+        boardForCount = boardRepository.save(boardForCount);
         user = new User();
         user.setUsername("user21");
         user.setPassword("aaa");
@@ -237,5 +243,40 @@ public class ArticleRepositoryTest {
                 .findAny()
                 .get();
         assertEquals(findArticle.getContent(), article.getContent());
+    }
+
+    @Test
+    public void count() {
+        article.setBoardId(boardForCount.getId());
+        article.setTitle("제목입니다.");
+        article.setContent("내용입니다.");
+        article.setAuthorId(user.getId());
+        article.setCreatedDate(LocalDateTime.now());
+        article.setModifiedDate(LocalDateTime.now());
+        article.setDeleted(false);
+        for (int i = 0; i < 10; i++)
+            article = articleRepository.save(article);
+        int result = articleRepository.count(article.getBoardId());
+        System.out.println("글 카운팅 : " + result);
+        assertEquals(result, 10);
+    }
+
+    @Test
+    public void findByBoardIdPagination() {
+        article.setBoardId(board.getId());
+        article.setTitle("제목입니다.");
+        article.setContent("내용입니다.");
+        article.setAuthorId(user.getId());
+        article.setCreatedDate(LocalDateTime.now());
+        article.setModifiedDate(LocalDateTime.now());
+        article.setDeleted(false);
+        for (int i = 0; i < 15; i++) {
+            article.setTitle(i + "번째 글입니다.");
+            articleRepository.save(article);
+        }
+        PageRequest pageable = PageRequest.of(0, 15);
+        List<Article> articles = articleRepository.findByBoardIdPagination(pageable, 1);
+        articles.stream().forEach(a -> System.out.println(a.getTitle()));
+        assertEquals(articles.size(), 15);
     }
 }
