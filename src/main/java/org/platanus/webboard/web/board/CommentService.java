@@ -3,6 +3,7 @@ package org.platanus.webboard.web.board;
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
+import org.platanus.webboard.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,20 +25,24 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Comment update(Comment comment) throws Exception {
+    public Comment update(Comment comment, User user) throws Exception {
         comment.setCreatedDate(findById(comment.getId()).getCreatedDate());
         comment.setModifiedDate(LocalDateTime.now());
         Optional<Comment> getComment = commentRepository.findById(comment.getId());
         if (getComment.isEmpty())
             throw new IllegalArgumentException("없는 댓글 입니다.");
+        if (comment.getAuthorId() != user.getId())
+            throw new IllegalArgumentException("작성자가 아닙니다.");
         if (commentRepository.update(comment) != 1)
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
         return comment;
     }
 
-    public boolean updateDeleteFlag(Comment comment) throws Exception {
+    public boolean updateDeleteFlag(Comment comment, User user) throws Exception {
         if (commentRepository.findById(comment.getId()).get().isDeleted())
             throw new IllegalArgumentException("이미 삭제된 댓글 입니다.");
+        if (comment.getAuthorId() != user.getId())
+            throw new IllegalArgumentException("작성자가 아닙니다.");
         comment.setDeleted(true);
         if (commentRepository.updateDeleteFlag(comment) != 1)
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
