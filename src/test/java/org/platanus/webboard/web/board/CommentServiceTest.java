@@ -109,7 +109,7 @@ public class CommentServiceTest {
             comment.setDeleted(false);
             comment = commentService.write(comment);
             comment.setContent(content);
-            comment = commentService.update(comment);
+            comment = commentService.update(comment, user);
             assertEquals(comment.getContent(), content);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -126,7 +126,7 @@ public class CommentServiceTest {
             comment.setContent(content);
             comment.setDeleted(false);
             comment = commentService.write(comment);
-            boolean result = commentService.updateDeleteFlag(comment);
+            boolean result = commentService.updateDeleteFlag(comment, user);
             assertEquals(result, true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -212,7 +212,7 @@ public class CommentServiceTest {
             comment.setContent(content);
             comment.setDeleted(false);
             comment = commentService.write(comment);
-            commentService.updateDeleteFlag(comment);
+            commentService.updateDeleteFlag(comment, user);
             boolean result = commentService.isDeleted(comment);
             assertEquals(result, true);
         } catch (Exception e) {

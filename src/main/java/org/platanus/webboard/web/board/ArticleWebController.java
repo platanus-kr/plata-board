@@ -26,14 +26,15 @@ public class ArticleWebController {
     private final UserService userService;
 
     @GetMapping(value = "/{articleId}")
-    public String view(@PathVariable("articleId") long articleId, Model model,
-                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) throws Exception {
+    public String view(@PathVariable("articleId") long articleId,
+                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
+                       Model model) throws Exception {
         Article article = articleService.findById(articleId);
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
         List<CommentViewDto> commentsResponse = new ArrayList<>();
         commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
             try {
-                commentsResponse.add(CommentViewDto.from(c, authorNickname));
+                commentsResponse.add(CommentViewDto.from(c, userService.findById(c.getAuthorId()).getNickname()));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -47,6 +48,16 @@ public class ArticleWebController {
         model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
         model.addAttribute("comments", commentsResponse);
         return "board/boardView";
+    }
+
+    @GetMapping(value = "/{articleId}/delete")
+    public String remove(@PathVariable("articleId") long articleId,
+                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) throws Exception {
+        Article article = articleService.findById(articleId);
+        long redirectBoardId = article.getBoardId();
+        if (!articleService.updateDeleteFlag(article, user))
+            System.out.println("삭제에 문제가 생겼습니다.");
+        return "redirect:/board/" + redirectBoardId;
     }
 
     @GetMapping(value = "/{articleId}/modify")
@@ -69,11 +80,12 @@ public class ArticleWebController {
 
     @PostMapping(value = "/{articleId}/modify")
     public String articleModify(@PathVariable("articleId") long articleId,
+                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
                                 @ModelAttribute("article") ArticleWriteDto articleRequest) throws Exception {
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
-        articleService.update(article);
+        articleService.update(article, user);
         return "redirect:/article/{articleId}";
     }
 

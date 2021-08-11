@@ -30,7 +30,7 @@
     <div class="comment_view">
         <div class="comments" th:each="comment: ${comments}">
             <div class="comment">
-                <div class="comment_metadata">
+                <div class="metadata">
                     <div class="author">글쓴이 : <span th:text="${comment.authorNickname}"></span></div>
                     <div class="author">글 쓴 시간 : <span
                             th:text="${#temporals.format(comment.createdDate, 'MM/dd HH:mm:ss')}"></span></div>
@@ -39,6 +39,12 @@
                 </div>
                 <div class="content">
                     <pre th:text="${comment.content}"></pre>
+                </div>
+                <div th:if="${user.getId() == comment.getAuthorId()}" class="control">
+                    <a class="btn btn-primary btn-floating m-1"
+                       th:href="@{|/comment/${comment.getId()}/delete|}" role="button">
+                        삭제
+                    </a>
                 </div>
             </div>
             <hr/>
@@ -61,10 +67,16 @@
            th:href="@{|/board/${board_id}/write|}" role="button">
             글쓰기
         </a>
-        <a class="btn btn-primary btn-floating m-1"
+        <span th:if="${user != null}">
+        <a th:if="${user.getId() == article.getAuthorId()}" class="btn btn-primary btn-floating m-1"
            th:href="@{|/article/${article_id}/modify|}" role="button">
             수정하기
         </a>
+        <a th:if="${user.getId() == article.getAuthorId()}" class="btn btn-primary btn-floating m-1"
+           th:href="@{|/article/${article_id}/delete|}" role="button">
+            삭제하기
+        </a>
+        </span>
         <a class="btn btn-primary btn-floating m-1"
            th:href="@{|/board/${board_id}|}" role="button">
             목록보기

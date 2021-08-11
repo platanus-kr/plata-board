@@ -46,17 +46,15 @@ public class BoardWebController {
     public String write(@PathVariable("id") long id,
                         @ModelAttribute("article") ArticleWriteDto articleRequest,
                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) {
-        if (articleRequest.getTitle().trim().length() == 0 && articleRequest.getContent().trim().length() == 0) {
+        if (articleRequest.getTitle().trim().length() == 0 || articleRequest.getContent().trim().length() == 0) {
             System.out.println("빈 값이 있습니다.");
             return "redirect:/board/{id}/write";
         }
-
         Article article = new Article();
         article.setBoardId(id);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
         article.setAuthorId(user.getId());
-
         try {
             articleService.write(article);
         } catch (Exception e) {
