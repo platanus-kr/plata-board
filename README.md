@@ -105,7 +105,8 @@ WEBBOARD_KEY : 호스트의 SSH KEY
 ### 기술셋 내역
 
 - Spring Boot 2.5.2
-- JdbcTemplate
+- Spring Data
+- Spring JDBC (JdbcTemplate)
 - MariaDB 10.x
 - H2 Database
 - Thymeleaf 3.0.12
