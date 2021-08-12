@@ -1,11 +1,11 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
-import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.dto.ArticleWriteDto;
+import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -45,7 +45,7 @@ public class BoardWebController {
     @PostMapping(value = "/{id}/write")
     public String write(@PathVariable("id") long id,
                         @ModelAttribute("article") ArticleWriteDto articleRequest,
-                        @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) {
+                        @Login User user) {
         if (articleRequest.getTitle().trim().length() == 0 || articleRequest.getContent().trim().length() == 0) {
             System.out.println("빈 값이 있습니다.");
             return "redirect:/board/{id}/write";
