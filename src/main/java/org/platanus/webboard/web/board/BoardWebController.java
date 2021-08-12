@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
@@ -47,7 +49,7 @@ public class BoardWebController {
                         @ModelAttribute("article") ArticleWriteDto articleRequest,
                         @Login User user) {
         if (articleRequest.getTitle().trim().length() == 0 || articleRequest.getContent().trim().length() == 0) {
-            System.out.println("빈 값이 있습니다.");
+            log.info("Board write #{}: 빈 값이 있습니다. by User #{}", id, user.getId());
             return "redirect:/board/{id}/write";
         }
         Article article = new Article();
@@ -60,6 +62,7 @@ public class BoardWebController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        log.info("Board write #{}: {} by User #{}", id, article.getTitle(), user.getId());
         return "redirect:/board/{id}";
     }
 

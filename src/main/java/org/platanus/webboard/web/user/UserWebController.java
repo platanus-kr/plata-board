@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequestMapping(value = "/user")
 @RequiredArgsConstructor
@@ -25,8 +27,9 @@ public class UserWebController {
     public String createUser(@ModelAttribute("join") User user) {
         try {
             userService.join(user);
+            log.info("User Controller #{}: join {} user", user.getId(), user.getUsername());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("User Controller: Join failed {} - {}", user.getUsername(), e.getMessage());
             return "redirect:/join";
         }
         return "redirect:/";
@@ -49,8 +52,9 @@ public class UserWebController {
             modifyUser.setPassword(user.getPassword());
         try {
             userService.update(modifyUser);
+            log.info("User Controller #{}: modify {} user", modifyUser.getId(), modifyUser.getUsername());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("User Controller: modify failed {} - {}", modifyUser.getUsername(), e.getMessage());
             return "redirect:/user/modify";
         }
         return "redirect:/";

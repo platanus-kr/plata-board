@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.login;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.dto.LoginUserDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginWebController {
@@ -30,8 +32,9 @@ public class LoginWebController {
         User loginUser;
         try {
             loginUser = loginService.login(login.getUsername(), login.getPassword());
+            log.info("Login Controller: Login {}", login.getUsername());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("Login Controller: Login failed {} - {}", login.getUsername(), e.getMessage());
             return "login/loginForm";
         }
         HttpSession session = request.getSession(true);
