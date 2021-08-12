@@ -40,12 +40,14 @@
                 <div class="content">
                     <pre th:text="${comment.content}"></pre>
                 </div>
+                <span th:if="${user != null}">
                 <div th:if="${user.getId() == comment.getAuthorId()}" class="control">
                     <a class="btn btn-primary btn-floating m-1"
                        th:href="@{|/comment/${comment.getId()}/delete|}" role="button">
                         삭제
                     </a>
                 </div>
+                </span>
             </div>
             <hr/>
         </div>
