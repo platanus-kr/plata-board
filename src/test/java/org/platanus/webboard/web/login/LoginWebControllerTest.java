@@ -43,7 +43,7 @@ public class LoginWebControllerTest {
         LoginWebController loginWebController = new LoginWebController(loginService);
 
         assertEquals("redirect:/success", loginWebController.login(loginUserDto, "/success", httpServletRequest));
-        assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_MEMBER));
+        assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class LoginWebControllerTest {
         LoginWebController loginWebController = new LoginWebController(loginService);
 
         assertEquals("login/loginForm", loginWebController.login(loginUserDto, "/success", httpServletRequest));
-        assertEquals(null, mockSessionMap.get(SessionConst.LOGIN_MEMBER));
+        assertEquals(null, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 
     public static class MockHttpSession implements HttpSession {

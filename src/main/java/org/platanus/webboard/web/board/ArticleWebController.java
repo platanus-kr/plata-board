@@ -1,13 +1,13 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
-import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleViewDto;
 import org.platanus.webboard.web.board.dto.ArticleWriteDto;
 import org.platanus.webboard.web.board.dto.CommentViewDto;
+import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +26,7 @@ public class ArticleWebController {
     private final UserService userService;
 
     @GetMapping(value = "/{articleId}")
-    public String view(@PathVariable("articleId") long articleId,
-                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
-                       Model model) throws Exception {
+    public String view(@PathVariable("articleId") long articleId, @Login User user, Model model) throws Exception {
         Article article = articleService.findById(articleId);
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
         List<CommentViewDto> commentsResponse = new ArrayList<>();
@@ -51,8 +49,7 @@ public class ArticleWebController {
     }
 
     @GetMapping(value = "/{articleId}/delete")
-    public String remove(@PathVariable("articleId") long articleId,
-                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) throws Exception {
+    public String remove(@PathVariable("articleId") long articleId, @Login User user) throws Exception {
         Article article = articleService.findById(articleId);
         long redirectBoardId = article.getBoardId();
         if (!articleService.updateDeleteFlag(article, user))
@@ -61,8 +58,7 @@ public class ArticleWebController {
     }
 
     @GetMapping(value = "/{articleId}/modify")
-    public String articleModifyView(@PathVariable("articleId") long articleId,
-                                    @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
+    public String articleModifyView(@PathVariable("articleId") long articleId, @Login User user,
                                     Model model) throws Exception {
         if (user.getId() != articleService.findById(articleId).getAuthorId()) {
             System.out.println("글쓴이가 아닙니다.");
@@ -79,8 +75,7 @@ public class ArticleWebController {
     }
 
     @PostMapping(value = "/{articleId}/modify")
-    public String articleModify(@PathVariable("articleId") long articleId,
-                                @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
+    public String articleModify(@PathVariable("articleId") long articleId, @Login User user,
                                 @ModelAttribute("article") ArticleWriteDto articleRequest) throws Exception {
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
@@ -90,8 +85,7 @@ public class ArticleWebController {
     }
 
     @PostMapping(value = "/{articleId}")
-    public String commentWrite(@PathVariable("articleId") long articleId,
-                               @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user,
+    public String commentWrite(@PathVariable("articleId") long articleId, @Login User user,
                                @ModelAttribute("comment") String commentRequest) {
         if (commentRequest.trim().length() == 0) {
             System.out.println("빈 값이 있습니다.");

@@ -1,10 +1,13 @@
 package org.platanus.webboard.web.user;
 
 import lombok.RequiredArgsConstructor;
-import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
+import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -30,8 +33,7 @@ public class UserWebController {
     }
 
     @GetMapping(value = "/modify")
-    public String view(@ModelAttribute("modify") User modifyUser,
-                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) {
+    public String view(@ModelAttribute("modify") User modifyUser, @Login User user) {
         modifyUser.setId(user.getId());
         modifyUser.setUsername(user.getUsername());
         modifyUser.setDeleted(user.isDeleted());
@@ -41,13 +43,12 @@ public class UserWebController {
     }
 
     @PostMapping(value = "/modify")
-    public String modifyUser(@ModelAttribute("modify") User modifyuser,
-                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User user) {
-        modifyuser.setId(user.getId());
-        if (modifyuser.getPassword().trim().length() == 0)
-            modifyuser.setPassword(user.getPassword());
+    public String modifyUser(@ModelAttribute("modify") User modifyUser, @Login User user) {
+        modifyUser.setId(user.getId());
+        if (modifyUser.getPassword().trim().length() == 0)
+            modifyUser.setPassword(user.getPassword());
         try {
-            userService.update(modifyuser);
+            userService.update(modifyUser);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return "redirect:/user/modify";
