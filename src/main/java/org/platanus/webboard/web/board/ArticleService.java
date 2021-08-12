@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.*;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.utils.PageConst;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
@@ -28,27 +30,40 @@ public class ArticleService {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        return articleRepository.save(article);
+        article = articleRepository.save(article);
+        log.info("Article write #{} by User #{}", article.getId(), article.getAuthorId());
+        return article;
     }
 
     public Article update(Article article, User user) throws Exception {
         article.setCreatedDate(findById(article.getId()).getCreatedDate());
         article.setModifiedDate(LocalDateTime.now());
         Optional<Article> getArticle = articleRepository.findById(article.getId());
-        if (getArticle.isEmpty())
+        if (getArticle.isEmpty()) {
+            log.info("Article update #{}: 없는 게시물 입니다.", article.getId());
             throw new IllegalArgumentException("없는 게시물 입니다.");
-        if (article.getAuthorId() != user.getId())
+        }
+        if (article.getAuthorId() != user.getId()) {
+            log.info("Article update #{}: 작성자가 아닙니다.", article.getId());
             throw new IllegalArgumentException("작성자가 아닙니다");
-        if (articleRepository.update(article) != 1)
+        }
+        if (articleRepository.update(article) != 1) {
+            log.info("Article update #{}: Repository Error.", article.getId());
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        }
+        log.info("Article update #{} by User #{}", article.getId(), user.getId());
         return article;
     }
 
     public boolean updateDeleteFlag(Article article, User user) throws Exception {
-        if (articleRepository.findById(article.getId()).get().isDeleted())
+        if (articleRepository.findById(article.getId()).get().isDeleted()) {
+            log.info("Article deleteflag #{}: 이미 삭제된 게시물 입니다..", article.getId());
             throw new IllegalArgumentException("이미 삭제된 게시물 입니다.");
-        if (article.getAuthorId() != user.getId())
+        }
+        if (article.getAuthorId() != user.getId()) {
+            log.info("Article deleteflag #{}: 작성자가 아닙니다.", article.getId());
             throw new IllegalArgumentException("작성자가 아닙니다");
+        }
         List<Comment> comments = commentRepository.findByArticleId(article.getId());
         comments.stream().filter(c -> !c.isDeleted()).forEach(
                 c -> {
@@ -56,14 +71,20 @@ public class ArticleService {
                     commentRepository.updateDeleteFlag(c);
                 });
         article.setDeleted(true);
-        if (articleRepository.updateDeleteFlag(article) != 1)
+        if (articleRepository.updateDeleteFlag(article) != 1) {
+            log.info("Article deleteflag #{}: Repository Error.", article.getId());
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        }
+        log.info("Article deleteflag #{} by User #{}", article.getId(), user.getId());
         return true;
     }
 
     public boolean delete(Article article) throws Exception {
-        if (articleRepository.delete(article) != 1)
+        if (articleRepository.delete(article) != 1) {
+            log.info("Article delete #{}: Repository Error.", article.getId());
             throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
+        }
+        log.info("Article delete #{}", article.getId());
         return true;
     }
 

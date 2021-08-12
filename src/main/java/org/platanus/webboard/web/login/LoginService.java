@@ -1,12 +1,14 @@
 package org.platanus.webboard.web.login;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -16,6 +18,9 @@ public class LoginService {
         Optional<User> returnUser = Optional.ofNullable(userService.findByUsername(username));
         return returnUser
                 .filter(u -> u.getPassword().equals(password))
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 로그인 정보 입니다."));
+                .orElseThrow(() -> {
+                    log.info("Login: 잘못된 로그인 정보입니다. {}", username);
+                    throw new IllegalArgumentException("잘못된 로그인 정보 입니다.");
+                });
     }
 }

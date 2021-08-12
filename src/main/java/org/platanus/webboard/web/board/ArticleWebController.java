@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/article")
@@ -53,7 +55,7 @@ public class ArticleWebController {
         Article article = articleService.findById(articleId);
         long redirectBoardId = article.getBoardId();
         if (!articleService.updateDeleteFlag(article, user))
-            System.out.println("삭제에 문제가 생겼습니다.");
+            log.info("ArticleController remove #{}: Service Error.", article.getId());
         return "redirect:/board/" + redirectBoardId;
     }
 
@@ -61,7 +63,7 @@ public class ArticleWebController {
     public String articleModifyView(@PathVariable("articleId") long articleId, @Login User user,
                                     Model model) throws Exception {
         if (user.getId() != articleService.findById(articleId).getAuthorId()) {
-            System.out.println("글쓴이가 아닙니다.");
+            log.info("ArticleController modify #{}: 글쓴이가 아닙니다. by User {}", articleId, user.getId());
             return "redirect:/article/{articleId}";
         }
         Article article = articleService.findById(articleId);
@@ -88,7 +90,7 @@ public class ArticleWebController {
     public String commentWrite(@PathVariable("articleId") long articleId, @Login User user,
                                @ModelAttribute("comment") String commentRequest) {
         if (commentRequest.trim().length() == 0) {
-            System.out.println("빈 값이 있습니다.");
+            log.info("ArticleController comment-write #{}: 폼이 비었습니다 by User {}", articleId, user.getId());
             return "redirect:/article/{articleId}";
         }
         Comment comment = new Comment();
