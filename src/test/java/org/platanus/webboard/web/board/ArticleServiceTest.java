@@ -109,7 +109,7 @@ public class ArticleServiceTest {
             article = articleService.write(article);
             String title = "수정된 제목입니다.";
             article.setTitle(title);
-            Article updatedArticle = articleService.update(article);
+            Article updatedArticle = articleService.update(article, user);
             assertEquals(updatedArticle.getTitle(), title);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -128,7 +128,7 @@ public class ArticleServiceTest {
             article.setModifiedDate(LocalDateTime.now());
             article.setDeleted(false);
             article = articleService.write(article);
-            boolean result = articleService.updateDeleteFlag(article);
+            boolean result = articleService.updateDeleteFlag(article, user);
             assertEquals(result, true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -229,7 +229,7 @@ public class ArticleServiceTest {
             article.setModifiedDate(LocalDateTime.now());
             article.setDeleted(false);
             article = articleService.write(article);
-            articleService.updateDeleteFlag(article);
+            articleService.updateDeleteFlag(article, user);
             boolean result = articleService.isDeleted(article);
             assertEquals(result, true);
         } catch (Exception e) {
