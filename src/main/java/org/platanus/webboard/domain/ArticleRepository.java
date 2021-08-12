@@ -24,7 +24,7 @@ public class ArticleRepository {
     @PostConstruct
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("ARTICLES").usingGeneratedKeyColumns("id");
     }
 
     public Article save(Article article) {

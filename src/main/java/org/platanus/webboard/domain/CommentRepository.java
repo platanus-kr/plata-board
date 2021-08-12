@@ -23,7 +23,7 @@ public class CommentRepository {
     @PostConstruct
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("comments").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("COMMENTS").usingGeneratedKeyColumns("id");
     }
 
     public Comment save(Comment comment) {

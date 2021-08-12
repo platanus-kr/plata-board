@@ -23,7 +23,7 @@ public class BoardRepository {
     @PostConstruct
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("boards").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("BOARDS").usingGeneratedKeyColumns("id");
     }
 
     public Board save(Board board) {

@@ -23,7 +23,7 @@ public class UserRepository {
     @PostConstruct
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("USERS").usingGeneratedKeyColumns("id");
     }
 
     public User save(User user) {
