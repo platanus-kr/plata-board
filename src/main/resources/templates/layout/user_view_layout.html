@@ -12,43 +12,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
             crossorigin="anonymous"></script>
-    <style>
-        body {
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-        }
-
-        html {
-            height: -webkit-fill-available;
-        }
-
-        main {
-            display: flex;
-            flex-wrap: nowrap;
-            height: 100vh;
-            height: -webkit-fill-available;
-            max-height: 100vh;
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-
-        .make-me-sticky {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user-view.css}"/>
 </head>
 <body>
 <main>
-    <!--    <div class="d-flex">-->
     <div th:replace="~{layout/user_view_gnb :: user_view_sidebar}"></div>
     <div class="flex-grow-1 align-self-stretch p-4">
         <div th:replace="~{layout/user_view_gnb :: user_view_gnb}"></div>
         <div th:replace="${content}"></div>
         <div th:replace="~{layout/user_view_footer :: footer}"></div>
     </div>
-    <!--    </div>-->
 </main>
 </body>
 </html>
