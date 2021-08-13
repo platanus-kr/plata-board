@@ -61,6 +61,10 @@ public class CommentRepository {
         return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
     }
 
+    public int findCountByArticleId(long id) {
+        return jdbcTemplate.queryForObject(QueryConst.COMMENT_FIND_COUNT_BY_ARTICLE_ID, Integer.class, id);
+    }
+
     public List<Comment> findByContent(String content) {
         return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_CONTENT, commentRowMapper(), "%" + content + "%");
     }

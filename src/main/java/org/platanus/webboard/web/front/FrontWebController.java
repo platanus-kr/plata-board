@@ -12,7 +12,6 @@ public class FrontWebController {
     public String front(@Login User user,
                         Model model) {
         model.addAttribute("user", user);
-//        return "front";
         return "redirect:/board/1";
     }
 

@@ -13,9 +13,10 @@ public class ArticleListDto {
     private long authorId;
     private String authorNickname;
     private LocalDateTime createdDate;
+    private int commentCount;
     private boolean deleted;
 
-    public static ArticleListDto from(Article a, String authorNickname) {
+    public static ArticleListDto from(Article a, String authorNickname, int commentCount) {
         ArticleListDto dto = new ArticleListDto();
         dto.setId(a.getId());
         dto.setBoardId(a.getBoardId());
@@ -23,6 +24,7 @@ public class ArticleListDto {
         dto.setAuthorId(a.getAuthorId());
         dto.setAuthorNickname(authorNickname);
         dto.setCreatedDate(a.getCreatedDate());
+        dto.setCommentCount(commentCount);
         dto.setDeleted(a.isDeleted());
         return dto;
 

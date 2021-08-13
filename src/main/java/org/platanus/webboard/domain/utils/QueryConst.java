@@ -24,6 +24,7 @@ public class QueryConst {
     public static final String COMMENT_UPDATE_DELETE_FLAG = "update COMMENTS set DELETED = ? where ID = ?";
     public static final String COMMENT_FIND_BY_ID = "select * from COMMENTS where ID = ?";
     public static final String COMMENT_FIND_BY_ARTICLE_ID = "select * from COMMENTS where ARTICLE_ID = ?";
+    public static final String COMMENT_FIND_COUNT_BY_ARTICLE_ID = "select count(*) from COMMENTS where ARTICLE_ID = ? and DELETED = 0";
     public static final String COMMENT_FIND_BY_CONTENT = "select * from COMMENTS where CONTENT like ?";
     public static final String COMMENT_FIND_ALL = "select * from COMMENTS";
     public static final String USER_DELETE = "delete from USERS where ID = ?";

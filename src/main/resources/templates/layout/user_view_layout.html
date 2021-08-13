@@ -29,17 +29,21 @@
             height: -webkit-fill-available;
             max-height: 100vh;
             overflow-x: auto;
-            overflow-y: hidden;
+            overflow-y: auto;
         }
 
-
+        .make-me-sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+        }
     </style>
 </head>
 <body>
 <main>
     <!--    <div class="d-flex">-->
     <div th:replace="~{layout/user_view_gnb :: user_view_sidebar}"></div>
-    <div class="flex-grow-1 flex-column align-self-stretch p-4">
+    <div class="flex-grow-1 align-self-stretch p-4">
         <div th:replace="~{layout/user_view_gnb :: user_view_gnb}"></div>
         <div th:replace="${content}"></div>
         <div th:replace="~{layout/user_view_footer :: footer}"></div>

@@ -98,8 +98,9 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> a.isDeleted()).forEach(a -> {
             try {
+                int commentCount = commentRepository.findCountByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
-                        .from(a, userService.findById(a.getAuthorId()).getNickname()));
+                        .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -123,8 +124,9 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
             try {
+                int commentCount = commentRepository.findCountByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
-                        .from(a, userService.findById(a.getAuthorId()).getNickname()));
+                        .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -136,8 +138,9 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
             try {
+                int commentCount = commentRepository.findCountByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
-                        .from(a, userService.findById(a.getAuthorId()).getNickname()));
+                        .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
