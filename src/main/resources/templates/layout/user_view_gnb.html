@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="user_view_gnb">
+    <div th:if="${user != null}" th:text="${user.getNickname()}">로그인 되어 있습니다.</div>
+    <div th:unless="${user != null}">게스트 입니다.</div>
+</div>
+
+
+<div th:fragment="user_view_sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+     style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">BBS</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="#" class="nav-link active text-white" aria-current="page"><i class="bi bi-house"></i> Home</a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://avatars.githubusercontent.com/u/6806008?v=4" alt="" class="rounded-circle me-2" width="32"
+                 height="32">
+            <strong th:if="${user != null}" th:text="${user.getNickname()}"></strong>
+            <strong th:unless="${user != null}">게스트</strong>
+        </a>
+        <ul th:if="${user == null}" class="dropdown-menu dropdown-menu-dark text-small shadow"
+            aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" th:href="@{/login(redirectURL=${#request.requestURI})}">로그인</a></li>
+            <li><a class="dropdown-item" th:href="@{|/user/join|}">회원가입</a></li>
+        </ul>
+        <ul th:if="${user != null}" class="dropdown-menu dropdown-menu-dark text-small shadow"
+            aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" th:href="@{|/user/modify|}">정보 수정</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" th:href="@{|/logout|}">로그아웃</a></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

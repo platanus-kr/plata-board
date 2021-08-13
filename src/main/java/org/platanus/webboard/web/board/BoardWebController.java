@@ -26,9 +26,11 @@ public class BoardWebController {
     @GetMapping(value = "/{id}")
     public String list(@PathVariable("id") long boardId,
                        @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum,
+                       @Login User user,
                        Model model) throws Exception {
         Page<ArticleListDto> articles = articleService.findPageOfArticlesByBoardId(boardId, pageNum - 1);
         String boardName = boardService.findById(boardId).getName();
+        model.addAttribute("user", user);
         model.addAttribute("articles", articles);
         model.addAttribute("board_id", boardId);
         model.addAttribute("board_name", boardName);

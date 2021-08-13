@@ -1,7 +1,6 @@
 package org.platanus.webboard.domain.utils;
 
 public class QueryConst {
-
     public static final String BOARD_DELETE = "delete from BOARDS where ID = ?";
     public static final String BOARD_UPDATE = "update BOARDS set NAME = ?, DESCRIPTION = ?  where ID = ?";
     public static final String BOARD_FIND_ALL = "select * from BOARDS";

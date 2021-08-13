@@ -10,8 +10,6 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
@@ -20,7 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/",
                         "/board/*", "/board", "/article/*",
                         "/user/join", "/login", "/logout",
-                        "/css/**", "/*.ico", "/error");
+                        "/css/**", "/*.ico", "/error",
+                        "/fragment/**");
     }
 
     @Override
