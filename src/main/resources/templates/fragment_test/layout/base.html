@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,link)">
+    <meta charset="UTF-8">
+    <title th:replace="${title}">레이아웃 타이틀</title>
+    <!-- 여기가 추가되는것 -->
+    <th:block th:replace="${link}"/>
+</head>
+<body>
+
+</body>
+</html>

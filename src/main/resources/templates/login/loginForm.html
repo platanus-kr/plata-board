@@ -9,26 +9,26 @@
 </head>
 <body>
 <div class="container">
-    <div class="board_title">
-        <h2>로그인</h2>
-    </div>
-    <div class="board_list">
-        <form action="boardList.html" th:action th:object="${login}" method="post">
-            <div>
-                <label for="username">아이디</label>
-                <input type="text" id="username" th:field="*{username}"
-                       class="form-control" placeholder="아이디를 입력하세요">
-            </div>
-            <div>
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" th:field="*{password}"
-                       class="form-control" placeholder="비밀번호를 입력하세요">
-            </div>
-            <div>
-                <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
-            </div>
+    <div class="d-flex justify-content-center">
+        <div class="board_list shadow p-3 mb-5 bg-body rounded">
+            <h2>로그인</h2>
+            <form action="boardList.html" th:action th:object="${login}" method="post">
+                <div class="m-3">
+                    <label for="username">아이디</label>
+                    <input type="text" id="username" th:field="*{username}"
+                           class="form-control" placeholder="아이디를 입력하세요">
+                </div>
+                <div class="m-3">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" th:field="*{password}"
+                           class="form-control" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div class="m-3">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 </body>
