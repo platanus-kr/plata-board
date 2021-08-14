@@ -22,3 +22,7 @@ main {
     position: sticky;
     top: 0;
 }
+
+.article_content pre {
+    font-size: 1rem;
+}

@@ -1,6 +1,9 @@
 package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.Board;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +15,10 @@ public class BoardApiController {
     private final ArticleService articleService;
     private final CommentService commentService;
 
-//    @PostMapping(value = "/board")
-//    public Board save(@RequestBody Board board) throws Exception {
-//        return boardService.create(board);
-//    }
+    @PostMapping(value = "/board")
+    public Board save(@RequestBody Board board) throws Exception {
+        return boardService.create(board);
+    }
 //
 //    @DeleteMapping(value = "/board/{id}")
 //    public void delete(@PathVariable long id) throws Exception {
