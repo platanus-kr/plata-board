@@ -38,7 +38,8 @@ java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar
 
 로컬실행은 메모리DB로 서버가 종료되면 데이터가 모두 사라지는 대신 release로 구분된 이 환경은 MariaDB를 통해 데이터를 영속할 수 있습니다.
 
-준비된 서버나 인스턴스가 없다면 [이 문서](https://platanus.me/post/1586)를 통해서 참고할 수 있습니다. (CentOS 기준) 만약 준비가 가능하다면 Java 11버전과 MariaDB 10버전을 설치해 주시고 적절한 데이터베이스 하나만 만들어주시면 됩니다.
+준비된 서버나 인스턴스가 없다면 [이 문서](https://platanus.me/post/1586)를 통해서 참고할 수 있습니다. (CentOS 기준) 만약 준비가 가능하다면 Java 11버전과 MariaDB
+10버전을 설치해 주시고 적절한 데이터베이스 하나만 만들어주시면 됩니다.
 
 #### DB 준비
 
@@ -80,7 +81,8 @@ java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar --spring.config.location=classp
 
 #### 웹에 개시하기
 
-웹 게시판 서비스는 8080포트로 서버 로컬 실행 됩니다. 만약 도메인이나 80포트 또는 SSL 통신이 필요하다면 [이 문서](https://platanus.me/post/1590)를 통해서 Reverse proxy 설정을 할 수 있습니다.
+웹 게시판 서비스는 8080포트로 서버 로컬 실행 됩니다. 만약 도메인이나 80포트 또는 SSL 통신이 필요하다면 [이 문서](https://platanus.me/post/1590)를 통해서 Reverse proxy
+설정을 할 수 있습니다.
 
 ### Continuous Deploy
 
@@ -110,4 +112,5 @@ WEBBOARD_KEY : 호스트의 SSH KEY
 - MariaDB 10.x
 - H2 Database
 - Thymeleaf 3.0.12
+- Hibernate Validator
 - Gradle 7.1.1
