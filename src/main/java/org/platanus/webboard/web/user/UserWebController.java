@@ -24,7 +24,7 @@ public class UserWebController {
 
     @GetMapping(value = "/join")
     public String join(@ModelAttribute("join") User user) {
-        return "login/join_form";
+        return "user/join_form";
     }
 
     @PostMapping(value = "/join")
@@ -32,7 +32,7 @@ public class UserWebController {
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("User Controller : {}", bindingResult);
-            return "login/join_form";
+            return "user/join_form";
         }
         try {
             userService.join(user);
