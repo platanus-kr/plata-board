@@ -113,4 +113,5 @@ WEBBOARD_KEY : 호스트의 SSH KEY
 - H2 Database
 - Thymeleaf 3.0.12
 - Hibernate Validator
+- commonmark-java
 - Gradle 7.1.1

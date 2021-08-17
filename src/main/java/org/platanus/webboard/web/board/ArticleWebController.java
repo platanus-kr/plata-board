@@ -9,6 +9,7 @@ import org.platanus.webboard.web.board.dto.ArticleViewDto;
 import org.platanus.webboard.web.board.dto.ArticleWriteDto;
 import org.platanus.webboard.web.board.dto.CommentViewDto;
 import org.platanus.webboard.web.board.dto.CommentWriteDto;
+import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,12 @@ public class ArticleWebController {
     @GetMapping(value = "/{articleId}")
     public String view(@PathVariable("articleId") long articleId, @Login User user, Model model) throws Exception {
         Article article = articleService.findById(articleId);
+        article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
         List<CommentViewDto> commentsResponse = new ArrayList<>();
         commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
             try {
+                c.setContent(MarkdownParser.from(c.getContent()));
                 commentsResponse.add(CommentViewDto.from(c, userService.findById(c.getAuthorId()).getNickname()));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
