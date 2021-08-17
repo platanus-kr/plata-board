@@ -11,7 +11,10 @@ import org.platanus.webboard.web.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -34,7 +37,7 @@ public class BoardWebController {
         model.addAttribute("articles", articles);
         model.addAttribute("board_id", boardId);
         model.addAttribute("board_name", boardName);
-        return "board/boardList";
+        return "board/board_list";
     }
 
     @GetMapping(value = "/{id}/write")
@@ -43,16 +46,18 @@ public class BoardWebController {
         model.addAttribute("board_id", id);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", new ArticleWriteDto());
-        return "board/boardWrite";
+        return "board/board_write";
     }
 
     @PostMapping(value = "/{id}/write")
     public String write(@PathVariable("id") long id,
-                        @ModelAttribute("article") ArticleWriteDto articleRequest,
+                        @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
+                        BindingResult bindingResult,
                         @Login User user) {
-        if (articleRequest.getTitle().trim().length() == 0 || articleRequest.getContent().trim().length() == 0) {
-            log.info("Board write #{}: 빈 값이 있습니다. by User #{}", id, user.getId());
-            return "redirect:/board/{id}/write";
+
+        if (bindingResult.hasErrors()) {
+            log.info("Board write #{} by User #{} : {}", id, user.getId(), bindingResult);
+            return "board/board_write";
         }
         Article article = new Article();
         article.setBoardId(id);
