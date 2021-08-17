@@ -23,7 +23,7 @@
         </div>
         <hr/>
         <div class="article_content">
-            <pre th:text="${article.content}"></pre>
+            [(${article.content})]
         </div>
         <hr/>
     </div>
@@ -38,7 +38,7 @@
                             th:text="${#temporals.format(comment.modifiedDate, 'MM/dd HH:mm:ss')}"></span></div>
                 </div>
                 <div class="content">
-                    <pre th:text="${comment.content}"></pre>
+                    [(${comment.content})]
                 </div>
                 <span th:if="${user != null}">
                 <div th:if="${user.getId() == comment.getAuthorId()}" class="control">

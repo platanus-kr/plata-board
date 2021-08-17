@@ -17,12 +17,17 @@ main {
     overflow-y: auto;
 }
 
+.field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
 .make-me-sticky {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
 }
 
-.article_content pre {
-    font-size: 1rem;
+textarea#articleContent {
+    height: 300px;
 }
