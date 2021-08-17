@@ -8,12 +8,15 @@ import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleViewDto;
 import org.platanus.webboard.web.board.dto.ArticleWriteDto;
 import org.platanus.webboard.web.board.dto.CommentViewDto;
+import org.platanus.webboard.web.board.dto.CommentWriteDto;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +44,15 @@ public class ArticleWebController {
         });
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
+        CommentWriteDto commentWriteDto = new CommentWriteDto();
         model.addAttribute("user", user);
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
+        model.addAttribute("comment", commentWriteDto);
         model.addAttribute("comments", commentsResponse);
-        return "board/boardView";
+        return "board/board_view";
     }
 
     @GetMapping(value = "/{articleId}/delete")
@@ -73,12 +78,17 @@ public class ArticleWebController {
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", ArticleViewDto.fromModify(article));
-        return "board/boardModify";
+        return "board/board_modify";
     }
 
     @PostMapping(value = "/{articleId}/modify")
     public String articleModify(@PathVariable("articleId") long articleId, @Login User user,
-                                @ModelAttribute("article") ArticleWriteDto articleRequest) throws Exception {
+                                @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
+                                BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            log.info("error = {}", bindingResult);
+            return "board/board_modify";
+        }
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
@@ -88,15 +98,16 @@ public class ArticleWebController {
 
     @PostMapping(value = "/{articleId}")
     public String commentWrite(@PathVariable("articleId") long articleId, @Login User user,
-                               @ModelAttribute("comment") String commentRequest) {
-        if (commentRequest.trim().length() == 0) {
-            log.info("ArticleController comment-write #{}: 폼이 비었습니다 by User {}", articleId, user.getId());
-            return "redirect:/article/{articleId}";
+                               @Valid @ModelAttribute("comment") CommentWriteDto commentRequest,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.info("ArticleController comment-write #{} : {}", articleId, bindingResult);
+            return "error/has_message";
         }
         Comment comment = new Comment();
         comment.setArticleId(articleId);
         comment.setAuthorId(user.getId());
-        comment.setContent(commentRequest);
+        comment.setContent(commentRequest.getContent());
         try {
             commentService.write(comment);
         } catch (Exception e) {

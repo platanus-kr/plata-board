@@ -6,6 +6,8 @@ import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.dto.LoginUserDto;
 import org.platanus.webboard.web.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWebControllerTest {
+    @Autowired
+    private BindingResult bindingResult;
 
     @Test
 //    @DisplayName("로그인 성공시 세션이 잘 기록되는지 확인")
@@ -42,7 +46,7 @@ public class LoginWebControllerTest {
 
         LoginWebController loginWebController = new LoginWebController(loginService);
 
-        assertEquals("redirect:/success", loginWebController.login(loginUserDto, "/success", httpServletRequest));
+        assertEquals("redirect:/success", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
         assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 
@@ -69,7 +73,7 @@ public class LoginWebControllerTest {
 
         LoginWebController loginWebController = new LoginWebController(loginService);
 
-        assertEquals("login/loginForm", loginWebController.login(loginUserDto, "/success", httpServletRequest));
+        assertEquals("login/loginForm", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
         assertEquals(null, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 

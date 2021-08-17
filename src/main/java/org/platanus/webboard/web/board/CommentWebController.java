@@ -26,6 +26,5 @@ public class CommentWebController {
         }
         log.info("Comment Controller deleteflag #{} by User #{}", comment.getId(), user.getId());
         return "redirect:/article/" + redirectArticleId;
-
     }
 }

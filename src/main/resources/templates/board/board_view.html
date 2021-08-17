@@ -53,11 +53,13 @@
         </div>
     </div>
     <div th:if="${user != null}" class="comment_write">
-        <form id="comment_write" method="post">
+        <form id="comment_write" th:action th:object="${comment}" method="post">
             <div>
                 <label for="commentContent">댓글</label>
-                <textarea type="text" id="commentContent" name="comment" class="form-control"
+                <textarea type="text" id="commentContent" th:field="*{content}"
+                          th:errorclass="field-error" name="comment" class="form-control"
                           placeholder="댓글 내용을 입력하세요"></textarea>
+                <div class="field-error" th:errors="*{content}">내용 오류</div>
             </div>
             <div>
                 <button class="w-100 btn btn-outline-primary btn-lg" type="submit">댓글 저장</button>

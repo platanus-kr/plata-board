@@ -6,6 +6,12 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <title>로그인</title>
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -13,15 +19,22 @@
         <div class="board_list shadow p-3 mb-5 bg-body rounded">
             <h2>로그인</h2>
             <form action="boardList.html" th:action th:object="${login}" method="post">
+
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류</p>
+                </div>
+
                 <div class="m-3">
                     <label for="username">아이디</label>
                     <input type="text" id="username" th:field="*{username}"
-                           class="form-control" placeholder="아이디를 입력하세요">
+                           th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
+                    <div class="field-error" th:errors="*{username}">아이디 오류</div>
                 </div>
                 <div class="m-3">
                     <label for="password">비밀번호</label>
                     <input type="password" id="password" th:field="*{password}"
-                           class="form-control" placeholder="비밀번호를 입력하세요">
+                           th:errorclass="field-error" class="form-control" placeholder="비밀번호를 입력하세요">
+                    <div class="field-error" th:errors="*{password}">비밀번호 오류</div>
                 </div>
                 <div class="m-3">
                     <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>

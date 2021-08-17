@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.argumentresolver.Login;
+import org.platanus.webboard.web.user.dto.UserModifyDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -20,11 +24,16 @@ public class UserWebController {
 
     @GetMapping(value = "/join")
     public String join(@ModelAttribute("join") User user) {
-        return "user/joinForm";
+        return "login/join_form";
     }
 
     @PostMapping(value = "/join")
-    public String createUser(@ModelAttribute("join") User user) {
+    public String createUser(@Valid @ModelAttribute("join") User user,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.info("User Controller : {}", bindingResult);
+            return "login/join_form";
+        }
         try {
             userService.join(user);
             log.info("User Controller #{}: join {} user", user.getId(), user.getUsername());
@@ -42,16 +51,21 @@ public class UserWebController {
         modifyUser.setDeleted(user.isDeleted());
         modifyUser.setEmail(user.getEmail());
         modifyUser.setNickname(user.getNickname());
-        return "user/modifyForm";
+        return "user/modify_form";
     }
 
     @PostMapping(value = "/modify")
-    public String modifyUser(@ModelAttribute("modify") User modifyUser, @Login User user) {
+    public String modifyUser(@Valid @ModelAttribute("modify") UserModifyDto modifyUser,
+                             BindingResult bindingResult, @Login User user) {
         modifyUser.setId(user.getId());
         if (modifyUser.getPassword().trim().length() == 0)
             modifyUser.setPassword(user.getPassword());
+        if (bindingResult.hasErrors()) {
+            log.error("User Controller #{} : {}", user.getId(), bindingResult);
+            return "user/modify_form";
+        }
         try {
-            userService.update(modifyUser);
+            userService.update(UserModifyDto.from(modifyUser));
             log.info("User Controller #{}: modify {} user", modifyUser.getId(), modifyUser.getUsername());
         } catch (Exception e) {
             log.info("User Controller: modify failed {} - {}", modifyUser.getUsername(), e.getMessage());
