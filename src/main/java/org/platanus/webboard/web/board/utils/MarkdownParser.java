@@ -8,7 +8,7 @@ public class MarkdownParser {
     public static String from(String content) {
         Parser parser = Parser.builder().build();
         Node document = parser.parse(content);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).sanitizeUrls(true).build();
         return renderer.render(document);
     }
 }
