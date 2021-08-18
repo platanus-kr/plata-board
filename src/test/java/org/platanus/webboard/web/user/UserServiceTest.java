@@ -79,10 +79,10 @@ public class UserServiceTest {
     @Test
     public void update() {
         try {
-            user.setUsername("user02");
+            user.setUsername("user12");
             user.setPassword("aaa");
-            user.setNickname("user02");
-            user.setEmail("user2@gmail.com");
+            user.setNickname("user12");
+            user.setEmail("user12@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             user.setUsername("userupdate02");
@@ -97,10 +97,10 @@ public class UserServiceTest {
     @Test
     public void revoke() {
         try {
-            user.setUsername("user03");
+            user.setUsername("user13");
             user.setPassword("aaa");
-            user.setNickname("user03");
-            user.setEmail("user3@gmail.com");
+            user.setNickname("user13");
+            user.setEmail("user13@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             userService.revoke(user);
@@ -119,10 +119,10 @@ public class UserServiceTest {
     @Test
     public void findById() {
         try {
-            user.setUsername("user04");
+            user.setUsername("user14");
             user.setPassword("aaa");
-            user.setNickname("user04");
-            user.setEmail("user4@gmail.com");
+            user.setNickname("user14");
+            user.setEmail("user14@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             assertEquals(userService.findById(user.getId()).getId(), user.getId());
@@ -140,10 +140,10 @@ public class UserServiceTest {
     @Test
     public void findByUsername() {
         try {
-            user.setUsername("user05");
+            user.setUsername("user15");
             user.setPassword("aaa");
-            user.setNickname("user05");
-            user.setEmail("user5@gmail.com");
+            user.setNickname("user15");
+            user.setEmail("user15@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             assertEquals(userService.findByUsername(user.getUsername()).getUsername(), user.getUsername());
@@ -161,10 +161,10 @@ public class UserServiceTest {
     @Test
     public void findByNickname() {
         try {
-            user.setUsername("user06");
+            user.setUsername("user16");
             user.setPassword("aaa");
-            user.setNickname("user06");
-            user.setEmail("user6@gmail.com");
+            user.setNickname("user16");
+            user.setEmail("user16@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             assertEquals(userService.findByNickname(user.getNickname()).getNickname(), user.getNickname());
@@ -182,10 +182,10 @@ public class UserServiceTest {
     @Test
     public void findByEmail() {
         try {
-            user.setUsername("user07");
+            user.setUsername("user17");
             user.setPassword("aaa");
-            user.setNickname("user07");
-            user.setEmail("user7@gmail.com");
+            user.setNickname("user17");
+            user.setEmail("user17@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             assertEquals(userService.findByEmail(user.getEmail()).getEmail(), user.getEmail());
@@ -203,10 +203,10 @@ public class UserServiceTest {
     @Test
     public void findAll() {
         try {
-            user.setUsername("user08");
+            user.setUsername("user18");
             user.setPassword("aaa");
-            user.setNickname("user08");
-            user.setEmail("user8@gmail.com");
+            user.setNickname("user18");
+            user.setEmail("user18@gmail.com");
             user.setDeleted(false);
             user = userService.join(user);
             List<User> users = userService.findAll();
