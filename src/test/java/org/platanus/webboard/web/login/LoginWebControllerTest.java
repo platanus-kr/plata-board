@@ -6,7 +6,6 @@ import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.dto.LoginUserDto;
 import org.platanus.webboard.web.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 
 import javax.servlet.ServletContext;
@@ -20,8 +19,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWebControllerTest {
-    @Autowired
-    private BindingResult bindingResult;
 
     @Test
 //    @DisplayName("로그인 성공시 세션이 잘 기록되는지 확인")
@@ -35,6 +32,9 @@ public class LoginWebControllerTest {
         Mockito.when(userService.findByUsername("test")).thenReturn(user);
         LoginService loginService = new LoginService(userService);
 
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        Mockito.when(bindingResult.hasErrors()).thenReturn(false);
+
         LoginUserDto loginUserDto = new LoginUserDto();
         loginUserDto.setUsername("test");
         loginUserDto.setPassword("test11");
@@ -45,8 +45,8 @@ public class LoginWebControllerTest {
         Mockito.when(httpServletRequest.getSession(true)).thenReturn(httpSession);
 
         LoginWebController loginWebController = new LoginWebController(loginService);
-
-        assertEquals("redirect:/success", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
+        String result = loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest);
+        assertEquals("redirect:/success", result);
         assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 
@@ -62,6 +62,9 @@ public class LoginWebControllerTest {
         Mockito.when(userService.findByUsername("test")).thenReturn(user);
         LoginService loginService = new LoginService(userService);
 
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        Mockito.when(bindingResult.hasErrors()).thenReturn(false);
+
         LoginUserDto loginUserDto = new LoginUserDto();
         loginUserDto.setUsername("test");
         loginUserDto.setPassword("test__failed!!!");
@@ -73,7 +76,7 @@ public class LoginWebControllerTest {
 
         LoginWebController loginWebController = new LoginWebController(loginService);
 
-        assertEquals("login/loginForm", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
+        assertEquals("login/login_form", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
         assertEquals(null, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 

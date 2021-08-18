@@ -270,13 +270,14 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 50; i++) {
             article.setTitle(i + "번째 글입니다.");
             articleRepository.save(article);
         }
         PageRequest pageable = PageRequest.of(0, 15);
-        List<Article> articles = articleRepository.findByBoardIdPagination(pageable, 1);
-        articles.stream().forEach(a -> System.out.println(a.getTitle()));
+        System.out.println(board.getId());
+        List<Article> articles = articleRepository.findByBoardIdPagination(pageable, board.getId());
+        articles.forEach(a -> System.out.println(a.getTitle()));
         assertEquals(articles.size(), 15);
     }
 }
