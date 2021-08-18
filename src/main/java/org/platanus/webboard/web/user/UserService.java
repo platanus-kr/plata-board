@@ -25,7 +25,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
         }
         if (userRepository.findByEmail((user.getEmail())).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getEmail());
+            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
             throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
         }
 //        MessageDigest md = MessageDigest.getInstance(("SHA-256"));
@@ -37,7 +37,15 @@ public class UserService {
         return user;
     }
 
-    public User update(User user) throws Exception {
+    public User update(User user, User loginUser) throws Exception {
+        if (userRepository.findByNickname(user.getNickname()).isPresent() && !user.getNickname().equals(loginUser.getNickname())) {
+            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
+            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
+        }
+        if (userRepository.findByEmail((user.getEmail())).isPresent() && !user.getEmail().equals(loginUser.getEmail())) {
+            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
+            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+        }
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {

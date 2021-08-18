@@ -6,6 +6,12 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <title>회원가입</title>
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -13,6 +19,9 @@
         <div class="board_list shadow p-3 mb-5 bg-body rounded">
             <h2>회원가입</h2>
             <form action="boardList.html" th:action th:object="${join}" method="post">
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+                </div>
                 <div>
                     <label for="username">아이디</label>
                     <input type="text" id="username" th:field="*{username}"

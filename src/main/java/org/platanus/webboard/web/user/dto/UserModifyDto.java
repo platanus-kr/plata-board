@@ -9,8 +9,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserModifyDto {
     private long id;
-
-    @NotBlank
     private String username;
     private String password;
 

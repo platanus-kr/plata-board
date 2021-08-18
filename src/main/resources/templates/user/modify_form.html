@@ -6,6 +6,12 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <title>회원정보 변경</title>
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -13,11 +19,12 @@
         <div class="board_list shadow p-3 mb-5 bg-body rounded">
             <h2>회원정보 변경</h2>
             <form action="boardList.html" th:action th:object="${modify}" method="post">
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+                </div>
                 <div>
-                    <label for="username">아이디</label>
-                    <input type="text" id="username" th:field="*{username}"
-                           th:errorclass="field-error" class="form-control" placeholder="아이디를 입력하세요">
-                    <div class="field-error" th:errors="*{username}">아이디 오류</div>
+                    <label>아이디</label>
+                    <p th:text="${modify.username}"></p>
                 </div>
                 <div>
                     <label for="password">비밀번호</label>

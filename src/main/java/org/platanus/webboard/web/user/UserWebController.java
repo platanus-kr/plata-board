@@ -39,7 +39,8 @@ public class UserWebController {
             log.info("User Controller #{}: join {} user", user.getId(), user.getUsername());
         } catch (Exception e) {
             log.info("User Controller: Join failed {} - {}", user.getUsername(), e.getMessage());
-            return "redirect:/join";
+            bindingResult.reject("joinFailed", e.getMessage());
+            return "user/join_form";
         }
         return "redirect:/";
     }
@@ -57,19 +58,21 @@ public class UserWebController {
     @PostMapping(value = "/modify")
     public String modifyUser(@Valid @ModelAttribute("modify") UserModifyDto modifyUser,
                              BindingResult bindingResult, @Login User user) {
-        modifyUser.setId(user.getId());
-        if (modifyUser.getPassword().trim().length() == 0)
-            modifyUser.setPassword(user.getPassword());
         if (bindingResult.hasErrors()) {
             log.error("User Controller #{} : {}", user.getId(), bindingResult);
             return "user/modify_form";
         }
+        modifyUser.setId(user.getId());
+        modifyUser.setUsername(user.getUsername());
+        if (modifyUser.getPassword().trim().length() == 0)
+            modifyUser.setPassword(user.getPassword());
         try {
-            userService.update(UserModifyDto.from(modifyUser));
+            userService.update(UserModifyDto.from(modifyUser), user);
             log.info("User Controller #{}: modify {} user", modifyUser.getId(), modifyUser.getUsername());
         } catch (Exception e) {
             log.info("User Controller: modify failed {} - {}", modifyUser.getUsername(), e.getMessage());
-            return "redirect:/user/modify";
+            bindingResult.reject("modifyFailed", e.getMessage());
+            return "user/modify_form";
         }
         return "redirect:/";
     }
