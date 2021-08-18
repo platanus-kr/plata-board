@@ -1,6 +1,7 @@
 package org.platanus.webboard.web.board;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.BoardRepository;
@@ -20,7 +21,7 @@ public class BoardServiceTest {
 
     private static BoardRepository boardRepository;
     private static BoardService boardService;
-//    private Board board;
+    private Board board;
 
     @BeforeAll
     static void beforeAll() {
@@ -38,17 +39,16 @@ public class BoardServiceTest {
 //    static void afterAll() {
 //        boardRepository.allDelete();
 //    }
-//
-//    @BeforeEach
-//    public void beforeEach() {
-//        board = new Board();
-//    }
+
+    @BeforeEach
+    public void beforeEach() {
+        board = new Board();
+    }
 
     @Test
     public void create() {
         try {
-            Board board = new Board();
-            String boardName = "BOARD 01";
+            String boardName = "BOARD 11";
             board.setName(boardName);
             board.setDescription("description");
             Board createdBoard = boardService.create(board);
@@ -63,8 +63,7 @@ public class BoardServiceTest {
     @Test
     public void update() {
         try {
-            Board board = new Board();
-            String boardName = "BOARD 02";
+            String boardName = "BOARD 12";
             String updateBoardName = "BOARD 02 UPDATE";
             board.setName(boardName);
             board.setDescription("description");
@@ -82,8 +81,7 @@ public class BoardServiceTest {
     @Test
     public void findAll() {
         try {
-            Board board = new Board();
-            String boardName = "BOARD 03";
+            String boardName = "BOARD 13";
             board.setName(boardName);
             board.setDescription("description");
             boardService.create(board);
