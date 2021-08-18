@@ -86,7 +86,7 @@ public class UserServiceTest {
             user.setDeleted(false);
             user = userService.join(user);
             user.setUsername("userupdate02");
-            user = userService.update(user);
+            user = userService.update(user, user);
             assertEquals(userService.findById(user.getId()).getId(), user.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
