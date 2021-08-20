@@ -48,7 +48,6 @@ public class LoginWebController {
         }
         UserSessionDto userSessionDto = UserSessionDto.from(loginUser,
                 request.getHeader("user-agent"), request.getRemoteAddr());
-        System.out.println(userSessionDto);
         HttpSession session = request.getSession(true);
         session.setAttribute(SessionConst.LOGIN_USER, userSessionDto);
         return "redirect:" + redirectURL;
