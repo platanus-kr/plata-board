@@ -21,14 +21,15 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
         if (session != null && userSessionDto != null) {
             if (!userSessionDto.getUserIp().equals(requestIp)) {
-                log.info("Interceptor detected by session IP non-equal : #{} {}",
-                        userSessionDto.getId(), userSessionDto.getUsername());
+                log.info("Interceptor detected session change IP : #{} {} - origin: {} / hijack: {}",
+                        userSessionDto.getId(), userSessionDto.getUsername(),
+                        userSessionDto.getUserIp(), requestIp);
                 session.invalidate();
                 response.sendRedirect("/session_error");
                 return false;
             }
             if (!userSessionDto.getUserAgent().equals(requestUserAgent)) {
-                log.info("Interceptor detected by session User-Agent non-equal : #{} {}",
+                log.info("Interceptor detected session change User-Agent : #{} {}",
                         userSessionDto.getId(), userSessionDto.getUsername());
                 session.invalidate();
                 response.sendRedirect("/session_error");
