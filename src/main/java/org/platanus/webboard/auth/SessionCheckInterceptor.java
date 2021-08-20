@@ -2,6 +2,7 @@ package org.platanus.webboard.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.utils.IPUtils;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,12 +17,11 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
         String requestUserAgent = request.getHeader("user-agent");
-        String requestIp = request.getHeader("X-Forwarded-For");
+        String requestIp = IPUtils.getRemoteAddr(request);
 //        String requestIp = request.getRemoteAddr();
         HttpSession session = request.getSession();
         UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
         if (session != null && userSessionDto != null) {
-            log.info(requestIp);
             if (!userSessionDto.getUserIp().equals(requestIp)) {
                 log.info("Interceptor detected session change IP : #{} {} - origin: {} / hijack: {}",
                         userSessionDto.getId(), userSessionDto.getUsername(),

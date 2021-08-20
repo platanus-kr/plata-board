@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
+import org.platanus.webboard.utils.IPUtils;
 import org.platanus.webboard.web.login.dto.UserLoginDto;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class LoginWebController {
             return "login/login_form";
         }
         UserSessionDto userSessionDto = UserSessionDto.from(loginUser,
-                request.getHeader("user-agent"), request.getRemoteAddr());
+                request.getHeader("user-agent"), IPUtils.getRemoteAddr(request));
         HttpSession session = request.getSession(true);
         session.setAttribute(SessionConst.LOGIN_USER, userSessionDto);
         return "redirect:" + redirectURL;
