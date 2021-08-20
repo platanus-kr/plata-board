@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.Data;
+import org.platanus.webboard.web.login.dto.UserSessionDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,4 +23,13 @@ public class User {
     @Email
     private String email;
     private boolean deleted;
+
+    public static User fromLoginSessionDto(UserSessionDto userSessionDto) {
+        User user = new User();
+        user.setId(userSessionDto.getId());
+        user.setUsername(userSessionDto.getUsername());
+        user.setNickname(userSessionDto.getNickname());
+        user.setEmail(userSessionDto.getEmail());
+        return user;
+    }
 }
