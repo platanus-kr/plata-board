@@ -11,7 +11,9 @@ public class BoardListInterceptor implements HandlerInterceptor {
     private final BoardService boardService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
         request.setAttribute("boardList", boardService.findAll());
         return true;
     }

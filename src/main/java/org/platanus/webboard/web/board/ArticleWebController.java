@@ -11,6 +11,7 @@ import org.platanus.webboard.web.board.dto.CommentViewDto;
 import org.platanus.webboard.web.board.dto.CommentWriteDto;
 import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
+import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,9 @@ public class ArticleWebController {
     private final UserService userService;
 
     @GetMapping(value = "/{articleId}")
-    public String view(@PathVariable("articleId") long articleId, @Login User user, Model model) throws Exception {
+    public String view(@PathVariable("articleId") long articleId,
+                       @Login UserSessionDto user,
+                       Model model) throws Exception {
         Article article = articleService.findById(articleId);
         article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
@@ -59,16 +62,19 @@ public class ArticleWebController {
     }
 
     @GetMapping(value = "/{articleId}/delete")
-    public String remove(@PathVariable("articleId") long articleId, @Login User user) throws Exception {
+    public String remove(@PathVariable("articleId") long articleId,
+                         @Login UserSessionDto user) throws Exception {
         Article article = articleService.findById(articleId);
         long redirectBoardId = article.getBoardId();
-        if (!articleService.updateDeleteFlag(article, user))
+        User userFromDto = User.fromLoginSessionDto(user);
+        if (!articleService.updateDeleteFlag(article, userFromDto))
             log.info("ArticleController remove #{}: Service Error.", article.getId());
         return "redirect:/board/" + redirectBoardId;
     }
 
     @GetMapping(value = "/{articleId}/modify")
-    public String articleModifyView(@PathVariable("articleId") long articleId, @Login User user,
+    public String articleModifyView(@PathVariable("articleId") long articleId,
+                                    @Login UserSessionDto user,
                                     Model model) throws Exception {
         if (user.getId() != articleService.findById(articleId).getAuthorId()) {
             log.info("ArticleController modify #{}: 글쓴이가 아닙니다. by User {}", articleId, user.getId());
@@ -85,7 +91,8 @@ public class ArticleWebController {
     }
 
     @PostMapping(value = "/{articleId}/modify")
-    public String articleModify(@PathVariable("articleId") long articleId, @Login User user,
+    public String articleModify(@PathVariable("articleId") long articleId,
+                                @Login UserSessionDto user,
                                 @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
                                 BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -95,12 +102,14 @@ public class ArticleWebController {
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
-        articleService.update(article, user);
+        User userFromDto = User.fromLoginSessionDto(user);
+        articleService.update(article, userFromDto);
         return "redirect:/article/{articleId}";
     }
 
     @PostMapping(value = "/{articleId}")
-    public String commentWrite(@PathVariable("articleId") long articleId, @Login User user,
+    public String commentWrite(@PathVariable("articleId") long articleId,
+                               @Login UserSessionDto user,
                                @Valid @ModelAttribute("comment") CommentWriteDto commentRequest,
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

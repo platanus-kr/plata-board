@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
-public class LoginCheckInterceptor implements HandlerInterceptor {
+public class LoginUserInfoInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -20,24 +20,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String requestIp = request.getRemoteAddr();
         HttpSession session = request.getSession();
         UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
-        if (session == null || userSessionDto == null) {
-            response.sendRedirect("/login?redirectURL=" + requestURI);
+        if (session == null || userSessionDto == null)
             return false;
-        }
-        if (!userSessionDto.getUserIp().equals(requestIp)) {
-            log.info("Interceptor detected by session IP non-equal : #{} {}",
-                    userSessionDto.getId(), userSessionDto.getUsername());
-            session.invalidate();
-            response.sendRedirect("/session_error");
-            return false;
-        }
-        if (!userSessionDto.getUserAgent().equals(requestUserAgent)) {
-            log.info("Interceptor detected by session User-Agent non-equal : #{} {}",
-                    userSessionDto.getId(), userSessionDto.getUsername());
-            session.invalidate();
-            response.sendRedirect("/session_error");
-            return false;
-        }
+//        request.setAttribute("user",
+//                userSessionDto.from(userService.findById(userSessionDto.getId()), requestUserAgent, requestIp));
         return true;
     }
 }

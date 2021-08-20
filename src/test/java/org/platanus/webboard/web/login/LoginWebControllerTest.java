@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
-import org.platanus.webboard.web.login.dto.LoginUserDto;
+import org.platanus.webboard.web.login.dto.UserLoginDto;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.validation.BindingResult;
 
@@ -35,9 +35,9 @@ public class LoginWebControllerTest {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         Mockito.when(bindingResult.hasErrors()).thenReturn(false);
 
-        LoginUserDto loginUserDto = new LoginUserDto();
-        loginUserDto.setUsername("test");
-        loginUserDto.setPassword("test11");
+        UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setUsername("test");
+        userLoginDto.setPassword("test11");
 
         Map<String, Object> mockSessionMap = new HashMap<>();
         HttpSession httpSession = new MockHttpSession(mockSessionMap);
@@ -45,7 +45,7 @@ public class LoginWebControllerTest {
         Mockito.when(httpServletRequest.getSession(true)).thenReturn(httpSession);
 
         LoginWebController loginWebController = new LoginWebController(loginService);
-        String result = loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest);
+        String result = loginWebController.login(userLoginDto, bindingResult, "/success", httpServletRequest);
         assertEquals("redirect:/success", result);
         assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
@@ -65,9 +65,9 @@ public class LoginWebControllerTest {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         Mockito.when(bindingResult.hasErrors()).thenReturn(false);
 
-        LoginUserDto loginUserDto = new LoginUserDto();
-        loginUserDto.setUsername("test");
-        loginUserDto.setPassword("test__failed!!!");
+        UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setUsername("test");
+        userLoginDto.setPassword("test__failed!!!");
 
         Map<String, Object> mockSessionMap = new HashMap<>();
         HttpSession httpSession = new MockHttpSession(mockSessionMap);
@@ -76,7 +76,7 @@ public class LoginWebControllerTest {
 
         LoginWebController loginWebController = new LoginWebController(loginService);
 
-        assertEquals("login/login_form", loginWebController.login(loginUserDto, bindingResult, "/success", httpServletRequest));
+        assertEquals("login/login_form", loginWebController.login(userLoginDto, bindingResult, "/success", httpServletRequest));
         assertEquals(null, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 

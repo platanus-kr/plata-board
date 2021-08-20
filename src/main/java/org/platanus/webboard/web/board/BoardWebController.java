@@ -3,10 +3,10 @@ package org.platanus.webboard.web.board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Article;
-import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.dto.ArticleWriteDto;
 import org.platanus.webboard.web.login.argumentresolver.Login;
+import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class BoardWebController {
     @GetMapping(value = "/{id}")
     public String list(@PathVariable("id") long boardId,
                        @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum,
-                       @Login User user,
+                       @Login UserSessionDto user,
                        Model model) throws Exception {
         Page<ArticleListDto> articles = articleService.findPageOfArticlesByBoardId(boardId, pageNum - 1);
         String boardName = boardService.findById(boardId).getName();
@@ -41,8 +41,11 @@ public class BoardWebController {
     }
 
     @GetMapping(value = "/{id}/write")
-    public String writeForm(@PathVariable("id") long id, Model model) throws Exception {
+    public String writeForm(@PathVariable("id") long id,
+                            @Login UserSessionDto user,
+                            Model model) throws Exception {
         String boardName = boardService.findById(id).getName();
+        model.addAttribute("user", user);
         model.addAttribute("board_id", id);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", new ArticleWriteDto());
@@ -53,7 +56,7 @@ public class BoardWebController {
     public String write(@PathVariable("id") long id,
                         @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
                         BindingResult bindingResult,
-                        @Login User user) {
+                        @Login UserSessionDto user) {
 
         if (bindingResult.hasErrors()) {
             log.info("Board write #{} by User #{} : {}", id, user.getId(), bindingResult);
