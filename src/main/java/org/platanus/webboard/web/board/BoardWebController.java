@@ -29,11 +29,9 @@ public class BoardWebController {
     @GetMapping(value = "/{id}")
     public String list(@PathVariable("id") long boardId,
                        @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum,
-                       @Login UserSessionDto user,
                        Model model) throws Exception {
         Page<ArticleListDto> articles = articleService.findPageOfArticlesByBoardId(boardId, pageNum - 1);
         String boardName = boardService.findById(boardId).getName();
-        model.addAttribute("user", user);
         model.addAttribute("articles", articles);
         model.addAttribute("board_id", boardId);
         model.addAttribute("board_name", boardName);
@@ -45,7 +43,6 @@ public class BoardWebController {
                             @Login UserSessionDto user,
                             Model model) throws Exception {
         String boardName = boardService.findById(id).getName();
-        model.addAttribute("user", user);
         model.addAttribute("board_id", id);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", new ArticleWriteDto());

@@ -34,7 +34,6 @@ public class ArticleWebController {
 
     @GetMapping(value = "/{articleId}")
     public String view(@PathVariable("articleId") long articleId,
-                       @Login UserSessionDto user,
                        Model model) throws Exception {
         Article article = articleService.findById(articleId);
         article.setContent(MarkdownParser.from(article.getContent()));
@@ -51,7 +50,6 @@ public class ArticleWebController {
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
         CommentWriteDto commentWriteDto = new CommentWriteDto();
-        model.addAttribute("user", user);
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
