@@ -53,7 +53,7 @@ public class UserWebController {
         modifyUser.setUsername(user.getUsername());
         modifyUser.setDeleted(false);
         modifyUser.setEmail(userService.findById(user.getId()).getEmail());
-        modifyUser.setNickname(user.getNickname());
+        modifyUser.setNickname(userService.findById(user.getId()).getNickname());
         return "user/modify_form";
     }
 
@@ -65,14 +65,18 @@ public class UserWebController {
             log.error("User Controller #{} : {}", user.getId(), bindingResult);
             return "user/modify_form";
         }
+        // 수정이 불가능한 고정된 항목.
         modifyUser.setId(user.getId());
         modifyUser.setUsername(user.getUsername());
+        // 패스워드는 비어있으면 원래 패스워드를 사용한다.
         if (modifyUser.getPassword().trim().length() == 0)
             modifyUser.setPassword(userService.findById(user.getId()).getPassword());
         try {
-            User userFromDto = User.fromLoginSessionDto(user);
-            userFromDto.setEmail(modifyUser.getEmail());
-            userService.update(UserModifyDto.from(modifyUser), userFromDto);
+            User findBySessionUserId = userService.findById(user.getId());
+            // 수정할 수 있는 항목은 아래 두개 뿐이다.
+            findBySessionUserId.setEmail(modifyUser.getEmail());
+            findBySessionUserId.setNickname(modifyUser.getNickname());
+            userService.update(UserModifyDto.from(modifyUser), findBySessionUserId);
             log.info("User Controller #{}: modify {} user", modifyUser.getId(), modifyUser.getUsername());
         } catch (Exception e) {
             log.info("User Controller: modify failed {} - {}", modifyUser.getUsername(), e.getMessage());
