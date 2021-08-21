@@ -94,6 +94,13 @@ textarea#articleContent {
     font-size: 0.9rem;
 }
 
+.board_view .article_metadata .view_count,
+.board_view .article_metadata .create_date,
+.board_view .article_metadata .modify_date {
+    margin-left: 10px;
+}
+
+
 .board_view .article_content {
     border: 1px solid #F1F1F1;
     padding: 15px;
@@ -114,6 +121,11 @@ textarea#articleContent {
     background: #F1F1F1;
     padding: 5px 10px;
     font-size: 0.9rem;
+}
+
+.comment_view .metadata .create_date,
+.comment_view .metadata .modify_date {
+    margin-left: 10px;
 }
 
 .comment_view .metadata a {

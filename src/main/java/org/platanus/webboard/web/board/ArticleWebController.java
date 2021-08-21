@@ -36,6 +36,7 @@ public class ArticleWebController {
     public String view(@PathVariable("articleId") long articleId,
                        Model model) throws Exception {
         Article article = articleService.findById(articleId);
+        articleService.updateViewCount(articleId);
         article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
         List<CommentViewDto> commentsResponse = new ArrayList<>();

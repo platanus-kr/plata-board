@@ -29,7 +29,7 @@
                                                                    th:text="${article.commentCount}"></span></span>
                 </td>
                 <td class="text-center"><span class="author" th:text="${article.authorNickname}"></span></td>
-                <td class="text-center"><span class="view_count">0</span></td>
+                <td class="text-center"><span class="view_count" th:text="${article.viewCount}"></span></td>
                 <td class="text-center"><span class="create_date"
                                               th:text="${#temporals.format(article.createdDate, 'MM/dd HH:mm')}"></span>
                 </td>

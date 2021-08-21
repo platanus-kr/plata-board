@@ -36,6 +36,8 @@ public class ArticleRepository {
         parameters.put("created_date", article.getCreatedDate());
         parameters.put("modified_date", article.getModifiedDate());
         parameters.put("deleted", article.isDeleted());
+        parameters.put("recommend", article.getRecommend());
+        parameters.put("view_count", article.getViewCount());
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         article.setId(key.longValue());
         return article;
@@ -48,6 +50,12 @@ public class ArticleRepository {
     public int update(Article article) {
         return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE,
                 article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
+    }
+
+    public int updateViewCount(long id) {
+        return jdbcTemplate.update("update ARTICLES set VIEW_COUNT = VIEW_COUNT + 1 where ID = ?", id);
+
+
     }
 
     public int updateDeleteFlag(Article article) {
@@ -96,7 +104,7 @@ public class ArticleRepository {
     }
 
     public int count(long boardId) {
-        return jdbcTemplate.queryForObject("select count(*) from ARTICLES where board_id =?", Integer.class, boardId);
+        return jdbcTemplate.queryForObject(QueryConst.ARTICLE_COUNT, Integer.class, boardId);
     }
 
     public String likeWrapper(String string) {
@@ -114,6 +122,8 @@ public class ArticleRepository {
             article.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
             article.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
             article.setDeleted(rs.getBoolean("deleted"));
+            article.setRecommend(rs.getLong("recommend"));
+            article.setViewCount(rs.getLong("view_count"));
             return article;
         };
     }

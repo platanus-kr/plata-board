@@ -16,4 +16,5 @@ public class Comment {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private boolean deleted;
+    private long recommend;
 }
