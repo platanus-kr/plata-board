@@ -9,25 +9,30 @@
 <body>
 <section>
     <div class="board_title">
-        <h2 th:text="${board_name}"></h2>
+        <h4 th:text="${board_name}"></h4>
     </div>
     <div class="board_list">
         <table class="table">
             <thead>
             <tr>
                 <th class="col-md-8">제목</th>
-                <th class="col-md-2">글쓴이</th>
-                <th class="col-md-2">글쓴 날짜</th>
+                <th class="col-md-1 text-center">글쓴이</th>
+                <th class="col-md-1 text-center">조회</th>
+                <th class="col-md-2 text-center">글쓴 날짜</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="article : ${articles}">
                 <td>
-                    <a th:href="@{|/article/${article.id}|}" th:text="${article.title}"></a> <span
-                        th:if="${article.commentCount != 0}">[<span th:text="${article.commentCount}"></span>]</span>
+                    <a class="align-middle" th:href="@{|/article/${article.id}|}" th:text="${article.title}"></a> <span
+                        th:if="${article.commentCount != 0}"><span class="align-middle comments_quantity"
+                                                                   th:text="${article.commentCount}"></span></span>
                 </td>
-                <td th:text="${article.authorNickname}"></td>
-                <td th:text="${#temporals.format(article.createdDate, 'MM/dd HH:mm')}"></td>
+                <td class="text-center"><span class="author" th:text="${article.authorNickname}"></span></td>
+                <td class="text-center"><span class="view_count" th:text="${article.viewCount}"></span></td>
+                <td class="text-center"><span class="create_date"
+                                              th:text="${#temporals.format(article.createdDate, 'MM/dd HH:mm')}"></span>
+                </td>
             </tr>
             </tbody>
         </table>

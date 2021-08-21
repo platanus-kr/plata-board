@@ -30,6 +30,8 @@ public class ArticleService {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
+        article.setRecommend(0L);
+        article.setViewCount(0L);
         article = articleRepository.save(article);
         log.info("Article write #{} by User #{}", article.getId(), article.getAuthorId());
         return article;
@@ -53,6 +55,11 @@ public class ArticleService {
         }
         log.info("Article update #{} by User #{}", article.getId(), user.getId());
         return article;
+    }
+
+    public boolean updateViewCount(long articleId) {
+        articleRepository.updateViewCount(articleId);
+        return true;
     }
 
     public boolean updateDeleteFlag(Article article, User user) throws Exception {

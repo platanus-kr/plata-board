@@ -18,7 +18,6 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
                              Object handler) throws Exception {
         String requestUserAgent = request.getHeader("user-agent");
         String requestIp = IPUtils.getRemoteAddr(request);
-//        String requestIp = request.getRemoteAddr();
         HttpSession session = request.getSession();
         UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
         if (session != null && userSessionDto != null) {

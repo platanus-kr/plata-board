@@ -15,6 +15,8 @@ public class ArticleListDto {
     private LocalDateTime createdDate;
     private int commentCount;
     private boolean deleted;
+    private long recommend;
+    private long viewCount;
 
     public static ArticleListDto from(Article a, String authorNickname, int commentCount) {
         ArticleListDto dto = new ArticleListDto();
@@ -26,6 +28,8 @@ public class ArticleListDto {
         dto.setCreatedDate(a.getCreatedDate());
         dto.setCommentCount(commentCount);
         dto.setDeleted(a.isDeleted());
+        dto.setRecommend(a.getRecommend());
+        dto.setViewCount(a.getViewCount());
         return dto;
 
     }

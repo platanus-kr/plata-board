@@ -15,6 +15,8 @@ public class ArticleViewDto {
     public String authorNickname;
     public LocalDateTime createdDate;
     public LocalDateTime modifiedDate;
+    private long recommend;
+    private long viewCount;
 
     public static ArticleViewDto fromView(Article article, String authorNickname) {
         ArticleViewDto articleResponse = new ArticleViewDto();
@@ -26,6 +28,8 @@ public class ArticleViewDto {
         articleResponse.setAuthorNickname(authorNickname);
         articleResponse.setCreatedDate(article.getCreatedDate());
         articleResponse.setModifiedDate(article.getModifiedDate());
+        articleResponse.setRecommend(article.getRecommend());
+        articleResponse.setViewCount(article.getViewCount());
         return articleResponse;
     }
 

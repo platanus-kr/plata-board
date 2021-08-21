@@ -9,62 +9,64 @@
 <body>
 <section>
     <div class="board_title">
-        <h2 th:text="${board_name}"></h2>
+        <h4 th:text="${board_name}"></h4>
     </div>
     <div class="board_view">
 
-        <div class="title">제목 : <span th:text="${article.title}"></span></div>
-        <div class="article_metadata">
-            <div class="author">글쓴이 : <span th:text="${article.authorNickname}"></span></div>
-            <div class="author">글 쓴 시간 : <span
-                    th:text="${#temporals.format(article.createdDate, 'MM/dd HH:mm:ss')}"></span></div>
-            <div class="author">수정한 시간 : <span
+        <div class="title"><span class="align-middle" th:text="${article.title}"></span>
+            <span class="comments_quantity align-middle" th:if="${comments_quantity > 0}"
+                  th:text="${comments_quantity}"></span></div>
+        <div class="article_metadata d-flex">
+            <div class="author me-auto"><i class="bi bi-person-circle"></i> <span
+                    th:text="${article.authorNickname}"></span></div>
+            <div class="view_count"><i class="bi bi-eye"></i> <span th:text="${article.viewCount}"></span></div>
+            <div class="create_date"><i class="bi bi-pen"></i> <span
+                    th:text="${#temporals.format(article.createdDate, 'MM/dd HH:mm:ss')}"> </span>
+            </div>
+            <div class="modify_date"><i class="bi bi-node-plus"></i> <span
                     th:text="${#temporals.format(article.modifiedDate, 'MM/dd HH:mm:ss')}"></span></div>
         </div>
-        <hr/>
+
         <div class="article_content">
             [(${article.content})]
         </div>
-        <hr/>
+
     </div>
     <div class="comment_view">
         <div class="comments" th:each="comment: ${comments}">
             <div class="comment">
-                <div class="metadata">
-                    <div class="author">글쓴이 : <span th:text="${comment.authorNickname}"></span></div>
-                    <div class="author">글 쓴 시간 : <span
+                <div class="metadata d-flex">
+                    <div class="author me-auto"><span
+                            th:text="${comment.authorNickname}"></span></div>
+                    <div class="create_date"><i class="bi bi-pen"></i> <span
                             th:text="${#temporals.format(comment.createdDate, 'MM/dd HH:mm:ss')}"></span></div>
-                    <div class="author">수정한 시간 : <span
+                    <div class="modify_date"><i class="bi bi-node-plus"></i> <span
                             th:text="${#temporals.format(comment.modifiedDate, 'MM/dd HH:mm:ss')}"></span></div>
+                    <div class="delete_function" th:if="${user != null}">
+                        <span th:if="${user.getId() == comment.getAuthorId()}">
+                            <a th:href="@{|/comment/${comment.getId()}/delete|}">삭제</a></span>
+                    </div>
                 </div>
                 <div class="content">
                     [(${comment.content})]
                 </div>
-                <span th:if="${user != null}">
-                <div th:if="${user.getId() == comment.getAuthorId()}" class="control">
-                    <a class="btn btn-primary btn-floating m-1"
-                       th:href="@{|/comment/${comment.getId()}/delete|}" role="button">
-                        삭제
-                    </a>
-                </div>
-                </span>
             </div>
-            <hr/>
         </div>
     </div>
     <div th:if="${user != null}" class="comment_write">
-        <form id="comment_write" th:action th:object="${comment}" method="post">
-            <div>
-                <label for="commentContent">댓글</label>
+        <div class="comment_form">
+            <form id="comment_write" th:action th:object="${comment}" method="post">
+                <div class="input-group">
                 <textarea type="text" id="commentContent" th:field="*{content}"
                           th:errorclass="field-error" name="comment" class="form-control"
-                          placeholder="댓글 내용을 입력하세요"></textarea>
-                <div class="field-error" th:errors="*{content}">내용 오류</div>
-            </div>
-            <div>
-                <button class="w-100 btn btn-outline-primary btn-lg" type="submit">댓글 저장</button>
-            </div>
-        </form>
+                          placeholder="댓글 내용을 입력하세요"
+                          aria-describedby="button-addon2"></textarea>
+                    <button class="btn btn-primary" id="button-addon2" type="submit">댓글 저장</button>
+
+                    <div class="field-error" th:errors="*{content}">내용 오류</div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="board_button">
         <a class="btn btn-primary btn-floating m-1"
