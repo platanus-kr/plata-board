@@ -1,6 +1,7 @@
 body {
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    background-color: #eee;
 }
 
 html {
@@ -30,4 +31,112 @@ main {
 
 textarea#articleContent {
     height: 300px;
+}
+
+.board_content {
+    max-width: 800px;
+
+}
+
+/* ----------------- */
+
+.board_list {
+    background-color: white;
+    padding: 10px 15px;
+}
+
+.board_list tr span.comments_quantity {
+    color: #F7683A;
+    font-size: 0.95rem;
+}
+
+.board_list tr span.author {
+    font-size: 0.85em;
+}
+
+.board_list tr span.view_count {
+    font-size: 0.8rem;
+}
+
+.board_list tr span.create_date {
+    font-size: 0.8em;
+}
+
+
+/* ----------------- */
+
+
+.board_view {
+    background-color: white;
+    padding: 10px 15px;
+}
+
+.board_view .title {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.board_view .title .comments_quantity {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: #FAFAFA;
+    border-radius: 2px;
+    padding: 1px 3px;
+    font-size: 0.95rem;
+    color: #F7683A;
+}
+
+.board_view .article_metadata {
+    background: #FAFAFA;
+    padding: 5px 10px;
+    border: 1px solid #F1F1F1;
+    border-top: 3px solid #999;
+    border-bottom: none;
+    font-size: 0.9rem;
+}
+
+.board_view .article_content {
+    border: 1px solid #F1F1F1;
+    padding: 15px;
+}
+
+/* ----------------- */
+
+.comment_view {
+    background-color: white;
+    padding: 10px 15px;
+}
+
+.comment_view .comment {
+    margin-bottom: 10px;
+}
+
+.comment_view .metadata {
+    background: #F1F1F1;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+}
+
+.comment_view .metadata a {
+    color: #F7683A;
+}
+
+.comment .content {
+    padding: 5px 10px;
+}
+
+.comment_write {
+    background-color: white;
+    padding: 10px 15px;
+}
+
+.comment_write .comment_form {
+    padding: 15px;
+    background-color: #F1F1F1;
+}
+
+/* ----------------- */
+
+.board_button {
+    background-color: white;
+    padding: 10px 15px;
 }

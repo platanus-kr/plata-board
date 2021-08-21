@@ -49,6 +49,7 @@ public class ArticleWebController {
         });
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
+
         CommentWriteDto commentWriteDto = new CommentWriteDto();
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
@@ -56,6 +57,7 @@ public class ArticleWebController {
         model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
         model.addAttribute("comment", commentWriteDto);
         model.addAttribute("comments", commentsResponse);
+        model.addAttribute("comments_quantity", commentsResponse.size());
         return "board/board_view";
     }
 
