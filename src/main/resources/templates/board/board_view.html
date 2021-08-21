@@ -42,8 +42,8 @@
                             th:text="${#temporals.format(comment.createdDate, 'MM/dd HH:mm:ss')}"></span></div>
                     <div class="modify_date"><i class="bi bi-node-plus"></i> <span
                             th:text="${#temporals.format(comment.modifiedDate, 'MM/dd HH:mm:ss')}"></span></div>
-                    <div clas="delete_function" th:if="${user != null}">
-                        <span th:if="${user.getId() == comment.getAuthorId()}">|
+                    <div class="delete_function" th:if="${user != null}">
+                        <span th:if="${user.getId() == comment.getAuthorId()}">
                             <a th:href="@{|/comment/${comment.getId()}/delete|}">삭제</a></span>
                     </div>
                 </div>

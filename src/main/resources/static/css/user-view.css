@@ -124,7 +124,8 @@ textarea#articleContent {
 }
 
 .comment_view .metadata .create_date,
-.comment_view .metadata .modify_date {
+.comment_view .metadata .modify_date,
+.comment_view .metadata .delete_function {
     margin-left: 10px;
 }
 
