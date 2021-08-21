@@ -34,6 +34,7 @@ public class QueryConst {
     public static final String USER_FIND_BY_USERNAME = "select * from USERS where USERNAME = ?";
     public static final String USER_FIND_BY_EMAIL = "select * from USERS where EMAIL = ?";
     public static final String USER_FIND_BY_NICKNAME = "select * from USERS where NICKNAME = ?";
+    public static final String USER_FIND_BY_ROLE = "select * from USERS where ROLE = ?";
     public static final String USER_FIND_ALL = "select * from USERS";
     public static final String USER_ALL_DELETE = "delete from USERS";
 }

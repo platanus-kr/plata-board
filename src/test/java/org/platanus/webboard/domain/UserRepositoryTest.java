@@ -140,6 +140,24 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void findByRole() {
+        user.setUsername("user091");
+        user.setPassword("aaa");
+        user.setNickname("user091");
+        user.setEmail("user091@gmail.com");
+        user.setRole(UserRole.USER);
+        user.setDeleted(false);
+        user = userRepository.save(user);
+        List<User> users = userRepository.findByRole(UserRole.USER);
+        User findUser = users.stream()
+                .filter(u -> u.getUsername() == user.getUsername())
+                .findAny()
+                .get();
+        System.out.println(findUser.getRole());
+        assertEquals(findUser.getRole(), user.getRole());
+    }
+
+    @Test
     public void findAll() {
         user.setUsername("user09");
         user.setPassword("aaa");

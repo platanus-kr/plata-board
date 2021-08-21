@@ -23,6 +23,7 @@ public class User {
     @Email
     private String email;
     private boolean deleted;
+    private UserRole role;
 
     public static User fromLoginSessionDto(UserSessionDto userSessionDto) {
         User user = new User();
@@ -30,6 +31,7 @@ public class User {
         user.setUsername(userSessionDto.getUsername());
         user.setNickname(userSessionDto.getNickname());
         user.setEmail(userSessionDto.getEmail());
+        user.setRole(userSessionDto.getRole());
         return user;
     }
 }

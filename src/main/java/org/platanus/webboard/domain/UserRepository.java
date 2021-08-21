@@ -33,6 +33,7 @@ public class UserRepository {
         parameters.put("nickname", user.getNickname());
         parameters.put("email", user.getEmail());
         parameters.put("deleted", user.isDeleted());
+        parameters.put("role", user.getRole());
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setId(key.longValue());
         return user;
@@ -71,6 +72,10 @@ public class UserRepository {
         return result.stream().findAny();
     }
 
+    public List<User> findByRole(UserRole role) {
+        return jdbcTemplate.query(QueryConst.USER_FIND_BY_ROLE, userRowMapper(), role.getKey());
+    }
+
     public List<User> findAll() {
         return jdbcTemplate.query(QueryConst.USER_FIND_ALL, userRowMapper());
     }
@@ -88,6 +93,7 @@ public class UserRepository {
             user.setNickname(rs.getString("nickname"));
             user.setEmail(rs.getString("email"));
             user.setDeleted(rs.getBoolean(("deleted")));
+            user.setRole(UserRole.valueOf(rs.getString("role")));
             return user;
         };
     }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
+import org.platanus.webboard.domain.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,17 +33,18 @@ public class UserService {
 //        md.update(user.getPassword().getBytes());
 //        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         log.info("User join #{}, {}", user.getId(), user.getUsername());
         return user;
     }
 
-    public User update(User user, User loginUser) throws Exception {
-        if (userRepository.findByNickname(user.getNickname()).isPresent() && !user.getNickname().equals(loginUser.getNickname())) {
+    public User update(User user, User sessionUser) throws Exception {
+        if (userRepository.findByNickname(user.getNickname()).isPresent() && !user.getNickname().equals(sessionUser.getNickname())) {
             log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
             throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
         }
-        if (userRepository.findByEmail((user.getEmail())).isPresent() && !user.getEmail().equals(loginUser.getEmail())) {
+        if (userRepository.findByEmail((user.getEmail())).isPresent() && !user.getEmail().equals(sessionUser.getEmail())) {
             log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
             throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
         }
@@ -110,6 +112,10 @@ public class UserService {
             throw new IllegalArgumentException("없는 회원 입니다.");
         }
         return user.get();
+    }
+
+    public List<User> findByRole(UserRole role) {
+        return userRepository.findByRole(role);
     }
 
     public List<User> findAll() {
