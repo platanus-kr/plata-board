@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,31 +36,25 @@ public class ArticleRecommendRepository {
     }
 
     public Optional<ArticleRecommend> findByArticleIdAndUserId(long articleId, long userId) {
-        List<ArticleRecommend> result = jdbcTemplate.query("select * from ARTICLES_RECOMMEND where ARTICLE_ID = ? and USER_ID = ?",
+        List<ArticleRecommend> result = jdbcTemplate.query(QueryConst.ARTICLE_RECOMMEND_FIND_BY_ARTICLE_ID_AND_USER_ID,
                 articleRecommendRowMapper(), articleId, userId);
         return result.stream().findAny();
     }
 
     public List<ArticleRecommend> findByArticleId(long articleId) {
-        return jdbcTemplate.query("select * from ARTICLES_RECOMMEND where ARTICLE_ID = ?",
-                articleRecommendRowMapper(), articleId);
+        return jdbcTemplate.query(QueryConst.ARTICLE_RECOMMEND_FIND_BY_ARTICLE_ID, articleRecommendRowMapper(), articleId);
     }
 
     public List<ArticleRecommend> findByUserId(long userId) {
-        return jdbcTemplate.query("select * from ARTICLES_RECOMMEND where USER_ID = ?",
-                articleRecommendRowMapper(), userId);
+        return jdbcTemplate.query(QueryConst.ARTICLE_RECOMMEND_FIND_BY_USER_ID, articleRecommendRowMapper(), userId);
     }
 
     public int countByArticleId(long articleId) {
-        return jdbcTemplate.queryForObject(
-                "select count(*) from ARTICLES as A inner join ARTICLES_RECOMMEND as AR on A.ID = AR.ARTICLE_ID where AR.ARTICLE_ID = ?"
-                , Integer.class, articleId);
+        return jdbcTemplate.queryForObject(QueryConst.ARTICLE_RECOMMEND_COUNT_BY_ARTICLE_ID, Integer.class, articleId);
     }
 
     public int countByUserId(long userId) {
-        return jdbcTemplate.queryForObject(
-                "select count(*) from ARTICLES as A inner join ARTICLES_RECOMMEND as AR on AR.ARTICLE_ID = A.ID WHERE AR.USER_ID = ?"
-                , Integer.class, userId);
+        return jdbcTemplate.queryForObject(QueryConst.ARTICLE_RECOMMEND_COUNT_BY_USER_ID, Integer.class, userId);
     }
 
     public RowMapper<ArticleRecommend> articleRecommendRowMapper() {

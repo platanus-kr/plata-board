@@ -166,3 +166,17 @@ textarea#articleContent {
     background-color: white;
     padding: 10px 15px;
 }
+
+/* ----------------- */
+footer {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+footer .copyright {
+    margin: 30px;
+}
+
+footer .copyright a {
+    color: #555;
+}
