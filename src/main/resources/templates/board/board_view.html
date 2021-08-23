@@ -29,6 +29,15 @@
 
         <div class="article_content">
             [(${article.content})]
+
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="btn-group ">
+                    <a class="btn btn-secondary" th:href="@{|/article/${article_id}/recommend|}"><i
+                            class="bi bi-hand-thumbs-up-fill"></i> 추천</a>
+                    <a href="#" class="btn btn-secondary active" th:text="${article.recommend}">recommend count</a>
+                </div>
+            </div>
+
         </div>
 
     </div>

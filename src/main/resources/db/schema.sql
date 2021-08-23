@@ -1,13 +1,3 @@
--- boards Table Create SQL
-CREATE TABLE boards
-(
-    `ID`          INT          NOT NULL AUTO_INCREMENT,
-    `NAME`        VARCHAR(255) NULL,
-    `DESCRIPTION` VARCHAR(255) NULL,
-    CONSTRAINT PK_boards PRIMARY KEY (ID)
-);
-
-
 -- users Table Create SQL
 CREATE TABLE users
 (
@@ -19,6 +9,16 @@ CREATE TABLE users
     `DELETED`  TINYINT      NULL,
     `ROLE`     VARCHAR(255) NULL,
     CONSTRAINT PK_users PRIMARY KEY (ID)
+);
+
+
+-- boards Table Create SQL
+CREATE TABLE boards
+(
+    `ID`          INT          NOT NULL AUTO_INCREMENT,
+    `NAME`        VARCHAR(255) NULL,
+    `DESCRIPTION` VARCHAR(255) NULL,
+    CONSTRAINT PK_boards PRIMARY KEY (ID)
 );
 
 
@@ -45,6 +45,16 @@ ALTER TABLE articles
 ALTER TABLE articles
     ADD CONSTRAINT FK_articles_AUTHOR_ID_users_ID FOREIGN KEY (AUTHOR_ID)
         REFERENCES users (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- articles_recommend Table Create SQL
+CREATE TABLE articles_recommend
+(
+    `ID`         INT NOT NULL AUTO_INCREMENT,
+    `ARTICLE_ID` INT NULL,
+    `USER_ID`    INT NULL,
+    PRIMARY KEY (ID)
+);
 
 
 -- comments Table Create SQL
