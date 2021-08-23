@@ -59,13 +59,26 @@ textarea#articleContent {
 }
 
 .board_list tr span.create_date {
-    font-size: 0.8em;
+    font-size: 0.8rem;
 }
 
+.board_list tr span.recommend_active {
+    padding: 2px 4px;
+    font-size: 0.8rem;
+    color: white;
+    background-color: #333;
+    border-radius: 3px;
+}
+
+.board_list tr span.recommend_off {
+    padding: 2px 4px;
+    font-size: 0.8rem;
+    color: white;
+    background-color: #bbb;
+    border-radius: 3px;
+}
 
 /* ----------------- */
-
-
 .board_view {
     background-color: white;
     padding: 10px 15px;

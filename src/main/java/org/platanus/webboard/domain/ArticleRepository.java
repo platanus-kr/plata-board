@@ -54,8 +54,10 @@ public class ArticleRepository {
 
     public int updateViewCount(long id) {
         return jdbcTemplate.update("update ARTICLES set VIEW_COUNT = VIEW_COUNT + 1 where ID = ?", id);
+    }
 
-
+    public int updateRecommend(long id) {
+        return jdbcTemplate.update("update ARTICLES set RECOMMEND = RECOMMEND + 1 where ID =?", id);
     }
 
     public int updateDeleteFlag(Article article) {

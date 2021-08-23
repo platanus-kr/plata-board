@@ -14,6 +14,9 @@
             <div th:if="${comment != null}">
                 <div class="field-error" th:errors="*{comment.content}">코맨트 내용 에러</div>
             </div>
+            <div th:if="${error != null}">
+                <div class="field-error" th:text="${error.content}">코맨트 내용 에러</div>
+            </div>
             <a class="btn btn-primary btn-floating m-1" href="javascript:history.back()">돌아가기</a>
 
         </div>

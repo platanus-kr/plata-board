@@ -1,0 +1,6 @@
+-- INSERT INTO articles_recommend (ID, ARTICLE_ID, USER_ID)
+-- VALUES (1, 10, 1);
+-- INSERT INTO articles_recommend (ID, ARTICLE_ID, USER_ID)
+-- VALUES (2, 9, 1);
+-- INSERT INTO articles_recommend (ID, ARTICLE_ID, USER_ID)
+-- VALUES (3, 10, 2);

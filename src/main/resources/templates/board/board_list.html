@@ -24,6 +24,9 @@
             <tbody>
             <tr th:each="article : ${articles}">
                 <td>
+                    <span th:if="${article.recommend > 0}" th:text="${article.recommend}"
+                          class="recommend_active"></span>
+                    <span th:unless="${article.recommend > 0}" class="recommend_off">0</span>
                     <a class="align-middle" th:href="@{|/article/${article.id}|}" th:text="${article.title}"></a> <span
                         th:if="${article.commentCount != 0}"><span class="align-middle comments_quantity"
                                                                    th:text="${article.commentCount}"></span></span>

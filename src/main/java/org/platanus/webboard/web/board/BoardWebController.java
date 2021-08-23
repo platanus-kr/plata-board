@@ -65,12 +65,12 @@ public class BoardWebController {
         article.setContent(articleRequest.getContent());
         article.setAuthorId(user.getId());
         try {
-            articleService.write(article);
+            article = articleService.write(article);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         log.info("Board write #{}: {} by User #{}", id, article.getTitle(), user.getId());
-        return "redirect:/board/{id}";
+        return "redirect:/article/" + article.getId();
     }
 
 }

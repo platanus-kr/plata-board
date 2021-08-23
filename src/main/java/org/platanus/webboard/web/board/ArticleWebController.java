@@ -2,13 +2,8 @@ package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.domain.Article;
-import org.platanus.webboard.domain.Comment;
-import org.platanus.webboard.domain.User;
-import org.platanus.webboard.web.board.dto.ArticleViewDto;
-import org.platanus.webboard.web.board.dto.ArticleWriteDto;
-import org.platanus.webboard.web.board.dto.CommentViewDto;
-import org.platanus.webboard.web.board.dto.CommentWriteDto;
+import org.platanus.webboard.domain.*;
+import org.platanus.webboard.web.board.dto.*;
 import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
@@ -29,6 +24,7 @@ import java.util.List;
 public class ArticleWebController {
     private final BoardService boardService;
     private final ArticleService articleService;
+    private final ArticleRecommendService articleRecommendService;
     private final CommentService commentService;
     private final UserService userService;
 
@@ -125,6 +121,23 @@ public class ArticleWebController {
             commentService.write(comment);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return "redirect:/article/{articleId}";
+    }
+
+    @GetMapping(value = "/{articleId}/recommend")
+    public String articleRecommendUpdate(@PathVariable("articleId") long articleId,
+                                         @Login UserSessionDto user,
+                                         @ModelAttribute("error") ErrorDto errorDto) {
+        ArticleRecommend articleRecommend = new ArticleRecommend();
+        articleRecommend.setArticleId(articleId);
+        articleRecommend.setUserId(user.getId());
+        try {
+            articleRecommendService.save(articleRecommend);
+        } catch (Exception e) {
+            log.info("ArticleController recommend-update #{} : 이미 추천한 게시물 by #{} {}", articleId, user.getId(), user.getUsername());
+            errorDto.setContent("이미 추천한 게시물 입니다.");
+            return "error/has_message";
         }
         return "redirect:/article/{articleId}";
     }
