@@ -3,7 +3,10 @@ package org.platanus.webboard.web.board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.*;
-import org.platanus.webboard.web.board.dto.*;
+import org.platanus.webboard.web.board.dto.ArticleViewDto;
+import org.platanus.webboard.web.board.dto.ArticleWriteDto;
+import org.platanus.webboard.web.board.dto.CommentWriteDto;
+import org.platanus.webboard.web.board.dto.ErrorDto;
 import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
@@ -14,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,15 +37,16 @@ public class ArticleWebController {
         articleService.updateViewCount(articleId);
         article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
-        List<CommentViewDto> commentsResponse = new ArrayList<>();
-        commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
-            try {
-                c.setContent(MarkdownParser.from(c.getContent()));
-                commentsResponse.add(CommentViewDto.from(c, userService.findById(c.getAuthorId()).getNickname()));
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        });
+//        List<CommentViewDto> commentsResponse = new ArrayList<>();
+//        commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
+//            try {
+//                c.setContent(MarkdownParser.from(c.getContent()));
+//                commentsResponse.add(CommentViewDto.from(c, userService.findById(c.getAuthorId()).getNickname()));
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//            }
+//        });
+        List<Comment> commentsResponse = commentService.findCommentsByArticleId(articleId);
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
 

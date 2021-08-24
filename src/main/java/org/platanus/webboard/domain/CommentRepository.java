@@ -83,6 +83,7 @@ public class CommentRepository {
             comment.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
             comment.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
             comment.setDeleted(rs.getBoolean("deleted"));
+            comment.setAuthorNickname(rs.getString("author_nickname"));
             return comment;
         };
     }
