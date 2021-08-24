@@ -53,12 +53,18 @@ public class CommentRepository {
     }
 
     public Optional<Comment> findById(long id) {
-        List<Comment> result = jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ID, commentRowMapper(), id);
+//        List<Comment> result = jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ID, commentRowMapper(), id);
+        List<Comment> result = jdbcTemplate.query("select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C, USERS U where C.ID = ? AND C.AUTHOR_ID = U.ID AND C.DELETED = 0",
+                commentRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Comment> findByArticleId(long id) {
-        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
+//        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
+//        return jdbcTemplate.query("select * from COMMENTS where ARTICLE_ID = ? AND DELETED = 0"
+        return jdbcTemplate.query(
+                "select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C, USERS U where C.ARTICLE_ID = ? AND C.AUTHOR_ID = U.ID AND C.DELETED = 0",
+                commentRowMapper(), id);
     }
 
     public int findCountByArticleId(long id) {
@@ -83,6 +89,7 @@ public class CommentRepository {
             comment.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
             comment.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
             comment.setDeleted(rs.getBoolean("deleted"));
+            comment.setAuthorNickname(rs.getString("author_nickname"));
             return comment;
         };
     }

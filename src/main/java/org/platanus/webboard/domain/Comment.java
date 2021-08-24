@@ -17,4 +17,7 @@ public class Comment {
     private LocalDateTime modifiedDate;
     private boolean deleted;
     private long recommend;
+
+    // add join
+    private String authorNickname;
 }
