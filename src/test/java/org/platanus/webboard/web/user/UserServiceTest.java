@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
+import org.platanus.webboard.domain.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -53,6 +54,7 @@ public class UserServiceTest {
             user.setNickname("user11");
             user.setEmail("user11@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             assertEquals(userService.findById(user.getId()).getId(), user.getId());
         } catch (Exception e) {
@@ -84,6 +86,7 @@ public class UserServiceTest {
             user.setNickname("user12");
             user.setEmail("user12@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             user.setUsername("userupdate02");
             user = userService.update(user, user);
@@ -102,6 +105,7 @@ public class UserServiceTest {
             user.setNickname("user13");
             user.setEmail("user13@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             userService.revoke(user);
             userService.findById(user.getId());
@@ -124,6 +128,7 @@ public class UserServiceTest {
             user.setNickname("user14");
             user.setEmail("user14@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             assertEquals(userService.findById(user.getId()).getId(), user.getId());
         } catch (Exception e) {
@@ -145,6 +150,7 @@ public class UserServiceTest {
             user.setNickname("user15");
             user.setEmail("user15@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             assertEquals(userService.findByUsername(user.getUsername()).getUsername(), user.getUsername());
         } catch (Exception e) {
@@ -166,6 +172,7 @@ public class UserServiceTest {
             user.setNickname("user16");
             user.setEmail("user16@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             assertEquals(userService.findByNickname(user.getNickname()).getNickname(), user.getNickname());
         } catch (Exception e) {
@@ -187,6 +194,7 @@ public class UserServiceTest {
             user.setNickname("user17");
             user.setEmail("user17@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             assertEquals(userService.findByEmail(user.getEmail()).getEmail(), user.getEmail());
         } catch (Exception e) {
@@ -208,6 +216,7 @@ public class UserServiceTest {
             user.setNickname("user18");
             user.setEmail("user18@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
             List<User> users = userService.findAll();
             User findUser = users.stream()

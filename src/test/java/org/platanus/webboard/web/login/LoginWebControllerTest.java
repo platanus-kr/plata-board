@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.login.dto.UserLoginDto;
+import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.platanus.webboard.web.user.UserService;
 import org.springframework.validation.BindingResult;
 
@@ -27,6 +28,8 @@ public class LoginWebControllerTest {
         user.setId(1);
         user.setUsername("test");
         user.setPassword("test11");
+        UserSessionDto userSessionDto = new UserSessionDto();
+        userSessionDto = UserSessionDto.from(user, null, null);
 
         UserService userService = Mockito.mock(UserService.class);
         Mockito.when(userService.findByUsername("test")).thenReturn(user);
@@ -47,7 +50,7 @@ public class LoginWebControllerTest {
         LoginWebController loginWebController = new LoginWebController(loginService);
         String result = loginWebController.login(userLoginDto, bindingResult, "/success", httpServletRequest);
         assertEquals("redirect:/success", result);
-        assertEquals(user, mockSessionMap.get(SessionConst.LOGIN_USER));
+        assertEquals(userSessionDto, mockSessionMap.get(SessionConst.LOGIN_USER));
     }
 
     @Test

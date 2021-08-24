@@ -1,5 +1,5 @@
 -- users Table Create SQL
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     `ID`       INT          NOT NULL AUTO_INCREMENT,
     `USERNAME` VARCHAR(255) NULL,
@@ -13,7 +13,7 @@ CREATE TABLE users
 
 
 -- boards Table Create SQL
-CREATE TABLE boards
+CREATE TABLE IF NOT EXISTS boards
 (
     `ID`          INT          NOT NULL AUTO_INCREMENT,
     `NAME`        VARCHAR(255) NULL,
@@ -23,7 +23,7 @@ CREATE TABLE boards
 
 
 -- articles Table Create SQL
-CREATE TABLE articles
+CREATE TABLE IF NOT EXISTS articles
 (
     `ID`            INT          NOT NULL AUTO_INCREMENT,
     `BOARD_ID`      INT          NULL,
@@ -39,16 +39,16 @@ CREATE TABLE articles
 );
 
 ALTER TABLE articles
-    ADD CONSTRAINT FK_articles_BOARD_ID_boards_ID FOREIGN KEY (BOARD_ID)
+    ADD CONSTRAINT IF NOT EXISTS FK_articles_BOARD_ID_boards_ID FOREIGN KEY (BOARD_ID)
         REFERENCES boards (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE articles
-    ADD CONSTRAINT FK_articles_AUTHOR_ID_users_ID FOREIGN KEY (AUTHOR_ID)
+    ADD CONSTRAINT IF NOT EXISTS FK_articles_AUTHOR_ID_users_ID FOREIGN KEY (AUTHOR_ID)
         REFERENCES users (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- articles_recommend Table Create SQL
-CREATE TABLE articles_recommend
+CREATE TABLE IF NOT EXISTS articles_recommend
 (
     `ID`         INT NOT NULL AUTO_INCREMENT,
     `ARTICLE_ID` INT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE articles_recommend
 
 
 -- comments Table Create SQL
-CREATE TABLE comments
+CREATE TABLE IF NOT EXISTS comments
 (
     `ID`            INT      NOT NULL AUTO_INCREMENT,
     `ARTICLE_ID`    INT      NULL,
@@ -72,10 +72,10 @@ CREATE TABLE comments
 );
 
 ALTER TABLE comments
-    ADD CONSTRAINT FK_comments_ARTICLE_ID_articles_ID FOREIGN KEY (ARTICLE_ID)
+    ADD CONSTRAINT IF NOT EXISTS FK_comments_ARTICLE_ID_articles_ID FOREIGN KEY (ARTICLE_ID)
         REFERENCES articles (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE comments
-    ADD CONSTRAINT FK_comments_AUTHOR_ID_users_ID FOREIGN KEY (AUTHOR_ID)
+    ADD CONSTRAINT IF NOT EXISTS FK_comments_AUTHOR_ID_users_ID FOREIGN KEY (AUTHOR_ID)
         REFERENCES users (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

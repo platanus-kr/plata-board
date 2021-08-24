@@ -16,7 +16,6 @@ configurations {
 
 test {
     ignoreFailures = true
-//    useJUnitPlatform()
 }
 
 
@@ -33,7 +32,6 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.commonmark:commonmark:0.18.0'
     implementation 'junit:junit:4.13.1'
-//    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'

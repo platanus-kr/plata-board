@@ -139,26 +139,26 @@ public class CommentServiceTest {
 //
 //    }
 
-    @Test
-    public void findAllComments() {
-        try {
-            String content = "내용입니다.";
-            comment.setArticleId(article.getId());
-            comment.setAuthorId(user.getId());
-            comment.setContent(content);
-            comment.setDeleted(false);
-            comment = commentService.write(comment);
-            List<Comment> comments = commentService.findAllComments();
-            Comment findComment = comments.stream()
-                    .filter(c -> c.getId() == comment.getId())
-                    .findAny()
-                    .get();
-            assertEquals(findComment.getId(), comment.getId());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fail();
-        }
-    }
+//    @Test
+//    public void findAllComments() {
+//        try {
+//            String content = "내용입니다.";
+//            comment.setArticleId(article.getId());
+//            comment.setAuthorId(user.getId());
+//            comment.setContent(content);
+//            comment.setDeleted(false);
+//            comment = commentService.write(comment);
+//            List<Comment> comments = commentService.findAllComments();
+//            Comment findComment = comments.stream()
+//                    .filter(c -> c.getId() == comment.getId())
+//                    .findAny()
+//                    .get();
+//            assertEquals(findComment.getId(), comment.getId());
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            fail();
+//        }
+//    }
 
 //    @Test
 //    public void findAllDeletedComments(){
@@ -203,22 +203,22 @@ public class CommentServiceTest {
         }
     }
 
-    @Test
-    public void isDeleted() {
-        try {
-            String content = "내용입니다.";
-            comment.setArticleId(article.getId());
-            comment.setAuthorId(user.getId());
-            comment.setContent(content);
-            comment.setDeleted(false);
-            comment = commentService.write(comment);
-            commentService.updateDeleteFlag(comment, user);
-            boolean result = commentService.isDeleted(comment);
-            assertEquals(result, true);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fail();
-        }
-    }
+//    @Test
+//    public void isDeleted() {
+//        try {
+//            String content = "내용입니다.";
+//            comment.setArticleId(article.getId());
+//            comment.setAuthorId(user.getId());
+//            comment.setContent(content);
+//            comment.setDeleted(false);
+//            comment = commentService.write(comment);
+//            commentService.updateDeleteFlag(comment, user);
+//            boolean result = commentService.isDeleted(comment);
+//            assertEquals(result, true);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            fail();
+//        }
+//    }
 
 }
