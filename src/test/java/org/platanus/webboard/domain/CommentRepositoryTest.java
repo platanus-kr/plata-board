@@ -153,39 +153,39 @@ public class CommentRepositoryTest {
 
     }
 
-    @Test
-    public void findByContent() {
-        String content = "내용";
-        comment.setArticleId(article.getId());
-        comment.setContent("댓글 내용입니다.");
-        comment.setCreatedDate(LocalDateTime.now());
-        comment.setModifiedDate(LocalDateTime.now());
-        comment.setAuthorId(user.getId());
-        comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        List<Comment> comments = commentRepository.findByContent(content);
-        Comment findComment = comments.stream()
-                .filter(c -> c.getId() == comment.getId())
-                .findAny()
-                .get();
-        assertEquals(findComment.getId(), comment.getId());
-    }
+//    @Test
+//    public void findByContent() {
+//        String content = "내용";
+//        comment.setArticleId(article.getId());
+//        comment.setContent("댓글 내용입니다.");
+//        comment.setCreatedDate(LocalDateTime.now());
+//        comment.setModifiedDate(LocalDateTime.now());
+//        comment.setAuthorId(user.getId());
+//        comment.setDeleted(false);
+//        comment = commentRepository.save(comment);
+//        List<Comment> comments = commentRepository.findByContent(content);
+//        Comment findComment = comments.stream()
+//                .filter(c -> c.getId() == comment.getId())
+//                .findAny()
+//                .get();
+//        assertEquals(findComment.getId(), comment.getId());
+//    }
 
-    @Test
-    public void findAll() {
-        comment.setArticleId(article.getId());
-        comment.setContent("댓글 내용입니다.");
-        comment.setCreatedDate(LocalDateTime.now());
-        comment.setModifiedDate(LocalDateTime.now());
-        comment.setAuthorId(user.getId());
-        comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        List<Comment> comments = commentRepository.findAll();
-        Comment findComment = comments.stream()
-                .filter(c -> c.getId() == comment.getId())
-                .findAny()
-                .get();
-        assertEquals(findComment.getId(), comment.getId());
-
-    }
+//    @Test
+//    public void findAll() {
+//        comment.setArticleId(article.getId());
+//        comment.setContent("댓글 내용입니다.");
+//        comment.setCreatedDate(LocalDateTime.now());
+//        comment.setModifiedDate(LocalDateTime.now());
+//        comment.setAuthorId(user.getId());
+//        comment.setDeleted(false);
+//        comment = commentRepository.save(comment);
+//        List<Comment> comments = commentRepository.findAll();
+//        Comment findComment = comments.stream()
+//                .filter(c -> c.getId() == comment.getId())
+//                .findAny()
+//                .get();
+//        assertEquals(findComment.getId(), comment.getId());
+//
+//    }
 }

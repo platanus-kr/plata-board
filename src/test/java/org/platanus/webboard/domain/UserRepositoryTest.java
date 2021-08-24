@@ -49,6 +49,7 @@ public class UserRepositoryTest {
         user.setNickname("user01");
         user.setEmail("user1@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         assertEquals(userRepository.findById(user.getId()).get().getId(), user.getId());
     }
@@ -60,6 +61,7 @@ public class UserRepositoryTest {
         user.setNickname("user02");
         user.setEmail("user2@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         int result = userRepository.delete(user);
         assertEquals(result, 1);
@@ -72,6 +74,7 @@ public class UserRepositoryTest {
         user.setNickname("user03");
         user.setEmail("user3@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         user.setUsername("userupdate03");
         int result = userRepository.update(user);
@@ -85,6 +88,7 @@ public class UserRepositoryTest {
         user.setNickname("user04");
         user.setEmail("user4@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         user.setDeleted(true);
         int result = userRepository.updateDeleteFlag(user);
@@ -98,6 +102,7 @@ public class UserRepositoryTest {
         user.setNickname("user05");
         user.setEmail("user5@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         User findUser = userRepository.findById(user.getId()).get();
         assertEquals(findUser.getId(), user.getId());
@@ -110,6 +115,7 @@ public class UserRepositoryTest {
         user.setNickname("user06");
         user.setEmail("user6@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         User findUser = userRepository.findByUsername(user.getUsername()).get();
         assertEquals(findUser.getUsername(), user.getUsername());
@@ -122,6 +128,7 @@ public class UserRepositoryTest {
         user.setNickname("user07");
         user.setEmail("user7@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         User findUser = userRepository.findByEmail(user.getEmail()).get();
         assertEquals(findUser.getEmail(), user.getEmail());
@@ -134,6 +141,7 @@ public class UserRepositoryTest {
         user.setNickname("user08");
         user.setEmail("user8@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         User findUser = userRepository.findByNickname(user.getNickname()).get();
         assertEquals(findUser.getNickname(), user.getNickname());
@@ -145,8 +153,8 @@ public class UserRepositoryTest {
         user.setPassword("aaa");
         user.setNickname("user091");
         user.setEmail("user091@gmail.com");
-        user.setRole(UserRole.USER);
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         List<User> users = userRepository.findByRole(UserRole.USER);
         User findUser = users.stream()
@@ -164,6 +172,7 @@ public class UserRepositoryTest {
         user.setNickname("user09");
         user.setEmail("user9@gmail.com");
         user.setDeleted(false);
+        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         List<User> users = userRepository.findAll();
         User findUser = users.stream()
