@@ -33,7 +33,7 @@ public class UserService {
 //        md.update(user.getPassword().getBytes());
 //        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
         user.setDeleted(false);
-        user.setRole(UserRole.USER);
+//        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         log.info("User join #{}, {}", user.getId(), user.getUsername());
         return user;

@@ -3,6 +3,7 @@ package org.platanus.webboard.web.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
+import org.platanus.webboard.domain.UserRole;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.platanus.webboard.web.user.dto.UserModifyDto;
@@ -35,6 +36,7 @@ public class UserWebController {
             log.info("User Controller : {}", bindingResult);
             return "user/join_form";
         }
+        user.setRole(UserRole.USER);
         try {
             userService.join(user);
             log.info("User Controller #{}: join {} user", user.getId(), user.getUsername());

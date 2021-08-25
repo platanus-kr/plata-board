@@ -4,33 +4,26 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title th:text="${board_name}"></title>
+    <title>게시판 관리</title>
 </head>
 <body>
 <section>
     <div class="board_title">
-        <h4 th:text="${board_name}"></h4>
+        <h4>게시판 관리</h4>
     </div>
     <div class="board_list">
         <table class="table">
             <thead>
             <tr>
-                <th class="col-md-8">제목</th>
-                <th class="col-md-1 text-center">글쓴이</th>
-                <th class="col-md-1 text-center">조회</th>
-                <th class="col-md-2 text-center">글쓴 날짜</th>
+                <th class="col-md-1 text-center">번호</th>
+                <th class="col-md-8">게시판 이름</th>
+                <th class="col-md-1 text-center">설명</th>
+                <th class="col-md-2 text-center">조작</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="article : ${articles}">
-                <td>
-                    <span th:if="${article.recommend > 0}" th:text="${article.recommend}"
-                          class="recommend_active"></span>
-                    <span th:unless="${article.recommend > 0}" class="recommend_off">0</span>
-                    <a class="align-middle" th:href="@{|/article/${article.id}|}" th:text="${article.title}"></a> <span
-                        th:if="${article.commentCount != 0}"><span class="align-middle comments_quantity"
-                                                                   th:text="${article.commentCount}"></span></span>
-                </td>
+            <tr th:each="board : ${boards}">
+                <td><span th:text="${board.id}"></span></td>
                 <td class="text-center"><span class="author" th:text="${article.authorNickname}"></span></td>
                 <td class="text-center"><span class="view_count" th:text="${article.viewCount}"></span></td>
                 <td class="text-center"><span class="create_date"

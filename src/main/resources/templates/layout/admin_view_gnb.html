@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="admin_view_gnb">
+    <div th:if="${user != null}"><span th:text="${user.getNickname()}"></span> :: 관리자 페이지에 로그인 되어 있습니다.</div>
+</div>
+
+
+<div th:fragment="admin_view_sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-dark bg-light make-me-sticky"
+     style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">Admin page</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/admin/board'}">게시판 관리</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/admin/user'}">사용자 관리</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/'}">사이트로 돌아가기</a>
+        </li>
+    </ul>
+
+</div>
+
+</body>
+</html>
