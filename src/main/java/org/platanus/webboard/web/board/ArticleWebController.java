@@ -37,16 +37,10 @@ public class ArticleWebController {
         articleService.updateViewCount(articleId);
         article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
-//        List<CommentViewDto> commentsResponse = new ArrayList<>();
-//        commentService.findCommentsByArticleId(articleId).stream().forEach(c -> {
-//            try {
-//                c.setContent(MarkdownParser.from(c.getContent()));
-//                commentsResponse.add(CommentViewDto.from(c, userService.findById(c.getAuthorId()).getNickname()));
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        });
         List<Comment> commentsResponse = commentService.findCommentsByArticleId(articleId);
+        commentsResponse.stream().forEach(c -> {
+            c.setContent(MarkdownParser.from(c.getContent()));
+        });
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
 
