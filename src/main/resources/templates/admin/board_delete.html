@@ -11,8 +11,10 @@
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="board_list shadow p-3 mb-5 bg-body rounded">
-            <form th:action>
+            <form th:action method="post">
                 <p>정말 삭제 하시겠습니까?</p>
+                <p>게시판을 삭제하면 실제 게시글과 실제 댓글 데이터가 모두 삭제됩니다.</p>
+                <!--                <input type="hidden" th:field="*{id}" th:value="*{id}">-->
                 <button class="btn btn-danger m-1" type="submit">삭제하기</button>
             </form>
             <a class="btn btn-primary btn-floating m-1" href="javascript:history.back()">돌아가기</a>

@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.Data;
+import org.platanus.webboard.web.board.dto.ArticleListDto;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -21,4 +22,19 @@ public class Article {
     private boolean deleted;
     private long recommend;
     private long viewCount;
+
+    public static Article fromListDto(ArticleListDto a) {
+        Article article = new Article();
+        article.setId(a.getId());
+        article.setBoardId(a.getBoardId());
+        article.setTitle(a.getTitle());
+        article.setContent("-");
+        article.setAuthorId(a.getAuthorId());
+        article.setCreatedDate(a.getCreatedDate());
+        article.setModifiedDate(LocalDateTime.now());
+        article.setDeleted(false);
+        article.setRecommend(a.getRecommend());
+        article.setViewCount(a.getViewCount());
+        return article;
+    }
 }

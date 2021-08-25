@@ -1,6 +1,9 @@
 package org.platanus.webboard.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.Board;
+import org.platanus.webboard.domain.User;
+import org.platanus.webboard.domain.UserRole;
 import org.platanus.webboard.web.board.ArticleService;
 import org.platanus.webboard.web.board.BoardService;
 import org.platanus.webboard.web.board.CommentService;
@@ -20,18 +23,27 @@ public class DataInitTest {
 
     @PostConstruct
     public void init() {
-//        User user = new User();
-//        user.setUsername("platanus");
-//        user.setEmail("platanus@canxan.com");
-//        user.setPassword("test!");
-//        user.setNickname("PLA");
-//        user.setRole(UserRole.ADMIN);
-//        try {
-//            user = userService.join(user);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//
+        User user = new User();
+        user.setUsername("admin");
+        user.setEmail("admin@admin.net");
+        user.setPassword("admin");
+        user.setNickname("admin");
+        user.setRole(UserRole.ADMIN);
+        try {
+            user = userService.join(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        Board board = new Board();
+        board.setName("Board01");
+        board.setDescription("the baord");
+        try {
+            board = boardService.create(board);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
 //        User user2 = new User();
 //        user2.setUsername("test");
 //        user2.setEmail("test@test.com");
@@ -43,15 +55,7 @@ public class DataInitTest {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
-//
-//        Board board = new Board();
-//        board.setName("Board01");
-//        board.setDescription("test baord");
-//        try {
-//            board = boardService.create(board);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
+
 //
 //        Article article = new Article();
 //        article.setTitle("제목입니다");

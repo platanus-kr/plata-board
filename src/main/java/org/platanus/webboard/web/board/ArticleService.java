@@ -22,11 +22,9 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
-    private final BoardService boardService;
     private final UserService userService;
 
     public Article write(Article article) throws Exception {
-        boardService.findById(article.getBoardId());
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
@@ -86,14 +84,16 @@ public class ArticleService {
         return true;
     }
 
-    public boolean delete(Article article) throws Exception {
-        if (articleRepository.delete(article) != 1) {
-            log.info("Article delete #{}: Repository Error.", article.getId());
-            throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
-        }
-        log.info("Article delete #{}", article.getId());
-        return true;
-    }
+//    public boolean delete(Article article) throws Exception {
+//        List<Comment> comments = commentRepository.findByArticleId(article.getId());
+//        comments.stream().forEach(c -> commentRepository.delete(c));
+//        if (articleRepository.delete(article) != 1) {
+//            log.info("Article delete #{}: Repository Error.", article.getId());
+//            throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
+//        }
+//        log.info("Article delete #{}", article.getId());
+//        return true;
+//    }
 
     public List<ArticleListDto> findAllArticles() {
         List<Article> articles = articleRepository.findAll();
@@ -153,12 +153,6 @@ public class ArticleService {
             }
         });
         return returnArticles;
-    }
-
-    public Article findArticleByBoardId(long boardId, long id) throws Exception {
-        boardService.findById(boardId);
-        Article returnArticle = findById(id);
-        return returnArticle;
     }
 
     public Article findById(long id) throws Exception {

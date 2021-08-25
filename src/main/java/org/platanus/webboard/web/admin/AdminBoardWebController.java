@@ -3,13 +3,16 @@ package org.platanus.webboard.web.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Board;
+import org.platanus.webboard.web.board.BoardDeleteService;
 import org.platanus.webboard.web.board.BoardService;
+import org.platanus.webboard.web.login.argumentresolver.Login;
+import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -18,6 +21,7 @@ import java.util.List;
 @RequestMapping("/admin/board")
 public class AdminBoardWebController {
     private final BoardService boardService;
+    private final BoardDeleteService boardDeleteService;
 
     @GetMapping
     public String boardFront(Model model) {
@@ -27,22 +31,52 @@ public class AdminBoardWebController {
     }
 
     @GetMapping(value = "/create")
-    public String createForm() {
+    public String createForm(Model model) {
+        model.addAttribute("board", new Board());
         return "admin/board_create";
     }
 
     @PostMapping(value = "/create")
-    public String create() {
+    public String create(@Valid @ModelAttribute("board") Board boardRequest,
+                         BindingResult bindingResult,
+                         @Login UserSessionDto user) {
+        if (bindingResult.hasErrors()) {
+            log.info("Admin : Create board #{} by User #{} : {}", boardRequest.getId(), user.getId(), bindingResult);
+            return "admin/board_create";
+        }
+        Board board = new Board();
+        board.setName(boardRequest.getName());
+        board.setDescription((boardRequest.getDescription()));
+        try {
+            board = boardService.create(board);
+        } catch (Exception e) {
+            log.info("Admin : Create board error : {} ", e.getMessage());
+        }
         return "redirect:/admin/board";
     }
 
-    @GetMapping(value = "/delete")
-    public String deleteForm() {
+    @GetMapping(value = "/{boardId}/delete")
+    public String deleteForm(@PathVariable("boardId") long boardId,
+                             Model model) {
+        Board findBoard = new Board();
+        try {
+            findBoard = boardService.findById(boardId);
+        } catch (Exception e) {
+            log.info("Admin : Delete board error : Not found board #{}", boardId);
+            return "redirect:/admin/board";
+        }
+        model.addAttribute("board", findBoard);
         return "admin/board_delete";
     }
 
-    @PostMapping(value = "/delete")
-    public String delete() {
+    @PostMapping(value = "/{boardId}/delete")
+    public String delete(@PathVariable("boardId") long boardId) {
+        try {
+            boardDeleteService.delete(boardService.findById(boardId));
+        } catch (Exception e) {
+            log.info("Admin : Delete board error : {}", e.getMessage());
+            return "redirect:/admin/board";
+        }
         return "redirect:/admin/board";
     }
 }

@@ -36,12 +36,7 @@ public class BoardService {
         log.info("Board create #{}: 게시판이 수정 되었습니다.", board.getId());
         return board;
     }
-
-    // todo: 게시판을 지울 떄 작성 글과 코멘트 전부를 삭제되도록 할 것
-    public void delete(Board board) throws Exception {
-        boardRepository.delete(board);
-    }
-
+    
     public Board findById(long id) throws Exception {
         if (boardRepository.findById(id).isEmpty()) {
             log.info("Board findBById #{}: 존재하지 않는 게시판 입니다.", id);

@@ -47,10 +47,10 @@ public class CommentServiceTest {
         userService = new UserService(userRepository);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, commentRepository, boardService, userService);
+        articleService = new ArticleService(articleRepository, commentRepository, userService);
         commentRepository = new CommentRepository(jdbcTemplate);
         commentRepository.init();
-        commentService = new CommentService(commentRepository, articleService);
+        commentService = new CommentService(commentRepository);
         try {
             board = new Board();
             board.setName("board32");
@@ -61,6 +61,7 @@ public class CommentServiceTest {
             user.setPassword("aaa");
             user.setNickname("user32");
             user.setEmail("user32@gmail.com");
+            user.setRole(UserRole.USER);
             user.setDeleted(false);
             user = userService.join(user);
             article = new Article();

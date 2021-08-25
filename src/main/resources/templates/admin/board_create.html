@@ -25,14 +25,14 @@
                 </div>
 
                 <div class="m-3">
-                    <label for="username">게시판 이름</label>
-                    <input type="text" id="username" th:field="*{name}"
+                    <label for="name">게시판 이름</label>
+                    <input type="text" id="name" th:field="*{name}"
                            th:errorclass="field-error" class="form-control" placeholder="게시판 이름을 입력하세요">
                     <div class="field-error" th:errors="*{name}">이름 오류</div>
                 </div>
                 <div class="m-3">
-                    <label for="password">게시판 설명</label>
-                    <input type="password" id="password" th:field="*{description}"
+                    <label for="description">게시판 설명</label>
+                    <input type="text" id="description" th:field="*{description}"
                            th:errorclass="field-error" class="form-control" placeholder="게시판 설명을 입력하세요">
                     <div class="field-error" th:errors="*{description}">설명 오류</div>
                 </div>

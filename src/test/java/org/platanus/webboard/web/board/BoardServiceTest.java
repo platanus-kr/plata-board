@@ -30,6 +30,7 @@ public class BoardServiceTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
         boardRepository = new BoardRepository(jdbcTemplate);
         boardRepository.init();
         boardService = new BoardService(boardRepository);

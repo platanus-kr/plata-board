@@ -17,10 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ArticleService articleService;
 
     public Comment write(Comment comment) throws Exception {
-        articleService.findById(comment.getArticleId());
         comment.setCreatedDate(LocalDateTime.now());
         comment.setModifiedDate(LocalDateTime.now());
         comment.setDeleted(false);

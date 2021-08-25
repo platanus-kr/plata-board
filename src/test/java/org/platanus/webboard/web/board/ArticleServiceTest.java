@@ -49,7 +49,7 @@ public class ArticleServiceTest {
         commentRepository = new CommentRepository(jdbcTemplate);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, commentRepository, boardService, userService);
+        articleService = new ArticleService(articleRepository, commentRepository, userService);
         try {
             board = new Board();
             board.setName("board31");
@@ -65,6 +65,7 @@ public class ArticleServiceTest {
             user.setNickname("user31");
             user.setEmail("user31@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
         } catch (Exception e) {
             System.out.println(e.getMessage());
