@@ -41,16 +41,16 @@ public class CommentServiceTest {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         boardRepository = new BoardRepository(jdbcTemplate);
         boardRepository.init();
-        boardService = new BoardService(boardRepository);
         userRepository = new UserRepository(jdbcTemplate);
         userRepository.init();
         userService = new UserService(userRepository);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, commentRepository, userService);
         commentRepository = new CommentRepository(jdbcTemplate);
         commentRepository.init();
         commentService = new CommentService(commentRepository);
+        articleService = new ArticleService(articleRepository, commentService, userService);
+        boardService = new BoardService(boardRepository, articleService);
         try {
             board = new Board();
             board.setName("board32");

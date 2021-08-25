@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ArticleService articleService;
 
     public Board create(Board board) throws Exception {
         if (boardRepository.findByName(board.getName()).isPresent()) {
@@ -36,7 +37,12 @@ public class BoardService {
         log.info("Board create #{}: 게시판이 수정 되었습니다.", board.getId());
         return board;
     }
-    
+
+    public void delete(Board board) throws Exception {
+        articleService.deleteByBoardId(board.getId());
+        boardRepository.delete(board);
+    }
+
     public Board findById(long id) throws Exception {
         if (boardRepository.findById(id).isEmpty()) {
             log.info("Board findBById #{}: 존재하지 않는 게시판 입니다.", id);

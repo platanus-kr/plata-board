@@ -3,7 +3,6 @@ package org.platanus.webboard.web.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Board;
-import org.platanus.webboard.web.board.BoardDeleteService;
 import org.platanus.webboard.web.board.BoardService;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequestMapping("/admin/board")
 public class AdminBoardWebController {
     private final BoardService boardService;
-    private final BoardDeleteService boardDeleteService;
 
     @GetMapping
     public String boardFront(Model model) {
@@ -72,7 +70,7 @@ public class AdminBoardWebController {
     @PostMapping(value = "/{boardId}/delete")
     public String delete(@PathVariable("boardId") long boardId) {
         try {
-            boardDeleteService.delete(boardService.findById(boardId));
+            boardService.delete(boardService.findById(boardId));
         } catch (Exception e) {
             log.info("Admin : Delete board error : {}", e.getMessage());
             return "redirect:/admin/board";

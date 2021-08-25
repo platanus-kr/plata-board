@@ -3,8 +3,8 @@ package org.platanus.webboard.web.board;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.platanus.webboard.domain.Board;
-import org.platanus.webboard.domain.BoardRepository;
+import org.platanus.webboard.domain.*;
+import org.platanus.webboard.web.user.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -21,6 +21,12 @@ public class BoardServiceTest {
 
     private static BoardRepository boardRepository;
     private static BoardService boardService;
+    private static ArticleRepository articleRepository;
+    private static ArticleService articleService;
+    private static CommentRepository commentRepository;
+    private static CommentService commentService;
+    private static UserRepository userRepository;
+    private static UserService userService;
     private Board board;
 
     @BeforeAll
@@ -33,7 +39,15 @@ public class BoardServiceTest {
 
         boardRepository = new BoardRepository(jdbcTemplate);
         boardRepository.init();
-        boardService = new BoardService(boardRepository);
+        articleRepository = new ArticleRepository(jdbcTemplate);
+        articleRepository.init();
+        commentRepository = new CommentRepository(jdbcTemplate);
+        commentRepository.init();
+        userRepository = new UserRepository(jdbcTemplate);
+        userRepository.init();
+        userService = new UserService(userRepository);
+        articleService = new ArticleService(articleRepository, commentService, userService);
+        boardService = new BoardService(boardRepository, articleService);
     }
 
 //    @AfterAll

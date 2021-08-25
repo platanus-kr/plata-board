@@ -15,12 +15,20 @@ public class LoginCheckConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/",
-                        "/board/*", "/board", "/article/*",
-                        "/user/join", "/login", "/logout",
-                        "/css/**", "/*.ico", "/error",
+                .excludePathPatterns(
+                        "/",
+                        "/board/*",
+                        "/board",
+                        "/article/*",
+                        "/user/join",
+                        "/login",
+                        "/logout",
+                        "/css/**",
+                        "/*.ico",
+                        "/error",
                         "/session_error",
-                        "/api/**");
+                        "/api/**"
+                );
     }
 
     @Override

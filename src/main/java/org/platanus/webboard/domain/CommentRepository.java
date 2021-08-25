@@ -43,6 +43,11 @@ public class CommentRepository {
         return jdbcTemplate.update(QueryConst.COMMENT_DELETE, comment.getId());
     }
 
+    public int deleteByBoardId(long boardId) {
+        return jdbcTemplate.
+                update("delete from COMMENTS where ARTICLE_ID in (select ID from ARTICLES where BOARD_ID = ?)", boardId);
+    }
+
     public int update(Comment comment) {
         return jdbcTemplate.update(QueryConst.COMMENT_UPDATE,
                 comment.getContent(), comment.getModifiedDate(), comment.getId());
@@ -87,4 +92,6 @@ public class CommentRepository {
             return comment;
         };
     }
+
+
 }
