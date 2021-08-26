@@ -56,6 +56,16 @@ public class UserService {
         }
     }
 
+    public User updateRoleByUserId(long id, UserRole role) {
+        User user = userRepository.findById(id).get();
+        if (role == UserRole.USER)
+            user.setRole(UserRole.USER);
+        else if (role == UserRole.ADMIN)
+            user.setRole(UserRole.ADMIN);
+        userRepository.update(user);
+        return user;
+    }
+
     public void revoke(User user) throws Exception {
         if (userRepository.findById(user.getId()).get().isDeleted()) {
             log.info("User revoke #{}: 이미 탈퇴한 회원 입니다.", user.getId());

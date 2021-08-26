@@ -33,7 +33,7 @@ public class UserRepository {
         parameters.put("nickname", user.getNickname());
         parameters.put("email", user.getEmail());
         parameters.put("deleted", user.isDeleted());
-        parameters.put("role", user.getRole());
+        parameters.put("role", user.getRole().getKey());
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setId(key.longValue());
         return user;
@@ -45,7 +45,7 @@ public class UserRepository {
 
     public int update(User user) {
         return jdbcTemplate.update(QueryConst.USER_UPDATE,
-                user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), user.getId());
+                user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), user.getRole().getKey(), user.getId());
     }
 
     public int updateDeleteFlag(User user) {

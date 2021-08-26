@@ -44,7 +44,7 @@ public class ArticleRepository {
     }
 
     public int deleteByBoardId(long boardId) {
-        return jdbcTemplate.update("delete from ARTICLES where BOARD_ID = ?", boardId);
+        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE_BY_BOARD_ID, boardId);
     }
 
     public int delete(Article article) {

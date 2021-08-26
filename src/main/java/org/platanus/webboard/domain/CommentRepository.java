@@ -45,7 +45,7 @@ public class CommentRepository {
 
     public int deleteByBoardId(long boardId) {
         return jdbcTemplate.
-                update("delete from COMMENTS where ARTICLE_ID in (select ID from ARTICLES where BOARD_ID = ?)", boardId);
+                update(QueryConst.COMMENT_DELETE_BY_BOARD_ID, boardId);
     }
 
     public int update(Comment comment) {
