@@ -28,6 +28,7 @@ public class ArticleServiceTest {
     private static ArticleRepository articleRepository;
     private static ArticleService articleService;
     private static CommentRepository commentRepository;
+    private static CommentService commentService;
     private static Board board;
     private static Board boardForPage;
     private static User user;
@@ -42,14 +43,16 @@ public class ArticleServiceTest {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         boardRepository = new BoardRepository(jdbcTemplate);
         boardRepository.init();
-        boardService = new BoardService(boardRepository);
         userRepository = new UserRepository(jdbcTemplate);
         userRepository.init();
         userService = new UserService(userRepository);
         commentRepository = new CommentRepository(jdbcTemplate);
+        commentRepository.init();
+        commentService = new CommentService(commentRepository);
         articleRepository = new ArticleRepository(jdbcTemplate);
         articleRepository.init();
-        articleService = new ArticleService(articleRepository, commentRepository, boardService, userService);
+        articleService = new ArticleService(articleRepository, commentService, userService);
+        boardService = new BoardService(boardRepository, articleService);
         try {
             board = new Board();
             board.setName("board31");
@@ -65,6 +68,7 @@ public class ArticleServiceTest {
             user.setNickname("user31");
             user.setEmail("user31@gmail.com");
             user.setDeleted(false);
+            user.setRole(UserRole.USER);
             user = userService.join(user);
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -67,7 +67,7 @@ public class BoardWebController {
         try {
             article = articleService.write(article);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("Board write error : {}", e.getMessage());
         }
         log.info("Board write #{}: {} by User #{}", id, article.getTitle(), user.getId());
         return "redirect:/article/" + article.getId();

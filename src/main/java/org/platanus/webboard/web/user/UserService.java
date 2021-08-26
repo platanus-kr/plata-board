@@ -33,7 +33,7 @@ public class UserService {
 //        md.update(user.getPassword().getBytes());
 //        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
         user.setDeleted(false);
-        user.setRole(UserRole.USER);
+//        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         log.info("User join #{}, {}", user.getId(), user.getUsername());
         return user;
@@ -54,6 +54,16 @@ public class UserService {
             log.info("User update #{}: Repository Error.", user.getId());
             throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
         }
+    }
+
+    public User updateRoleByUserId(long id, UserRole role) {
+        User user = userRepository.findById(id).get();
+        if (role == UserRole.USER)
+            user.setRole(UserRole.USER);
+        else if (role == UserRole.ADMIN)
+            user.setRole(UserRole.ADMIN);
+        userRepository.update(user);
+        return user;
     }
 
     public void revoke(User user) throws Exception {

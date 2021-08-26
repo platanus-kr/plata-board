@@ -2,7 +2,10 @@ package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.domain.*;
+import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.domain.ArticleRepository;
+import org.platanus.webboard.domain.Comment;
+import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.utils.PageConst;
 import org.platanus.webboard.web.user.UserService;
@@ -21,12 +24,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final CommentRepository commentRepository;
-    private final BoardService boardService;
+    private final CommentService commentService;
     private final UserService userService;
 
     public Article write(Article article) throws Exception {
-        boardService.findById(article.getBoardId());
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
@@ -71,11 +72,15 @@ public class ArticleService {
             log.info("Article deleteflag #{}: 작성자가 아닙니다.", article.getId());
             throw new IllegalArgumentException("작성자가 아닙니다");
         }
-        List<Comment> comments = commentRepository.findByArticleId(article.getId());
+        List<Comment> comments = commentService.findCommentsByArticleId(article.getId());
         comments.stream().filter(c -> !c.isDeleted()).forEach(
                 c -> {
                     c.setDeleted(true);
-                    commentRepository.updateDeleteFlag(c);
+                    try {
+                        commentService.updateDeleteFlag(c, user);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
         article.setDeleted(true);
         if (articleRepository.updateDeleteFlag(article) != 1) {
@@ -86,14 +91,21 @@ public class ArticleService {
         return true;
     }
 
-    public boolean delete(Article article) throws Exception {
-        if (articleRepository.delete(article) != 1) {
-            log.info("Article delete #{}: Repository Error.", article.getId());
-            throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
-        }
-        log.info("Article delete #{}", article.getId());
-        return true;
+    public void deleteByBoardId(long boardId) {
+        commentService.deleteByBoardId(boardId);
+        articleRepository.deleteByBoardId(boardId);
     }
+
+//    public boolean delete(Article article) throws Exception {
+//        List<Comment> comments = commentRepository.findByArticleId(article.getId());
+//        comments.stream().forEach(c -> commentRepository.delete(c));
+//        if (articleRepository.delete(article) != 1) {
+//            log.info("Article delete #{}: Repository Error.", article.getId());
+//            throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
+//        }
+//        log.info("Article delete #{}", article.getId());
+//        return true;
+//    }
 
     public List<ArticleListDto> findAllArticles() {
         List<Article> articles = articleRepository.findAll();
@@ -105,7 +117,7 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> a.isDeleted()).forEach(a -> {
             try {
-                int commentCount = commentRepository.findCountByArticleId(a.getId());
+                int commentCount = commentService.countByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
                         .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
@@ -131,7 +143,7 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
             try {
-                int commentCount = commentRepository.findCountByArticleId(a.getId());
+                int commentCount = commentService.countByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
                         .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
@@ -145,7 +157,7 @@ public class ArticleService {
         List<ArticleListDto> returnArticles = new ArrayList<>();
         articles.stream().filter(a -> !a.isDeleted()).forEach(a -> {
             try {
-                int commentCount = commentRepository.findCountByArticleId(a.getId());
+                int commentCount = commentService.countByArticleId(a.getId());
                 returnArticles.add(ArticleListDto
                         .from(a, userService.findById(a.getAuthorId()).getNickname(), commentCount));
             } catch (Exception e) {
@@ -153,12 +165,6 @@ public class ArticleService {
             }
         });
         return returnArticles;
-    }
-
-    public Article findArticleByBoardId(long boardId, long id) throws Exception {
-        boardService.findById(boardId);
-        Article returnArticle = findById(id);
-        return returnArticle;
     }
 
     public Article findById(long id) throws Exception {

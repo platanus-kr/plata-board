@@ -45,6 +45,10 @@ textarea#articleContent {
     padding: 10px 15px;
 }
 
+.board_list th{
+    font-size: 0.85rem;
+}
+
 .board_list tr span.comments_quantity {
     color: #F7683A;
     font-size: 0.95rem;

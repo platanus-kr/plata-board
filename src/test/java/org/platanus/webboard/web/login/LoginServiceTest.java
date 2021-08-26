@@ -3,6 +3,7 @@ package org.platanus.webboard.web.login;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.platanus.webboard.domain.User;
+import org.platanus.webboard.domain.UserRole;
 import org.platanus.webboard.web.user.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,6 +17,7 @@ public class LoginServiceTest {
         user.setId(1);
         user.setUsername("test");
         user.setPassword("test11");
+        user.setRole(UserRole.USER);
 
         UserService userService = Mockito.mock(UserService.class);
         Mockito.when(userService.findByUsername("test")).thenReturn(user);
@@ -30,6 +32,7 @@ public class LoginServiceTest {
         user.setId(1);
         user.setUsername("test");
         user.setPassword("test22");
+        user.setRole(UserRole.USER);
 
         UserService userService = Mockito.mock(UserService.class);
         Mockito.when(userService.findByUsername("test")).thenReturn(user);

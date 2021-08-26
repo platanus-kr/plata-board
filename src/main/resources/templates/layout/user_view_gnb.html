@@ -30,7 +30,7 @@
            id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://avatars.githubusercontent.com/u/6806008?v=4" alt="" class="rounded-circle me-2" width="32"
                  height="32">
-            <strong th:if="${user != null}" th:text="${user.getNickname()}"></strong>
+            <strong th:if="${user != null}" th:text="${user.nickname}"></strong>
             <strong th:unless="${user != null}">게스트</strong>
         </a>
         <ul th:if="${user == null}" class="dropdown-menu dropdown-menu-dark text-small shadow"
@@ -40,6 +40,9 @@
         </ul>
         <ul th:if="${user != null}" class="dropdown-menu dropdown-menu-dark text-small shadow"
             aria-labelledby="dropdownUser1">
+            <li th:if="${#strings.equals(user.role, 'ADMIN')}">
+                <a class="dropdown-item" th:href="@{'/admin'}">관리자 페이지</a>
+            </li>
             <li><a class="dropdown-item" th:href="@{|/user/modify|}">정보 수정</a></li>
             <li>
                 <hr class="dropdown-divider">

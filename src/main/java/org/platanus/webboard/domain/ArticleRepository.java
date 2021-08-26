@@ -43,6 +43,10 @@ public class ArticleRepository {
         return article;
     }
 
+    public int deleteByBoardId(long boardId) {
+        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE_BY_BOARD_ID, boardId);
+    }
+
     public int delete(Article article) {
         return jdbcTemplate.update(QueryConst.ARTICLE_DELETE, article.getId());
     }
@@ -129,4 +133,6 @@ public class ArticleRepository {
             return article;
         };
     }
+
+
 }

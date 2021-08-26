@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html
+        th:fragment="layout(title, content, user)"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}">Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/user-view.css}"/>
+</head>
+<body>
+<main>
+    <div th:replace="~{layout/admin_view_gnb :: admin_view_sidebar}"></div>
+    <div class="flex-grow-1 align-self-stretch p-4 board_content">
+        <div th:replace="~{layout/admin_view_gnb :: admin_view_gnb}"></div>
+        <div th:replace="${content}"></div>
+        <div th:replace="~{layout/admin_view_footer :: footer}"></div>
+    </div>
+</main>
+</body>
+</html>

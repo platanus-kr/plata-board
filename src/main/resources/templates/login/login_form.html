@@ -18,7 +18,7 @@
     <div class="d-flex justify-content-center">
         <div class="board_list shadow p-3 mb-5 bg-body rounded">
             <h2>로그인</h2>
-            <form action="boardList.html" th:action th:object="${login}" method="post">
+            <form th:action th:object="${login}" method="post">
 
                 <div th:if="${#fields.hasGlobalErrors()}">
                     <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류</p>

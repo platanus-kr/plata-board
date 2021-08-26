@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+        th:replace="~{layout/admin_view_layout :: layout(~{::title}, ~{::section}, ${user})}"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>사용자 관리</title>
+</head>
+<body>
+<section>
+    <div class="board_title">
+        <h4>사용자 관리</h4>
+    </div>
+    <div class="board_list">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="col-md-1 text-center">번호</th>
+                <th class="col-md-2">아이디</th>
+                <th class="col-md-2">닉네임</th>
+                <th class="col-md-3">이메일</th>
+                <th class="col-md-1 text-center">권한</th>
+                <th class="col-md-3 text-center">조작</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td class="text-center"><span th:text="${user.id}"></span></td>
+                <td><span th:text="${user.username}"></span></td>
+                <td><span th:text="${user.nickname}"></span></td>
+                <td><span th:text="${user.email}"></span></td>
+                <td class="text-center"><span th:text="${user.role}"></span></td>
+                <td class="text-center">
+                    <div class="user_control">
+                        <a class="btn btn-primary btn-floating btn-sm m-1"
+                           th:href="@{|/admin/user/${user.id}/change|}"
+                           role="button">권한변경</a>
+<!--                        <a th:if="${#strings.equals(user.role, 'USER')}"-->
+<!--                           class="btn btn-primary btn-floating btn-sm m-1"-->
+<!--                           th:href="@{|/admin/user/${user.id}/change|}"-->
+<!--                           role="button">권한변경</a>-->
+                        <a class="btn btn-danger btn-floating btn-sm m-1"
+                           th:href="@{|/admin/user/${user.id}/delete|}"
+                           role="button">삭제</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

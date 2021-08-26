@@ -17,10 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ArticleService articleService;
 
     public Comment write(Comment comment) throws Exception {
-        articleService.findById(comment.getArticleId());
         comment.setCreatedDate(LocalDateTime.now());
         comment.setModifiedDate(LocalDateTime.now());
         comment.setDeleted(false);
@@ -75,6 +73,10 @@ public class CommentService {
         log.info("Comment delete #{}", comment.getId());
     }
 
+    public void deleteByBoardId(long boardId) {
+        commentRepository.deleteByBoardId(boardId);
+    }
+
     public List<Comment> findAllComments() {
         List<Comment> comments = commentRepository.findAll();
         List<Comment> returnComments = new ArrayList<>();
@@ -103,6 +105,10 @@ public class CommentService {
             throw new IllegalArgumentException("없는 댓글 입니다.");
         }
         return comment.get();
+    }
+
+    public int countByArticleId(long articleId) {
+        return commentRepository.findCountByArticleId(articleId);
     }
 
     public boolean isDeleted(Comment comment) throws Exception {

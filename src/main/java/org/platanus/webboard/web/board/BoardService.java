@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ArticleService articleService;
 
     public Board create(Board board) throws Exception {
         if (boardRepository.findByName(board.getName()).isPresent()) {
@@ -37,8 +38,8 @@ public class BoardService {
         return board;
     }
 
-    // todo: 게시판을 지울 떄 작성 글과 코멘트 전부를 삭제되도록 할 것
     public void delete(Board board) throws Exception {
+        articleService.deleteByBoardId(board.getId());
         boardRepository.delete(board);
     }
 
