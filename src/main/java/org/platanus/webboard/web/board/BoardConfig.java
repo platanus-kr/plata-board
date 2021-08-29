@@ -13,7 +13,7 @@ public class BoardConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BoardListInterceptor(boardService))
-                .order(10)
+                .order(11)
                 .addPathPatterns("/**");
     }
 }

@@ -13,7 +13,7 @@ public class UserInfoConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserInfoInterceptor(userService))
-                .order(20)
+                .order(10)
                 .addPathPatterns("/**");
     }
 }
