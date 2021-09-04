@@ -1,6 +1,6 @@
 # Plata Board Project
 
-![screenshot](https://user-images.githubusercontent.com/6806008/132082255-cd3cc4f0-a8a8-4545-9013-a0e9f85c67c6.png)
+<img src="https://user-images.githubusercontent.com/6806008/132082255-cd3cc4f0-a8a8-4545-9013-a0e9f85c67c6.png" width="600px">
 
 - Spring Boot와 JdbcTemplate으로 구현한 회원 관리 기능을 가진 게시판 입니다.
 - 현재 이 문서는 작성중 입니다.
@@ -32,6 +32,10 @@
 ## 💡 서비스 구조
 
 ![service-flow](https://user-images.githubusercontent.com/6806008/132082548-897afdd5-b375-4e42-a37f-8562d4d2f056.png)
+
+## 🗃 DB 스키마 구조
+
+<img src="https://user-images.githubusercontent.com/6806008/130445595-b7b287de-2050-4c77-ab9d-4e536c573806.png" width="600px">
 
 ## 🔥 개발 과정
 
