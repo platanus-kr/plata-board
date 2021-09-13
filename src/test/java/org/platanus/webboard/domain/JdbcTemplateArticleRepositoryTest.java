@@ -16,11 +16,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
-public class ArticleRepositoryTest {
+public class JdbcTemplateArticleRepositoryTest {
 
-    private static BoardRepository boardRepository;
-    private static UserRepository userRepository;
-    private static ArticleRepository articleRepository;
+    private static JdbcTemplateBoardRepository jdbcTemplateBoardRepository;
+    private static JdbcTemplateUserRepository jdbcTemplateUserRepository;
+    private static JdbcTemplateArticleRepository jdbcTemplateArticleRepository;
     private static Board board;
     private static Board boardForCount;
     private static User user;
@@ -33,27 +33,27 @@ public class ArticleRepositoryTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        boardRepository = new BoardRepository(jdbcTemplate);
-        boardRepository.init();
-        userRepository = new UserRepository(jdbcTemplate);
-        userRepository.init();
-        articleRepository = new ArticleRepository(jdbcTemplate);
-        articleRepository.init();
+        jdbcTemplateBoardRepository = new JdbcTemplateBoardRepository(jdbcTemplate);
+        jdbcTemplateBoardRepository.init();
+        jdbcTemplateUserRepository = new JdbcTemplateUserRepository(jdbcTemplate);
+        jdbcTemplateUserRepository.init();
+        jdbcTemplateArticleRepository = new JdbcTemplateArticleRepository(jdbcTemplate);
+        jdbcTemplateArticleRepository.init();
         board = new Board();
         board.setName("board21");
         board.setDescription("description");
-        board = boardRepository.save(board);
+        board = jdbcTemplateBoardRepository.save(board);
         boardForCount = new Board();
         boardForCount.setName("boardForCount");
         boardForCount.setDescription("-");
-        boardForCount = boardRepository.save(boardForCount);
+        boardForCount = jdbcTemplateBoardRepository.save(boardForCount);
         user = new User();
         user.setUsername("user21");
         user.setPassword("aaa");
         user.setNickname("user21");
         user.setEmail("user21@gmail.com");
         user.setDeleted(false);
-        user = userRepository.save(user);
+        user = jdbcTemplateUserRepository.save(user);
     }
 
     @BeforeEach
@@ -70,8 +70,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        Article findArticle = articleRepository.findById(article.getId()).get();
+        article = jdbcTemplateArticleRepository.save(article);
+        Article findArticle = jdbcTemplateArticleRepository.findById(article.getId()).get();
         assertEquals(findArticle.getId(), article.getId());
     }
 
@@ -84,8 +84,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        int result = articleRepository.delete(article);
+        article = jdbcTemplateArticleRepository.save(article);
+        int result = jdbcTemplateArticleRepository.delete(article);
         assertEquals(result, 1);
     }
 
@@ -98,11 +98,11 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
+        article = jdbcTemplateArticleRepository.save(article);
         String changedTitle = "수정된 제목 입니다.";
         article.setTitle(changedTitle);
-        int result = articleRepository.update(article);
-        assertEquals(articleRepository.findById(article.getId()).get().getTitle(), changedTitle);
+        int result = jdbcTemplateArticleRepository.update(article);
+        assertEquals(jdbcTemplateArticleRepository.findById(article.getId()).get().getTitle(), changedTitle);
     }
 
     @Test
@@ -114,8 +114,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        int result = articleRepository.updateDeleteFlag(article);
+        article = jdbcTemplateArticleRepository.save(article);
+        int result = jdbcTemplateArticleRepository.updateDeleteFlag(article);
         assertEquals(result, 1);
     }
 
@@ -128,8 +128,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        Article findArticle = articleRepository.findById(article.getId()).get();
+        article = jdbcTemplateArticleRepository.save(article);
+        Article findArticle = jdbcTemplateArticleRepository.findById(article.getId()).get();
         assertEquals(findArticle.getId(), article.getId());
     }
 
@@ -142,8 +142,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findByBoardId(article.getBoardId());
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findByBoardId(article.getBoardId());
         Article findArticle = articles.stream()
                 .filter(a -> a.getId() == article.getId())
                 .findAny()
@@ -160,8 +160,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findAll();
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findAll();
         Article findArticle = articles.stream()
                 .filter(a -> a.getId() == article.getId())
                 .findAny()
@@ -178,8 +178,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findByAuthorId(article.getAuthorId());
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findByAuthorId(article.getAuthorId());
         Article findArticle = articles.stream()
                 .filter(a -> a.getAuthorId() == article.getAuthorId())
                 .findAny()
@@ -197,8 +197,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findByTitle(title);
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findByTitle(title);
         Article findArticle = articles.stream()
                 .filter(a -> a.getTitle().equals(article.getTitle()))
                 .findAny()
@@ -216,8 +216,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findByContent(content);
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findByContent(content);
         Article findArticle = articles.stream()
                 .filter(a -> a.getContent().equals(article.getContent()))
                 .findAny()
@@ -236,8 +236,8 @@ public class ArticleRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
-        List<Article> articles = articleRepository.findByTitleAndContent(title, content);
+        article = jdbcTemplateArticleRepository.save(article);
+        List<Article> articles = jdbcTemplateArticleRepository.findByTitleAndContent(title, content);
         Article findArticle = articles.stream()
                 .filter(a -> a.getContent().equals(article.getContent()))
                 .findAny()
@@ -255,8 +255,8 @@ public class ArticleRepositoryTest {
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
         for (int i = 0; i < 10; i++)
-            article = articleRepository.save(article);
-        int result = articleRepository.count(article.getBoardId());
+            article = jdbcTemplateArticleRepository.save(article);
+        int result = jdbcTemplateArticleRepository.count(article.getBoardId());
         System.out.println("글 카운팅 : " + result);
         assertEquals(result, 10);
     }
@@ -272,11 +272,11 @@ public class ArticleRepositoryTest {
         article.setDeleted(false);
         for (int i = 0; i < 50; i++) {
             article.setTitle(i + "번째 글입니다.");
-            articleRepository.save(article);
+            jdbcTemplateArticleRepository.save(article);
         }
         PageRequest pageable = PageRequest.of(0, 15);
         System.out.println(board.getId());
-        List<Article> articles = articleRepository.findByBoardIdPagination(pageable, board.getId());
+        List<Article> articles = jdbcTemplateArticleRepository.findByBoardIdPagination(pageable, board.getId());
         articles.forEach(a -> System.out.println(a.getTitle()));
         assertEquals(articles.size(), 15);
     }

@@ -1,138 +1,43 @@
 package org.platanus.webboard.domain;
 
-import lombok.RequiredArgsConstructor;
-import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.data.domain.Pageable;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class ArticleRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
+public interface ArticleRepository {
+    Article save(Article article);
 
-    @PostConstruct
-    public void init() {
-        jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("ARTICLES").usingGeneratedKeyColumns("id");
-    }
+    int deleteByBoardId(long boardId);
 
-    public Article save(Article article) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("board_id", article.getBoardId());
-        parameters.put("title", article.getTitle());
-        parameters.put("content", article.getContent());
-        parameters.put("author_id", article.getAuthorId());
-        parameters.put("created_date", article.getCreatedDate());
-        parameters.put("modified_date", article.getModifiedDate());
-        parameters.put("deleted", article.isDeleted());
-        parameters.put("recommend", article.getRecommend());
-        parameters.put("view_count", article.getViewCount());
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        article.setId(key.longValue());
-        return article;
-    }
+    int delete(Article article);
 
-    public int deleteByBoardId(long boardId) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE_BY_BOARD_ID, boardId);
-    }
+    int update(Article article);
 
-    public int delete(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE, article.getId());
-    }
+    int updateViewCount(long id);
 
-    public int update(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE,
-                article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
-    }
+    int updateRecommend(long id);
 
-    public int updateViewCount(long id) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_VIEW_COUNT, id);
-    }
+    int updateDeleteFlag(Article article);
 
-    public int updateRecommend(long id) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_RECOMMEND, id);
-    }
+    Optional<Article> findById(long id);
 
-    public int updateDeleteFlag(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_DELETE_FLAG, article.isDeleted(), article.getId());
-    }
+    List<Article> findByBoardId(long id);
 
-    public Optional<Article> findById(long id) {
-        List<Article> result = jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_ID, articleRowMapper(), id);
-        return result.stream().findAny();
-    }
+    List<Article> findByBoardIdPagination(Pageable page, long boardId);
 
-    public List<Article> findByBoardId(long id) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID, articleRowMapper(), id);
-    }
+    List<Article> findAll();
 
-    public List<Article> findByBoardIdPagination(Pageable page, long boardId) {
-//        Sort.Order order = !page.getSort().isEmpty() ? page.getSort().toList().get(0) : Sort.Order.by("ID");
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID_PAGE,
-                articleRowMapper(), boardId, page.getPageSize(), page.getOffset());
-    }
+    List<Article> findByAuthorId(long id);
 
-    public List<Article> findAll() {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_ALL, articleRowMapper());
-    }
+    List<Article> findByTitle(String title);
 
-    public List<Article> findByAuthorId(long id) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_AUTHOR_ID, articleRowMapper(), id);
-    }
+    List<Article> findByContent(String content);
 
-    public List<Article> findByTitle(String title) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE, articleRowMapper(), likeWrapper(title));
-    }
+    List<Article> findByTitleAndContent(String title, String content);
 
-    public List<Article> findByContent(String content) {
-        return jdbcTemplate
-                .query(QueryConst.ARTICLE_FIND_BY_CONTENT, articleRowMapper(), likeWrapper(content));
-    }
+    void allDelete();
 
-    public List<Article> findByTitleAndContent(String title, String content) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE_AND_CONTENT,
-                articleRowMapper(), likeWrapper(title), likeWrapper(content));
-    }
-
-    public void allDelete() {
-        jdbcTemplate.update(QueryConst.ARTICLE_ALL_DELETE);
-    }
-
-    public int count(long boardId) {
-        return jdbcTemplate.queryForObject(QueryConst.ARTICLE_COUNT, Integer.class, boardId);
-    }
-
-    public String likeWrapper(String string) {
-        return "%" + string + "%";
-    }
-
-    public RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setId(rs.getLong("id"));
-            article.setBoardId(rs.getLong("board_id"));
-            article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("content"));
-            article.setAuthorId(rs.getLong("author_id"));
-            article.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
-            article.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
-            article.setDeleted(rs.getBoolean("deleted"));
-            article.setRecommend(rs.getLong("recommend"));
-            article.setViewCount(rs.getLong("view_count"));
-            return article;
-        };
-    }
-
+    int count(long boardId);
 
 }

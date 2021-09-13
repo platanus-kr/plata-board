@@ -3,8 +3,8 @@ package org.platanus.webboard.web.user;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.platanus.webboard.domain.JdbcTemplateUserRepository;
 import org.platanus.webboard.domain.User;
-import org.platanus.webboard.domain.UserRepository;
 import org.platanus.webboard.domain.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Transactional
 public class UserServiceTest {
 
-    private static UserRepository userRepository;
+    private static JdbcTemplateUserRepository jdbcTemplateUserRepository;
     private static UserService userService;
     private User user;
 
@@ -31,9 +31,9 @@ public class UserServiceTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        userRepository = new UserRepository(jdbcTemplate);
-        userRepository.init();
-        userService = new UserService(userRepository);
+        jdbcTemplateUserRepository = new JdbcTemplateUserRepository(jdbcTemplate);
+        jdbcTemplateUserRepository.init();
+        userService = new UserService(jdbcTemplateUserRepository);
     }
 
 //    @AfterAll

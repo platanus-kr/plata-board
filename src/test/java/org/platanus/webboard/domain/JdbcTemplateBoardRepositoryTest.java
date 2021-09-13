@@ -13,9 +13,9 @@ import javax.sql.DataSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
-public class BoardRepositoryTest {
+public class JdbcTemplateBoardRepositoryTest {
 
-    private static BoardRepository boardRepository;
+    private static JdbcTemplateBoardRepository jdbcTemplateBoardRepository;
     private Board board;
 
     @BeforeAll
@@ -25,8 +25,8 @@ public class BoardRepositoryTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        boardRepository = new BoardRepository(jdbcTemplate);
-        boardRepository.init();
+        jdbcTemplateBoardRepository = new JdbcTemplateBoardRepository(jdbcTemplate);
+        jdbcTemplateBoardRepository.init();
     }
 
 //    @AfterAll
@@ -46,7 +46,7 @@ public class BoardRepositoryTest {
         String boardName = "BOARD 01";
         board.setName(boardName);
         board.setDescription("description");
-        Board savedBoard = boardRepository.save(board);
+        Board savedBoard = jdbcTemplateBoardRepository.save(board);
         assertEquals(savedBoard.getName(), boardName);
     }
 
@@ -54,10 +54,10 @@ public class BoardRepositoryTest {
     public void update() {
         board.setName("BOARD 02");
         board.setDescription("description");
-        Board savedBoard = boardRepository.save(board);
+        Board savedBoard = jdbcTemplateBoardRepository.save(board);
         String changeBoardName = "BOARD CHANGED";
         savedBoard.setName(changeBoardName);
-        int changedRowNumber = boardRepository.update(savedBoard);
+        int changedRowNumber = jdbcTemplateBoardRepository.update(savedBoard);
         assertEquals(changedRowNumber, 1);
     }
 
@@ -65,8 +65,8 @@ public class BoardRepositoryTest {
     public void findById() {
         board.setName("BOARD 03");
         board.setDescription("description");
-        Board savedBoard = boardRepository.save(board);
-        Board findBoard = boardRepository.findById(savedBoard.getId()).get();
+        Board savedBoard = jdbcTemplateBoardRepository.save(board);
+        Board findBoard = jdbcTemplateBoardRepository.findById(savedBoard.getId()).get();
         assertEquals(findBoard.getId(), savedBoard.getId());
     }
 
@@ -75,8 +75,8 @@ public class BoardRepositoryTest {
         String boardName = "BOARD 04";
         board.setName(boardName);
         board.setDescription("description");
-        Board savedBoard = boardRepository.save(board);
-        Board findBoard = boardRepository.findByName(savedBoard.getName()).get();
+        Board savedBoard = jdbcTemplateBoardRepository.save(board);
+        Board findBoard = jdbcTemplateBoardRepository.findByName(savedBoard.getName()).get();
         assertEquals(boardName, findBoard.getName());
     }
 

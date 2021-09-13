@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Transactional
 public class CommentServiceTest {
-    private static BoardRepository boardRepository;
+    private static JdbcTemplateBoardRepository jdbcTemplateBoardRepository;
     private static BoardService boardService;
-    private static UserRepository userRepository;
+    private static JdbcTemplateUserRepository jdbcTemplateUserRepository;
     private static UserService userService;
-    private static ArticleRepository articleRepository;
+    private static JdbcTemplateArticleRepository jdbcTemplateArticleRepository;
     private static ArticleService articleService;
-    private static CommentRepository commentRepository;
+    private static JdbcTemplateCommentRepository jdbcTemplateCommentRepository;
     private static CommentService commentService;
     private static Board board;
     private static User user;
@@ -39,18 +39,18 @@ public class CommentServiceTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        boardRepository = new BoardRepository(jdbcTemplate);
-        boardRepository.init();
-        userRepository = new UserRepository(jdbcTemplate);
-        userRepository.init();
-        userService = new UserService(userRepository);
-        articleRepository = new ArticleRepository(jdbcTemplate);
-        articleRepository.init();
-        commentRepository = new CommentRepository(jdbcTemplate);
-        commentRepository.init();
-        commentService = new CommentService(commentRepository);
-        articleService = new ArticleService(articleRepository, commentService, userService);
-        boardService = new BoardService(boardRepository, articleService);
+        jdbcTemplateBoardRepository = new JdbcTemplateBoardRepository(jdbcTemplate);
+        jdbcTemplateBoardRepository.init();
+        jdbcTemplateUserRepository = new JdbcTemplateUserRepository(jdbcTemplate);
+        jdbcTemplateUserRepository.init();
+        userService = new UserService(jdbcTemplateUserRepository);
+        jdbcTemplateArticleRepository = new JdbcTemplateArticleRepository(jdbcTemplate);
+        jdbcTemplateArticleRepository.init();
+        jdbcTemplateCommentRepository = new JdbcTemplateCommentRepository(jdbcTemplate);
+        jdbcTemplateCommentRepository.init();
+        commentService = new CommentService(jdbcTemplateCommentRepository);
+        articleService = new ArticleService(jdbcTemplateArticleRepository, commentService, userService);
+        boardService = new BoardService(jdbcTemplateBoardRepository, articleService);
         try {
             board = new Board();
             board.setName("board32");

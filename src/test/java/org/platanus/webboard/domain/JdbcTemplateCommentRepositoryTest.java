@@ -15,11 +15,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
-public class CommentRepositoryTest {
-    private static BoardRepository boardRepository;
-    private static UserRepository userRepository;
-    private static ArticleRepository articleRepository;
-    private static CommentRepository commentRepository;
+public class JdbcTemplateCommentRepositoryTest {
+    private static JdbcTemplateBoardRepository jdbcTemplateBoardRepository;
+    private static JdbcTemplateUserRepository jdbcTemplateUserRepository;
+    private static JdbcTemplateArticleRepository jdbcTemplateArticleRepository;
+    private static JdbcTemplateCommentRepository jdbcTemplateCommentRepository;
     private static Board board;
     private static User user;
     private static Article article;
@@ -32,25 +32,25 @@ public class CommentRepositoryTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        boardRepository = new BoardRepository(jdbcTemplate);
-        boardRepository.init();
-        userRepository = new UserRepository(jdbcTemplate);
-        userRepository.init();
-        articleRepository = new ArticleRepository(jdbcTemplate);
-        articleRepository.init();
-        commentRepository = new CommentRepository(jdbcTemplate);
-        commentRepository.init();
+        jdbcTemplateBoardRepository = new JdbcTemplateBoardRepository(jdbcTemplate);
+        jdbcTemplateBoardRepository.init();
+        jdbcTemplateUserRepository = new JdbcTemplateUserRepository(jdbcTemplate);
+        jdbcTemplateUserRepository.init();
+        jdbcTemplateArticleRepository = new JdbcTemplateArticleRepository(jdbcTemplate);
+        jdbcTemplateArticleRepository.init();
+        jdbcTemplateCommentRepository = new JdbcTemplateCommentRepository(jdbcTemplate);
+        jdbcTemplateCommentRepository.init();
         board = new Board();
         board.setName("board22");
         board.setDescription("description");
-        board = boardRepository.save(board);
+        board = jdbcTemplateBoardRepository.save(board);
         user = new User();
         user.setUsername("user22");
         user.setPassword("aaa");
         user.setNickname("user22");
         user.setEmail("user22@gmail.com");
         user.setDeleted(false);
-        user = userRepository.save(user);
+        user = jdbcTemplateUserRepository.save(user);
         article = new Article();
         article.setBoardId(board.getId());
         article.setTitle("제목입니다.");
@@ -59,7 +59,7 @@ public class CommentRepositoryTest {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
         article.setDeleted(false);
-        article = articleRepository.save(article);
+        article = jdbcTemplateArticleRepository.save(article);
     }
 
     @BeforeEach
@@ -75,8 +75,8 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        Comment findComment = commentRepository.findById(comment.getId()).get();
+        comment = jdbcTemplateCommentRepository.save(comment);
+        Comment findComment = jdbcTemplateCommentRepository.findById(comment.getId()).get();
         assertEquals(comment.getContent(), findComment.getContent());
     }
 
@@ -88,8 +88,8 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        int result = commentRepository.delete(comment);
+        comment = jdbcTemplateCommentRepository.save(comment);
+        int result = jdbcTemplateCommentRepository.delete(comment);
         assertEquals(result, 1);
     }
 
@@ -101,10 +101,10 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
+        comment = jdbcTemplateCommentRepository.save(comment);
         String content = "수정된 내용입니다.";
         comment.setContent(content);
-        int result = commentRepository.update(comment);
+        int result = jdbcTemplateCommentRepository.update(comment);
         assertEquals(result, 1);
     }
 
@@ -116,9 +116,9 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
+        comment = jdbcTemplateCommentRepository.save(comment);
         comment.setDeleted(true);
-        int result = commentRepository.updateDeleteFlag(comment);
+        int result = jdbcTemplateCommentRepository.updateDeleteFlag(comment);
         assertEquals(result, 1);
     }
 
@@ -130,8 +130,8 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        Comment findComment = commentRepository.findById(comment.getId()).get();
+        comment = jdbcTemplateCommentRepository.save(comment);
+        Comment findComment = jdbcTemplateCommentRepository.findById(comment.getId()).get();
         assertEquals(findComment.getId(), comment.getId());
     }
 
@@ -143,8 +143,8 @@ public class CommentRepositoryTest {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setAuthorId(user.getId());
         comment.setDeleted(false);
-        comment = commentRepository.save(comment);
-        List<Comment> comments = commentRepository.findByArticleId(comment.getArticleId());
+        comment = jdbcTemplateCommentRepository.save(comment);
+        List<Comment> comments = jdbcTemplateCommentRepository.findByArticleId(comment.getArticleId());
         Comment findComment = comments.stream()
                 .filter(c -> c.getId() == comment.getId())
                 .findAny()

@@ -14,9 +14,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
-public class UserRepositoryTest {
+public class JdbcTemplateUserRepositoryTest {
 
-    private static UserRepository userRepository;
+    private static JdbcTemplateUserRepository jdbcTemplateUserRepository;
     private User user;
 
     @BeforeAll
@@ -26,8 +26,8 @@ public class UserRepositoryTest {
                 .addScript("classpath:db/schema.sql")
                 .build();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        userRepository = new UserRepository(jdbcTemplate);
-        userRepository.init();
+        jdbcTemplateUserRepository = new JdbcTemplateUserRepository(jdbcTemplate);
+        jdbcTemplateUserRepository.init();
     }
 
 //    @AfterAll
@@ -50,8 +50,8 @@ public class UserRepositoryTest {
         user.setEmail("user1@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        assertEquals(userRepository.findById(user.getId()).get().getId(), user.getId());
+        user = jdbcTemplateUserRepository.save(user);
+        assertEquals(jdbcTemplateUserRepository.findById(user.getId()).get().getId(), user.getId());
     }
 
     @Test
@@ -62,8 +62,8 @@ public class UserRepositoryTest {
         user.setEmail("user2@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        int result = userRepository.delete(user);
+        user = jdbcTemplateUserRepository.save(user);
+        int result = jdbcTemplateUserRepository.delete(user);
         assertEquals(result, 1);
     }
 
@@ -75,9 +75,9 @@ public class UserRepositoryTest {
         user.setEmail("user3@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
+        user = jdbcTemplateUserRepository.save(user);
         user.setUsername("userupdate03");
-        int result = userRepository.update(user);
+        int result = jdbcTemplateUserRepository.update(user);
         assertEquals(result, 1);
     }
 
@@ -89,9 +89,9 @@ public class UserRepositoryTest {
         user.setEmail("user4@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
+        user = jdbcTemplateUserRepository.save(user);
         user.setDeleted(true);
-        int result = userRepository.updateDeleteFlag(user);
+        int result = jdbcTemplateUserRepository.updateDeleteFlag(user);
         assertEquals(result, 1);
     }
 
@@ -103,8 +103,8 @@ public class UserRepositoryTest {
         user.setEmail("user5@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        User findUser = userRepository.findById(user.getId()).get();
+        user = jdbcTemplateUserRepository.save(user);
+        User findUser = jdbcTemplateUserRepository.findById(user.getId()).get();
         assertEquals(findUser.getId(), user.getId());
     }
 
@@ -116,8 +116,8 @@ public class UserRepositoryTest {
         user.setEmail("user6@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        User findUser = userRepository.findByUsername(user.getUsername()).get();
+        user = jdbcTemplateUserRepository.save(user);
+        User findUser = jdbcTemplateUserRepository.findByUsername(user.getUsername()).get();
         assertEquals(findUser.getUsername(), user.getUsername());
     }
 
@@ -129,8 +129,8 @@ public class UserRepositoryTest {
         user.setEmail("user7@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        User findUser = userRepository.findByEmail(user.getEmail()).get();
+        user = jdbcTemplateUserRepository.save(user);
+        User findUser = jdbcTemplateUserRepository.findByEmail(user.getEmail()).get();
         assertEquals(findUser.getEmail(), user.getEmail());
     }
 
@@ -142,8 +142,8 @@ public class UserRepositoryTest {
         user.setEmail("user8@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        User findUser = userRepository.findByNickname(user.getNickname()).get();
+        user = jdbcTemplateUserRepository.save(user);
+        User findUser = jdbcTemplateUserRepository.findByNickname(user.getNickname()).get();
         assertEquals(findUser.getNickname(), user.getNickname());
     }
 
@@ -155,8 +155,8 @@ public class UserRepositoryTest {
         user.setEmail("user091@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        List<User> users = userRepository.findByRole(UserRole.USER);
+        user = jdbcTemplateUserRepository.save(user);
+        List<User> users = jdbcTemplateUserRepository.findByRole(UserRole.USER);
         User findUser = users.stream()
                 .filter(u -> u.getUsername() == user.getUsername())
                 .findAny()
@@ -173,8 +173,8 @@ public class UserRepositoryTest {
         user.setEmail("user9@gmail.com");
         user.setDeleted(false);
         user.setRole(UserRole.USER);
-        user = userRepository.save(user);
-        List<User> users = userRepository.findAll();
+        user = jdbcTemplateUserRepository.save(user);
+        List<User> users = jdbcTemplateUserRepository.findAll();
         User findUser = users.stream()
                 .filter(u -> u.getUsername() == user.getUsername())
                 .findAny()
