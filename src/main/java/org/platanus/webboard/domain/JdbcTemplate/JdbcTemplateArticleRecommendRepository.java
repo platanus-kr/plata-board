@@ -1,6 +1,8 @@
-package org.platanus.webboard.domain;
+package org.platanus.webboard.domain.JdbcTemplate;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.ArticleRecommend;
+import org.platanus.webboard.domain.ArticleRecommendRepository;
 import org.platanus.webboard.domain.utils.QueryConst;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

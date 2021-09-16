@@ -2,6 +2,7 @@ package org.platanus.webboard.config;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.*;
+import org.platanus.webboard.domain.JdbcTemplate.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;

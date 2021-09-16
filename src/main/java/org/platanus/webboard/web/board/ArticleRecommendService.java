@@ -1,6 +1,9 @@
-package org.platanus.webboard.domain;
+package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.domain.ArticleRecommend;
+import org.platanus.webboard.domain.ArticleRecommendRepository;
+import org.platanus.webboard.domain.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -3,7 +3,7 @@ package org.platanus.webboard.web.user;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.platanus.webboard.domain.JdbcTemplateUserRepository;
+import org.platanus.webboard.domain.JdbcTemplate.JdbcTemplateUserRepository;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
 import org.springframework.jdbc.core.JdbcTemplate;
