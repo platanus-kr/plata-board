@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="org.platanus.webboard.domain.Article" alias="article"/>
+        <typeAlias type="org.platanus.webboard.domain.ArticleRecommend" alias="articleRecommend"/>
+        <typeAlias type="org.platanus.webboard.domain.Board" alias="board"/>
+        <typeAlias type="org.platanus.webboard.domain.Comment" alias="comment"/>
+        <typeAlias type="org.platanus.webboard.domain.User" alias="user"/>
+        <typeAlias type="org.platanus.webboard.domain.UserRole" alias="userRole"/>
+        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleMapper" alias="articleMapper"/>
+        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleRecommendMapper"
+                   alias="articleRecommendMapper"/>
+        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper" alias="boardMapper"/>
+        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisCommentMapper" alias="commentMapper"/>
+        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisUserMapper" alias="userMapper"/>
+    </typeAliases>
+    <!--    <typeHandlers>-->
+    <!--        <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>-->
+    <!--    </typeHandlers>-->
+</configuration>
