@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="articleMapper">
-    <resultMap id="articleMap" type="article">
+<mapper namespace="org.platanus.webboard.domain.MyBatis.MyBatisArticleMapper">
+
+    <resultMap id="articleMap" type="articleAlias">
         <id column="id" property="id"/>
         <result column="board_id" property="boardId"/>
         <result column="title" property="title"/>
@@ -15,7 +16,7 @@
         <result column="view_count" property="viewCount"/>
     </resultMap>
 
-    <insert id="save" parameterType="article" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="articleAlias" useGeneratedKeys="true" keyProperty="id">
         insert into ARTICLES(BOARD_ID,
                              TITLE,
                              CONTENT,
@@ -42,13 +43,13 @@
         where BOARD_ID = #{boardId}
     </delete>
 
-    <delete id="delete" parameterType="article">
+    <delete id="delete" parameterType="articleAlias">
         delete
         from ARTICLES
         where ID = #{article.id}
     </delete>
 
-    <update id="update" parameterType="article">
+    <update id="update" parameterType="articleAlias">
         update ARTICLES
         set TITLE         = #{article.title},
             CONTENT       = #{article.content},
@@ -68,7 +69,7 @@
         where ID = #{id}
     </update>
 
-    <update id="updateDeleteFlag" parameterType="article">
+    <update id="updateDeleteFlag" parameterType="articleAlias">
         update ARTICLES
         set DELETED = #{article.deleted}
         where ID = #{article.id}
@@ -96,7 +97,7 @@
         limit #{page.getPageSize()} offset #{page.getOffset()}
     </select>
 
-    <select id="findAll" resultMap="article">
+    <select id="findAll" resultMap="articleMap">
         select *
         from ARTICLES
     </select>
@@ -113,7 +114,7 @@
         where TITLE like '%${title}%'
     </select>
 
-    <select id="findByContent" parameterType="article" resultMap="articleMap">
+    <select id="findByContent" parameterType="articleAlias" resultMap="articleMap">
         select *
         from ARTICLES
         where CONTENT like '%${article.content}%'

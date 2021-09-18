@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="articleRecommendMapper">
-    <resultMap id="articleRecommendMap" type="articleRecommend">
+<mapper namespace="org.platanus.webboard.domain.MyBatis.MyBatisArticleRecommendMapper">
+
+    <resultMap id="articleRecommendMap" type="articleRecommendAlias">
         <id column="id" property="id"/>
         <result column="article_id" property="articleId"/>
         <result column="user_id" property="userId"/>
     </resultMap>
 
-    <insert id="save" parameterType="articleRecommend" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="articleRecommendAlias" useGeneratedKeys="true" keyProperty="id">
         insert into ARTICLES_RECOMMEND(ARTICLE_ID,
                                        USER_ID)
         values (#{articleRecommend.articleId},

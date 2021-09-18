@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="commentMapper">
-    <resultMap id="commentMapper" type="comment">
+<mapper namespace="org.platanus.webboard.domain.MyBatis.MyBatisCommentMapper">
+
+    <resultMap id="commentMapper" type="commentAlias">
         <id column="id" property="id"/>
         <result column="article_id" property="articleId"/>
         <result column="content" property="content"/>
@@ -13,7 +14,7 @@
         <result column="author_nickname" property="authorNickname"/>
     </resultMap>
 
-    <insert id="save" parameterType="comment" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="commentAlias" useGeneratedKeys="true" keyProperty="id">
         insert into COMMENTS(ARTICLE_ID,
                              CONTENT,
                              AUTHOR_ID,
@@ -28,7 +29,7 @@
                 #{comment.deleted})
     </insert>
 
-    <delete id="delete" parameterType="comment">
+    <delete id="delete" parameterType="commentAlias">
         delete
         from COMMENTS
         where ID = #{comment.id}
@@ -43,14 +44,14 @@
                where BOARD_ID = #{boardId})
     </delete>
 
-    <update id="update" parameterType="comment">
+    <update id="update" parameterType="commentAlias">
         update COMMENTS
         set CONTENT      = #{comment.content},
             MODIFIED_DATE= #{comment.modifiedDate}
         where ID = #{comment.id}
     </update>
 
-    <update id="updateDeleteFlag" parameterType="comment">
+    <update id="updateDeleteFlag" parameterType="commentAlias">
         update COMMENTS
         set DELETED = #{comment.deleted}
         where ID = #{comment.id}

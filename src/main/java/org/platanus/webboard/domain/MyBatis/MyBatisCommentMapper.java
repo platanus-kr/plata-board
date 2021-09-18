@@ -1,11 +1,13 @@
 package org.platanus.webboard.domain.MyBatis;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Mapper
 public interface MyBatisCommentMapper extends CommentRepository {
     @Override
     Comment save(Comment comment);

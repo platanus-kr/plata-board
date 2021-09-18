@@ -1,5 +1,6 @@
 package org.platanus.webboard.domain.MyBatis;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.ArticleRepository;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+@Mapper
 public interface MyBatisArticleMapper extends ArticleRepository {
     @Override
     Article save(@Param("article") Article article);

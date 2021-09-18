@@ -53,6 +53,7 @@ public class JdbcTemplateCommentRepositoryTest {
         user.setPassword("aaa");
         user.setNickname("user22");
         user.setEmail("user22@gmail.com");
+        user.setRole(UserRole.USER);
         user.setDeleted(false);
         user = jdbcTemplateUserRepository.save(user);
         article = new Article();

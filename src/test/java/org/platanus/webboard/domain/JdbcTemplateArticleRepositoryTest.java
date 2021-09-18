@@ -55,6 +55,7 @@ public class JdbcTemplateArticleRepositoryTest {
         user.setPassword("aaa");
         user.setNickname("user21");
         user.setEmail("user21@gmail.com");
+        user.setRole(UserRole.USER);
         user.setDeleted(false);
         user = jdbcTemplateUserRepository.save(user);
     }

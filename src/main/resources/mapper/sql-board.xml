@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="boardMapper">
+<!--<mapper namespace="boardMapper">-->
+<mapper namespace="org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper">
 
-    <resultMap id="boardMap" type="board">
+    <resultMap id="boardMap" type="boardAlias">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="description" property="description"/>
     </resultMap>
 
-    <insert id="save" parameterType="board" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="boardAlias" useGeneratedKeys="true" keyProperty="id">
         insert into BOARDS(NAME,
-                           DESCIPTION)
-        values (#{board.name},
-                #{board.description})
+                           DESCRIPTION)
+        values (#{name},
+                #{description})
     </insert>
 
-    <delete id="delete" parameterType="board">
+    <delete id="delete" parameterType="boardAlias">
         delete
         from BOARDS
-        where ID = #{board.id}
+        where ID = #{id}
     </delete>
 
-    <update id="update" parameterType="board">
+    <update id="update" parameterType="boardAlias">
         update BOARDS
-        set NAME        = #{board.name},
-            DESCRIPTION = #{board.description}
-        where ID = #{board.id}
+        set NAME        = #{name},
+            DESCRIPTION = #{description}
+        where ID = #{id}
     </update>
 
     <select id="findAll" resultMap="boardMap">
@@ -34,13 +35,13 @@
         from BOARDS;
     </select>
 
-    <select id="findById" resultMap="boardMap">
+    <select id="findById" resultMap="boardMap" parameterType="long">
         select *
         from BOARDS
         where ID = #{id}
     </select>
 
-    <select id="findByName" resultMap="boardMap">
+    <select id="findByName" resultMap="boardMap" parameterType="string">
         select *
         from BOARDS
         where NAME = #{name}

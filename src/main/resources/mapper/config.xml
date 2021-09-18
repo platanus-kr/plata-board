@@ -4,19 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="org.platanus.webboard.domain.Article" alias="article"/>
-        <typeAlias type="org.platanus.webboard.domain.ArticleRecommend" alias="articleRecommend"/>
-        <typeAlias type="org.platanus.webboard.domain.Board" alias="board"/>
-        <typeAlias type="org.platanus.webboard.domain.Comment" alias="comment"/>
-        <typeAlias type="org.platanus.webboard.domain.User" alias="user"/>
-        <typeAlias type="org.platanus.webboard.domain.UserRole" alias="userRole"/>
-        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleMapper" alias="articleMapper"/>
-        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleRecommendMapper"
-                   alias="articleRecommendMapper"/>
-        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper" alias="boardMapper"/>
-        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisCommentMapper" alias="commentMapper"/>
-        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisUserMapper" alias="userMapper"/>
+        <typeAlias type="org.platanus.webboard.domain.Article" alias="articleAlias"/>
+        <typeAlias type="org.platanus.webboard.domain.ArticleRecommend" alias="articleRecommendAlias"/>
+        <typeAlias type="org.platanus.webboard.domain.Board" alias="boardAlias"/>
+        <typeAlias type="org.platanus.webboard.domain.Comment" alias="commentAlias"/>
+        <typeAlias type="org.platanus.webboard.domain.User" alias="userAlias"/>
+        <typeAlias type="org.platanus.webboard.domain.UserRole" alias="userRoleAlias"/>
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleMapper" alias="articleMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleRecommendMapper"-->
+        <!--                   alias="articleRecommendMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper" alias="boardMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisCommentMapper" alias="commentMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisUserMapper" alias="userMapper"/>-->
     </typeAliases>
+    <!--    <mappers>-->
+    <!--        <mapper resource="mapper/sql-board.sql"/>-->
+    <!--        <mapper resource="mapper/sql-user.sql"/>-->
+    <!--        <mapper resource="mapper/sql-article.sql"/>-->
+    <!--        <mapper resource="mapper/sql-comment.sql"/>-->
+    <!--        <mapper resource="mapper/sql-articlerecommend.sql"/>-->
+    <!--    </mappers>-->
     <!--    <typeHandlers>-->
     <!--        <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"/>-->
     <!--    </typeHandlers>-->
