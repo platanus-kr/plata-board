@@ -11,11 +11,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @RequiredArgsConstructor
 public class AppConfig {
     public final JdbcTemplate jdbcTemplate;
-    public final MyBatisBoardMapper boardMapper;
-    public final MyBatisUserMapper userMapper;
-    public final MyBatisArticleMapper articleMapper;
-    public final MyBatisCommentMapper commentMapper;
-    public final MyBatisArticleRecommendMapper articleRecommendMapper;
+    public final BoardMapper boardMapper;
+    public final UserMapper userMapper;
+    public final ArticleMapper articleMapper;
+    public final CommentMapper commentMapper;
+    public final ArticleRecommendMapper articleRecommendMapper;
 
     @Bean
     public BoardRepository boardRepository() {

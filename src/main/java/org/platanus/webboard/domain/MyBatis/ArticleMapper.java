@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface MyBatisArticleMapper extends ArticleRepository {
+public interface ArticleMapper extends ArticleRepository {
     @Override
     Article save(@Param("article") Article article);
 

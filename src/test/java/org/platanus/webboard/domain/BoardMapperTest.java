@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
-import org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper;
+import org.platanus.webboard.domain.MyBatis.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(SpringRunner.class)
 @MybatisTest
 //@ImportAutoConfiguration(MyBatisConfig.class)
-public class MyBatisBoardMapperTest {
+public class BoardMapperTest {
     @Autowired
-    private MyBatisBoardMapper boardMapper;
+    private BoardMapper boardMapper;
     private Board board;
 
     @BeforeEach

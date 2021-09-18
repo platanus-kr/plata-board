@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface MyBatisArticleRecommendMapper extends ArticleRecommendRepository {
+public interface ArticleRecommendMapper extends ArticleRecommendRepository {
     @Override
     ArticleRecommend save(@Param("articleRecommend") ArticleRecommend articleRecommend);
 

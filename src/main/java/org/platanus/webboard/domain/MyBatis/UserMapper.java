@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface MyBatisUserMapper extends UserRepository {
+public interface UserMapper extends UserRepository {
     @Override
     User save(@Param("user") User user);
 

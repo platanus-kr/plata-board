@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface MyBatisCommentMapper extends CommentRepository {
+public interface CommentMapper extends CommentRepository {
     @Override
     Comment save(Comment comment);
 

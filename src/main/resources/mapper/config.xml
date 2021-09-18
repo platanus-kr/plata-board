@@ -10,12 +10,12 @@
         <typeAlias type="org.platanus.webboard.domain.Comment" alias="commentAlias"/>
         <typeAlias type="org.platanus.webboard.domain.User" alias="userAlias"/>
         <typeAlias type="org.platanus.webboard.domain.UserRole" alias="userRoleAlias"/>
-        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleMapper" alias="articleMapper"/>-->
-        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisArticleRecommendMapper"-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.ArticleMapper" alias="articleMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.ArticleRecommendMapper"-->
         <!--                   alias="articleRecommendMapper"/>-->
-        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisBoardMapper" alias="boardMapper"/>-->
-        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisCommentMapper" alias="commentMapper"/>-->
-        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.MyBatisUserMapper" alias="userMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.BoardMapper" alias="boardMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.CommentMapper" alias="commentMapper"/>-->
+        <!--        <typeAlias type="org.platanus.webboard.domain.MyBatis.UserMapper" alias="userMapper"/>-->
     </typeAliases>
     <!--    <mappers>-->
     <!--        <mapper resource="mapper/sql-board.sql"/>-->
