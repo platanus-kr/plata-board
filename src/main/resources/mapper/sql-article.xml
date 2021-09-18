@@ -74,13 +74,13 @@
         where ID = #{article.id}
     </update>
 
-    <select id="findById" parameterType="long" resultMap="article">
+    <select id="findById" parameterType="long" resultMap="articleMap">
         select *
         from ARTICLES
         where ID = #{id}
     </select>
 
-    <select id="findByBoardId" parameterType="long" resultMap="article">
+    <select id="findByBoardId" parameterType="long" resultMap="articleMap">
         select *
         from ARTICLES
         where BOARD_ID = #{id}
@@ -88,7 +88,7 @@
     </select>
 
     <!-- Todo: Pageable 해결하기 -->
-    <select id="findByBoardIdPagination" parameterType="map" resultMap="article">
+    <select id="findByBoardIdPagination" parameterType="map" resultMap="articleMap">
         select *
         from ARTICLES
         where BOARD_ID = #{boardId}
@@ -101,22 +101,39 @@
         from ARTICLES
     </select>
 
-    <select id="findByAuthorId" parameterType="long" resultMap="article">
+    <select id="findByAuthorId" parameterType="long" resultMap="articleMap">
         select *
         from ARTICLES
         where AUTHOR_ID = #{id}
     </select>
 
-    <select id="findByTitle" parameterType="string" resultMap="article">
+    <select id="findByTitle" parameterType="string" resultMap="articleMap">
         select *
         from ARTICLES
-        where TITLE like #{title}
+        where TITLE like '%${title}%'
     </select>
-    <!--
-    public static final String ARTICLE_FIND_BY_TITLE = "";
-    public static final String ARTICLE_FIND_BY_CONTENT = "select * from ARTICLES where CONTENT like ?";
-    public static final String ARTICLE_FIND_BY_TITLE_AND_CONTENT = "select * from ARTICLES where TITLE like ? or CONTENT like ?";
-    public static final String ARTICLE_ALL_DELETE = "delete from ARTICLES";
-    public static final String ARTICLE_COUNT = "select count(*) from ARTICLES where board_id =?";
-    -->
+
+    <select id="findByContent" parameterType="article" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where CONTENT like '%${article.content}%'
+    </select>
+
+    <select id="findByTitleAndContent" parameterType="map" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where TITLE like '%${title}%'
+           or CONTENT like '%${content}%'
+    </select>
+
+    <delete id="allDelete">
+        delete
+        from ARTICLES
+    </delete>
+
+    <select id="count" parameterType="long">
+        select count(*)
+        from ARTICLES
+        where board_id = #{boardId}
+    </select>
 </mapper>
