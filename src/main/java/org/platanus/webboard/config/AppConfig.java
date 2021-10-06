@@ -2,6 +2,7 @@ package org.platanus.webboard.config;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.*;
+import org.platanus.webboard.domain.JdbcTemplate.*;
 import org.platanus.webboard.domain.MyBatis.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,32 +20,32 @@ public class AppConfig {
 
     @Bean
     public BoardRepository boardRepository() {
-//        return new JdbcTemplateBoardRepository(jdbcTemplate);
-        return boardMapper;
+        return new JdbcTemplateBoardRepository(jdbcTemplate);
+//        return boardMapper;
     }
 
     @Bean
     public UserRepository userRepository() {
-//        return new JdbcTemplateUserRepository(jdbcTemplate);
-        return userMapper;
+        return new JdbcTemplateUserRepository(jdbcTemplate);
+//        return userMapper;
     }
 
     @Bean
     public ArticleRepository articleRepository() {
-//        return new JdbcTemplateArticleRepository(jdbcTemplate);
-        return articleMapper;
+        return new JdbcTemplateArticleRepository(jdbcTemplate);
+//        return articleMapper;
     }
 
     @Bean
     public CommentRepository commentRepository() {
-//        return new JdbcTemplateCommentRepository(jdbcTemplate);
-        return commentMapper;
+        return new JdbcTemplateCommentRepository(jdbcTemplate);
+//        return commentMapper;
     }
 
     @Bean
     public ArticleRecommendRepository articleRecommendRepository() {
-//        return new JdbcTemplateArticleRecommendRepository(jdbcTemplate);
-        return articleRecommendMapper;
+        return new JdbcTemplateArticleRecommendRepository(jdbcTemplate);
+//        return articleRecommendMapper;
     }
 
 }
