@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.platanus.webboard.domain.MyBatis.ArticleMapper">
+
+    <resultMap id="articleMap" type="articleAlias">
+        <id column="id" property="id"/>
+        <result column="board_id" property="boardId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="author_id" property="authorId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modified_date" property="modifiedDate"/>
+        <result column="deleted" property="deleted"/>
+        <result column="recommend" property="recommend"/>
+        <result column="view_count" property="viewCount"/>
+    </resultMap>
+
+    <insert id="save" parameterType="articleAlias" useGeneratedKeys="true" keyProperty="id">
+        insert into ARTICLES(BOARD_ID,
+                             TITLE,
+                             CONTENT,
+                             AUTHOR_ID,
+                             CREATED_DATE,
+                             MODIFIED_DATE,
+                             DELETED,
+                             RECOMMEND,
+                             VIEW_COUNT)
+        values (#{article.boardId},
+                #{article.title},
+                #{article.content},
+                #{article.authorId},
+                #{article.create_date},
+                #{article.modified_date},
+                #{article.deleted},
+                #{article.recommend},
+                #{article.view_count})
+    </insert>
+
+    <delete id="deleteByBoardId" parameterType="long">
+        delete
+        from ARTICLES
+        where BOARD_ID = #{boardId}
+    </delete>
+
+    <delete id="delete" parameterType="articleAlias">
+        delete
+        from ARTICLES
+        where ID = #{article.id}
+    </delete>
+
+    <update id="update" parameterType="articleAlias">
+        update ARTICLES
+        set TITLE         = #{article.title},
+            CONTENT       = #{article.content},
+            MODIFIED_DATE = #{article.modifiedDate}
+        where ID = #{article.id}
+    </update>
+
+    <update id="updateViewCount" parameterType="long">
+        update ARTICLES
+        set VIEW_COUNT = VIEW_COUNT + 1
+        where ID = #{id}
+    </update>
+
+    <update id="updateRecommend" parameterType="long">
+        update ARTICLES
+        set RECOMMEND = RECOMMEND + 1
+        where ID = #{id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="articleAlias">
+        update ARTICLES
+        set DELETED = #{article.deleted}
+        where ID = #{article.id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where ID = #{id}
+    </select>
+
+    <select id="findByBoardId" parameterType="long" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where BOARD_ID = #{id}
+        order by ID desc
+    </select>
+
+    <!-- Todo: Pageable 해결하기 -->
+    <select id="findByBoardIdPagination" parameterType="map" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where BOARD_ID = #{boardId}
+        order by ID desc
+        limit #{page.getPageSize()} offset #{page.getOffset()}
+    </select>
+
+    <select id="findAll" resultMap="articleMap">
+        select *
+        from ARTICLES
+    </select>
+
+    <select id="findByAuthorId" parameterType="long" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where AUTHOR_ID = #{id}
+    </select>
+
+    <select id="findByTitle" parameterType="string" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where TITLE like '%${title}%'
+    </select>
+
+    <select id="findByContent" parameterType="articleAlias" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where CONTENT like '%${article.content}%'
+    </select>
+
+    <select id="findByTitleAndContent" parameterType="map" resultMap="articleMap">
+        select *
+        from ARTICLES
+        where TITLE like '%${title}%'
+           or CONTENT like '%${content}%'
+    </select>
+
+    <delete id="allDelete">
+        delete
+        from ARTICLES
+    </delete>
+
+    <select id="count" parameterType="long">
+        select count(*)
+        from ARTICLES
+        where board_id = #{boardId}
+    </select>
+</mapper>

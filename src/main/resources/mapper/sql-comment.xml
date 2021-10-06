@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.platanus.webboard.domain.MyBatis.CommentMapper">
+
+    <resultMap id="commentMapper" type="commentAlias">
+        <id column="id" property="id"/>
+        <result column="article_id" property="articleId"/>
+        <result column="content" property="content"/>
+        <result column="author_id" property="authorId"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="modified_date" property="modifiedDate"/>
+        <result column="deleted" property="deleted"/>
+        <result column="author_nickname" property="authorNickname"/>
+    </resultMap>
+
+    <insert id="save" parameterType="commentAlias" useGeneratedKeys="true" keyProperty="id">
+        insert into COMMENTS(ARTICLE_ID,
+                             CONTENT,
+                             AUTHOR_ID,
+                             CREATED_DATE,
+                             MODIFIED_DATE,
+                             DELETED)
+        values (#{comment.articleID},
+                #{comment.content},
+                #{comment.authorId},
+                #{comment.createdDate},
+                #{comment.modifiedDate},
+                #{comment.deleted})
+    </insert>
+
+    <delete id="delete" parameterType="commentAlias">
+        delete
+        from COMMENTS
+        where ID = #{comment.id}
+    </delete>
+
+    <delete id="deleteByBoardId" parameterType="long">
+        delete
+        from COMMENTS
+        where ARTICLE_ID in
+              (select ID
+               from ARTICLES
+               where BOARD_ID = #{boardId})
+    </delete>
+
+    <update id="update" parameterType="commentAlias">
+        update COMMENTS
+        set CONTENT      = #{comment.content},
+            MODIFIED_DATE= #{comment.modifiedDate}
+        where ID = #{comment.id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="commentAlias">
+        update COMMENTS
+        set DELETED = #{comment.deleted}
+        where ID = #{comment.id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="commentMapper">
+        select C.ID,
+               C.ARTICLE_ID,
+               C.CONTENT,
+               C.AUTHOR_ID,
+               C.CREATED_DATE,
+               C.MODIFIED_DATE,
+               C.DELETED,
+               U.NICKNAME as AUTHOR_NICKNAME
+        from COMMENTS C,
+             USERS U
+        where C.ID = #{id}
+          AND C.AUTHOR_ID = U.ID
+          AND C.DELETED = 0
+    </select>
+
+    <select id="findByArticleId" parameterType="long" resultMap="commentMapper">
+        select C.ID,
+               C.ARTICLE_ID,
+               C.CONTENT,
+               C.AUTHOR_ID,
+               C.CREATED_DATE,
+               C.MODIFIED_DATE,
+               C.DELETED,
+               U.NICKNAME as AUTHOR_NICKNAME
+        from COMMENTS C,
+             USERS U
+        where C.ARTICLE_ID = #{id}
+          AND C.AUTHOR_ID = U.ID
+          AND C.DELETED = 0
+    </select>
+
+    <select id="findCountByArticleId" parameterType="long">
+        select count(*)
+        from COMMENTS
+        where ARTICLE_ID = #{id}
+          and DELETED = 0
+    </select>
+
+    <select id="findByContent" parameterType="string" resultMap="commentMapper">
+        select *
+        from COMMENTS
+        where CONTENT like '%${content}%'
+    </select>
+
+    <select id="findAll" resultMap="commentMapper">
+        select *
+        from COMMENTS
+    </select>
+
+</mapper>

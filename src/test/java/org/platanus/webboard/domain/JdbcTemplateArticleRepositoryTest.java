@@ -3,6 +3,9 @@ package org.platanus.webboard.domain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.platanus.webboard.domain.JdbcTemplate.JdbcTemplateArticleRepository;
+import org.platanus.webboard.domain.JdbcTemplate.JdbcTemplateBoardRepository;
+import org.platanus.webboard.domain.JdbcTemplate.JdbcTemplateUserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -52,6 +55,7 @@ public class JdbcTemplateArticleRepositoryTest {
         user.setPassword("aaa");
         user.setNickname("user21");
         user.setEmail("user21@gmail.com");
+        user.setRole(UserRole.USER);
         user.setDeleted(false);
         user = jdbcTemplateUserRepository.save(user);
     }
