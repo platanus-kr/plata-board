@@ -1,6 +1,7 @@
 package org.platanus.webboard.utils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DataInitTest {
@@ -43,7 +45,7 @@ public class DataInitTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
 //        User user2 = new User();
 //        user2.setUsername("test");
 //        user2.setEmail("test@test.com");
@@ -55,14 +57,13 @@ public class DataInitTest {
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //        }
-
 //
 //        Article article = new Article();
 //        article.setTitle("제목입니다");
 //        article.setBoardId(board.getId());
 //        article.setAuthorId(user.getId());
 //        article.setContent("내용입니다");
-//        for (int i = 1; i <= 100; i++) {
+//        for (int i = 1; i <= 5; i++) {
 //            try {
 //                article.setTitle(i + "번째 제목입니다");
 //                articleService.write(article);
@@ -71,16 +72,18 @@ public class DataInitTest {
 //            }
 //        }
 //        Comment comment = new Comment();
-//        comment.setContent("## 댓글 내용 입니다.");
-//        comment.setArticleId(10L);
+//
+//        comment.setArticleId(1L);
 //        comment.setAuthorId(1L);
 //        comment.setDeleted(false);
-//        for (int i = 0; i < 5; i++) {
+//        for (int i = 0; i < 5000; i++) {
 //            try {
+//                comment.setContent(i + "댓글 내용 입니다.");
 //                commentService.write(comment);
 //            } catch (Exception e) {
 //                System.out.println(e.getMessage());
 //            }
 //        }
+
     }
 }

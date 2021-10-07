@@ -2,11 +2,11 @@ package org.platanus.webboard.web.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.domain.*;
-import org.platanus.webboard.web.board.dto.ArticleViewDto;
-import org.platanus.webboard.web.board.dto.ArticleWriteDto;
-import org.platanus.webboard.web.board.dto.CommentWriteDto;
-import org.platanus.webboard.web.board.dto.ErrorDto;
+import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.domain.ArticleRecommend;
+import org.platanus.webboard.domain.Comment;
+import org.platanus.webboard.domain.User;
+import org.platanus.webboard.web.board.dto.*;
 import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,23 +36,26 @@ public class ArticleWebController {
                        Model model) throws Exception {
         Article article = articleService.findById(articleId);
         articleService.updateViewCount(articleId);
-        article.setContent(MarkdownParser.from(article.getContent()));
         String authorNickname = userService.findById(article.getAuthorId()).getNickname();
-        List<Comment> commentsResponse = commentService.findCommentsByArticleId(articleId);
-        commentsResponse.stream().forEach(c -> {
-            c.setContent(MarkdownParser.from(c.getContent()));
+        List<Comment> comments = commentService.findCommentsByArticleId(articleId);
+        List<CommentViewDto> commentViewDtos = new ArrayList<>();
+        comments.stream().forEach(c -> {
+            CommentViewDto commentViewDto = CommentViewDto.from(c);
+            commentViewDto.setContent(MarkdownParser.from(c.getContent()));
+            commentViewDtos.add(commentViewDto);
         });
+        ArticleViewDto articleViewDto = ArticleViewDto.fromView(article, authorNickname);
+        articleViewDto.setContent(MarkdownParser.from(article.getContent()));
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
-
         CommentWriteDto commentWriteDto = new CommentWriteDto();
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
-        model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
+        model.addAttribute("article", articleViewDto);
         model.addAttribute("comment", commentWriteDto);
-        model.addAttribute("comments", commentsResponse);
-        model.addAttribute("comments_quantity", commentsResponse.size());
+        model.addAttribute("comments", comments);
+        model.addAttribute("comments_quantity", comments.size());
         return "board/board_view";
     }
 

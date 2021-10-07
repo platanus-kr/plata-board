@@ -9,6 +9,7 @@ import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.utils.PageConst;
 import org.platanus.webboard.web.user.UserService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -167,6 +168,7 @@ public class ArticleService {
         return returnArticles;
     }
 
+    @Cacheable(value = "article")
     public Article findById(long id) throws Exception {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isEmpty() || article.get().isDeleted())

@@ -15,13 +15,13 @@ public class CommentViewDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public static CommentViewDto from(Comment c, String authorNickname) {
+    public static CommentViewDto from(Comment c) {
         CommentViewDto commentResponse = new CommentViewDto();
         commentResponse.setId(c.getId());
         commentResponse.setArticleId(c.getArticleId());
         commentResponse.setContent(c.getContent());
         commentResponse.setAuthorId(c.getAuthorId());
-        commentResponse.setAuthorNickname(authorNickname);
+        commentResponse.setAuthorNickname(c.getAuthorNickname());
         commentResponse.setCreatedDate(c.getCreatedDate());
         commentResponse.setModifiedDate(c.getModifiedDate());
         return commentResponse;

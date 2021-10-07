@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
 import org.platanus.webboard.domain.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -91,10 +92,9 @@ public class CommentService {
         return returnComments;
     }
 
+    @Cacheable(value = "comment")
     public List<Comment> findCommentsByArticleId(long articleId) {
         List<Comment> comments = commentRepository.findByArticleId(articleId);
-//        List<Comment> returnComments = new ArrayList<>();
-//        comments.stream().filter(c -> !c.isDeleted()).forEach(c -> returnComments.add(c));
         return comments;
     }
 
