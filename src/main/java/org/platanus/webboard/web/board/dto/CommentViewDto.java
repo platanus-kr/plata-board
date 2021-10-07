@@ -2,6 +2,7 @@ package org.platanus.webboard.web.board.dto;
 
 import lombok.Data;
 import org.platanus.webboard.domain.Comment;
+import org.platanus.webboard.web.board.utils.MarkdownParser;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class CommentViewDto {
         CommentViewDto commentResponse = new CommentViewDto();
         commentResponse.setId(c.getId());
         commentResponse.setArticleId(c.getArticleId());
-        commentResponse.setContent(c.getContent());
+        commentResponse.setContent(MarkdownParser.from(c.getContent()));
         commentResponse.setAuthorId(c.getAuthorId());
         commentResponse.setAuthorNickname(c.getAuthorNickname());
         commentResponse.setCreatedDate(c.getCreatedDate());

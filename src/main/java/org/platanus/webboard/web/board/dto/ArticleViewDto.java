@@ -2,6 +2,7 @@ package org.platanus.webboard.web.board.dto;
 
 import lombok.Data;
 import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.web.board.utils.MarkdownParser;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class ArticleViewDto {
         articleResponse.setBoardId(article.getBoardId());
         articleResponse.setId(article.getId());
         articleResponse.setTitle(article.getTitle());
-        articleResponse.setContent(article.getContent());
+        articleResponse.setContent(MarkdownParser.from(article.getContent()));
         articleResponse.setAuthorId(article.getAuthorId());
         articleResponse.setAuthorNickname(authorNickname);
         articleResponse.setCreatedDate(article.getCreatedDate());

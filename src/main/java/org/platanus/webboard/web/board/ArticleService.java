@@ -9,6 +9,7 @@ import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.ArticleListDto;
 import org.platanus.webboard.web.board.utils.PageConst;
 import org.platanus.webboard.web.user.UserService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,6 +29,7 @@ public class ArticleService {
     private final CommentService commentService;
     private final UserService userService;
 
+    @CacheEvict(value = "article", allEntries = true)
     public Article write(Article article) throws Exception {
         article.setCreatedDate(LocalDateTime.now());
         article.setModifiedDate(LocalDateTime.now());
@@ -39,6 +41,7 @@ public class ArticleService {
         return article;
     }
 
+    @CacheEvict(value = "article")
     public Article update(Article article, User user) throws Exception {
         article.setCreatedDate(findById(article.getId()).getCreatedDate());
         article.setModifiedDate(LocalDateTime.now());

@@ -7,7 +7,6 @@ import org.platanus.webboard.domain.ArticleRecommend;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.web.board.dto.*;
-import org.platanus.webboard.web.board.utils.MarkdownParser;
 import org.platanus.webboard.web.login.argumentresolver.Login;
 import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.platanus.webboard.web.user.UserService;
@@ -41,21 +40,15 @@ public class ArticleWebController {
         List<CommentViewDto> commentViewDtos = new ArrayList<>();
         comments.stream().forEach(c -> {
             CommentViewDto commentViewDto = CommentViewDto.from(c);
-            commentViewDto.setContent(MarkdownParser.from(c.getContent()));
             commentViewDtos.add(commentViewDto);
         });
         ArticleViewDto articleViewDto = ArticleViewDto.fromView(article, authorNickname);
-        articleViewDto.setContent(MarkdownParser.from(article.getContent()));
         String boardName = boardService.findById(article.getBoardId()).getName();
-        String boardId = String.valueOf(article.getBoardId());
         CommentWriteDto commentWriteDto = new CommentWriteDto();
-        model.addAttribute("board_id", boardId);
-        model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", articleViewDto);
-        model.addAttribute("comment", commentWriteDto);
-        model.addAttribute("comments", comments);
-        model.addAttribute("comments_quantity", comments.size());
+        model.addAttribute("comment_write", commentWriteDto);
+        model.addAttribute("comments", commentViewDtos);
         return "board/board_view";
     }
 

@@ -14,8 +14,8 @@
     <div class="board_view">
 
         <div class="title"><span class="align-middle" th:text="${article.title}"></span>
-            <span class="comments_quantity align-middle" th:if="${comments_quantity > 0}"
-                  th:text="${comments_quantity}"></span></div>
+            <span class="comments_quantity align-middle" th:if="${#lists.size(comments) > 0}"
+                  th:text="${#lists.size(comments)}"></span></div>
         <div class="article_metadata d-flex">
             <div class="author me-auto"><i class="bi bi-person-circle"></i> <span
                     th:text="${article.authorNickname}"></span></div>
@@ -32,7 +32,7 @@
 
             <div class="d-flex align-items-center justify-content-center">
                 <div class="btn-group ">
-                    <a class="btn btn-secondary" th:href="@{|/article/${article_id}/recommend|}"><i
+                    <a class="btn btn-secondary" th:href="@{|/article/${article.id}/recommend|}"><i
                             class="bi bi-hand-thumbs-up-fill"></i> 추천</a>
                     <a href="#" class="btn btn-secondary active" th:text="${article.recommend}">recommend count</a>
                 </div>
@@ -64,7 +64,7 @@
     </div>
     <div th:if="${user != null}" class="comment_write">
         <div class="comment_form">
-            <form id="comment_write" th:action th:object="${comment}" method="post">
+            <form id="comment_write" th:action th:object="${comment_write}" method="post">
                 <div class="input-group">
                 <textarea type="text" id="commentContent" th:field="*{content}"
                           th:errorclass="field-error" name="comment" class="form-control"
@@ -79,21 +79,21 @@
     </div>
     <div class="board_button">
         <a class="btn btn-primary btn-floating m-1"
-           th:href="@{|/board/${board_id}/write|}" role="button">
+           th:href="@{|/board/${article.boardId}/write|}" role="button">
             글쓰기
         </a>
         <span th:if="${user != null}">
         <a th:if="${user.getId() == article.getAuthorId()}" class="btn btn-primary btn-floating m-1"
-           th:href="@{|/article/${article_id}/modify|}" role="button">
+           th:href="@{|/article/${article.id}/modify|}" role="button">
             수정하기
         </a>
         <a th:if="${user.getId() == article.getAuthorId()}" class="btn btn-primary btn-floating m-1"
-           th:href="@{|/article/${article_id}/delete|}" role="button">
+           th:href="@{|/article/${article.id}/delete|}" role="button">
             삭제하기
         </a>
         </span>
         <a class="btn btn-primary btn-floating m-1"
-           th:href="@{|/board/${board_id}|}" role="button">
+           th:href="@{|/board/${article.boardId}|}" role="button">
             목록보기
         </a>
     </div>

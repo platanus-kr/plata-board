@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
 import org.platanus.webboard.domain.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository commentRepository;
 
+    @CacheEvict(value = "comment", allEntries = true)
     public Comment write(Comment comment) throws Exception {
         comment.setCreatedDate(LocalDateTime.now());
         comment.setModifiedDate(LocalDateTime.now());
@@ -28,6 +30,7 @@ public class CommentService {
         return comment;
     }
 
+    @CacheEvict(value = "comment")
     public Comment update(Comment comment, User user) throws Exception {
         comment.setCreatedDate(findById(comment.getId()).getCreatedDate());
         comment.setModifiedDate(LocalDateTime.now());
@@ -48,6 +51,7 @@ public class CommentService {
         return comment;
     }
 
+    @CacheEvict(value = "comment")
     public boolean updateDeleteFlag(Comment comment, User user) throws Exception {
         if (commentRepository.findById(comment.getId()).get().isDeleted()) {
             log.info("Comment deleteflag #{}: 이미 삭제된 댓글 입니다.", comment.getId());
