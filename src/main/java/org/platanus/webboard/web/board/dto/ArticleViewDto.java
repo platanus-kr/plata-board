@@ -36,6 +36,8 @@ public class ArticleViewDto {
 
     public static ArticleViewDto fromModify(Article article) {
         ArticleViewDto articleResponse = new ArticleViewDto();
+        articleResponse.setBoardId(article.getBoardId());
+        articleResponse.setId(article.getId());
         articleResponse.setTitle(article.getTitle());
         articleResponse.setContent(article.getContent());
         return articleResponse;

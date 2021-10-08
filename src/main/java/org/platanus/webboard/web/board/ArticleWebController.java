@@ -74,8 +74,6 @@ public class ArticleWebController {
         Article article = articleService.findById(articleId);
         String boardName = boardService.findById(article.getBoardId()).getName();
         String boardId = String.valueOf(article.getBoardId());
-        model.addAttribute("board_id", boardId);
-        model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
         model.addAttribute("article", ArticleViewDto.fromModify(article));
         return "board/board_modify";
