@@ -2,8 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/6806008/132082255-cd3cc4f0-a8a8-4545-9013-a0e9f85c67c6.png" width="600px">
 
-- Spring Boot와 JdbcTemplate으로 구현한 회원 관리 기능을 가진 게시판 입니다.
-- 현재 이 문서는 작성중 입니다.
+- Spring Boot와 JdbcTemplate, MyBatis로 구현한 회원 관리 기능을 가진 게시판 입니다.
 
 * * *
 
