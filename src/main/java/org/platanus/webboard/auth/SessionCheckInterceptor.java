@@ -2,8 +2,8 @@ package org.platanus.webboard.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.utils.IPUtils;
-import org.platanus.webboard.web.login.dto.UserSessionDto;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

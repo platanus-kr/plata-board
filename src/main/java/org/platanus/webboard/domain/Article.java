@@ -1,7 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.Data;
-import org.platanus.webboard.web.board.dto.ArticleListDto;
+import org.platanus.webboard.controller.board.dto.ArticleListDto;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;

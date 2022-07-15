@@ -1,13 +1,13 @@
 package org.platanus.webboard.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.controller.board.ArticleService;
+import org.platanus.webboard.controller.board.BoardService;
+import org.platanus.webboard.controller.board.CommentService;
+import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
-import org.platanus.webboard.web.board.ArticleService;
-import org.platanus.webboard.web.board.BoardService;
-import org.platanus.webboard.web.board.CommentService;
-import org.platanus.webboard.web.user.UserService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -43,7 +43,7 @@ public class DataInitTest {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
 //        User user2 = new User();
 //        user2.setUsername("test");
 //        user2.setEmail("test@test.com");
