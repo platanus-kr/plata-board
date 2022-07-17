@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
+import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.ArticlesResponseDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.domain.Article;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -21,6 +25,14 @@ public class BoardRestControllerV1 {
     private final ArticleService articleService;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Return article list in a board by boardId
+     *
+     * @param boardId
+     * @param pageNum
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "/{id}")
     @ResponseBody
     public ResponseEntity list(@PathVariable("id") long boardId, @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
@@ -33,8 +45,31 @@ public class BoardRestControllerV1 {
             ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
             return ResponseEntity.badRequest().body(errorDto);
         }
-        ArticlesResponseDto responseDto = ArticlesResponseDto.builder().boardId(boardId).boardName(boardName).articles(articles).build();
-
+        ArticlesResponseDto responseDto = ArticlesResponseDto.builder()
+                .boardId(boardId)
+                .boardName(boardName)
+                .articles(articles)
+                .build();
         return ResponseEntity.ok(objectMapper.writeValueAsString(responseDto));
+    }
+
+    /**
+     * Post article in a board by boardId
+     *
+     * @param boardId
+     * @param articleRequest
+     * @return
+     */
+    @PostMapping(value = "/{id}/write")
+    public ResponseEntity write(@PathVariable("id") long boardId,
+                                @Valid @ModelAttribute("article") ArticleWriteDto articleRequest) {
+        Article article = Article.fromWriteDto(articleRequest);
+        try {
+            articleService.write(article);
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        return ResponseEntity.ok(200);
     }
 }

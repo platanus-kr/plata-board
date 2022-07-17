@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
-import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.login.argumentresolver.Login;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
-import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -26,8 +24,6 @@ import javax.validation.Valid;
 public class BoardWebController {
     private final BoardService boardService;
     private final ArticleService articleService;
-    private final CommentService commentService;
-    private final UserService userService;
 
     @GetMapping(value = "/{id}")
     public String list(@PathVariable("id") long boardId,
@@ -62,11 +58,12 @@ public class BoardWebController {
             log.info("Board write #{} by User #{} : {}", id, user.getId(), bindingResult);
             return "board/board_write";
         }
-        Article article = new Article();
-        article.setBoardId(id);
-        article.setTitle(articleRequest.getTitle());
-        article.setContent(articleRequest.getContent());
-        article.setAuthorId(user.getId());
+        Article article = Article.builder()
+                .boardId(id)
+                .title(articleRequest.getTitle())
+                .content(articleRequest.getContent())
+                .authorId(user.getId())
+                .build();
         try {
             article = articleService.write(article);
         } catch (Exception e) {
