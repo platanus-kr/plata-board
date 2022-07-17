@@ -1,9 +1,9 @@
-package org.platanus.webboard.domain.JdbcTemplate;
+package org.platanus.webboard.domain.jdbctemplate;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Board;
 import org.platanus.webboard.domain.BoardRepository;
-import org.platanus.webboard.domain.utils.QueryConst;
+import org.platanus.webboard.domain.utils.QueryConstant;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -38,29 +38,29 @@ public class JdbcTemplateBoardRepository implements BoardRepository {
     }
 
     public int delete(Board board) {
-        return jdbcTemplate.update(QueryConst.BOARD_DELETE, board.getId());
+        return jdbcTemplate.update(QueryConstant.BOARD_DELETE, board.getId());
     }
 
     public int update(Board board) {
-        return jdbcTemplate.update(QueryConst.BOARD_UPDATE, board.getName(), board.getDescription(), board.getId());
+        return jdbcTemplate.update(QueryConstant.BOARD_UPDATE, board.getName(), board.getDescription(), board.getId());
     }
 
     public List<Board> findAll() {
-        return jdbcTemplate.query(QueryConst.BOARD_FIND_ALL, boardRowMapper());
+        return jdbcTemplate.query(QueryConstant.BOARD_FIND_ALL, boardRowMapper());
     }
 
     public Optional<Board> findById(long id) {
-        List<Board> result = jdbcTemplate.query(QueryConst.BOARD_FIND_BY_ID, boardRowMapper(), id);
+        List<Board> result = jdbcTemplate.query(QueryConstant.BOARD_FIND_BY_ID, boardRowMapper(), id);
         return result.stream().findAny();
     }
 
     public Optional<Board> findByName(String name) {
-        List<Board> result = jdbcTemplate.query(QueryConst.BOARD_FIND_BY_NAME, boardRowMapper(), name);
+        List<Board> result = jdbcTemplate.query(QueryConstant.BOARD_FIND_BY_NAME, boardRowMapper(), name);
         return result.stream().findAny();
     }
 
     public void allDelete() {
-        jdbcTemplate.update(QueryConst.BOARD_ALL_DELETE);
+        jdbcTemplate.update(QueryConstant.BOARD_ALL_DELETE);
     }
 
     private RowMapper<Board> boardRowMapper() {

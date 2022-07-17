@@ -1,9 +1,9 @@
-package org.platanus.webboard.domain.JdbcTemplate;
+package org.platanus.webboard.domain.jdbctemplate;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.ArticleRepository;
-import org.platanus.webboard.domain.utils.QueryConst;
+import org.platanus.webboard.domain.utils.QueryConstant;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -46,73 +46,73 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     public int deleteByBoardId(long boardId) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE_BY_BOARD_ID, boardId);
+        return jdbcTemplate.update(QueryConstant.ARTICLE_DELETE_BY_BOARD_ID, boardId);
     }
 
     public int delete(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_DELETE, article.getId());
+        return jdbcTemplate.update(QueryConstant.ARTICLE_DELETE, article.getId());
     }
 
     public int update(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE,
+        return jdbcTemplate.update(QueryConstant.ARTICLE_UPDATE,
                 article.getTitle(), article.getContent(), article.getModifiedDate(), article.getId());
     }
 
     public int updateViewCount(long id) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_VIEW_COUNT, id);
+        return jdbcTemplate.update(QueryConstant.ARTICLE_UPDATE_VIEW_COUNT, id);
     }
 
     public int updateRecommend(long id) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_RECOMMEND, id);
+        return jdbcTemplate.update(QueryConstant.ARTICLE_UPDATE_RECOMMEND, id);
     }
 
     public int updateDeleteFlag(Article article) {
-        return jdbcTemplate.update(QueryConst.ARTICLE_UPDATE_DELETE_FLAG, article.isDeleted(), article.getId());
+        return jdbcTemplate.update(QueryConstant.ARTICLE_UPDATE_DELETE_FLAG, article.isDeleted(), article.getId());
     }
 
     public Optional<Article> findById(long id) {
-        List<Article> result = jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_ID, articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_ID, articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Article> findByBoardId(long id) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID, articleRowMapper(), id);
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_BOARD_ID, articleRowMapper(), id);
     }
 
     public List<Article> findByBoardIdPagination(Pageable page, long boardId) {
 //        Sort.Order order = !page.getSort().isEmpty() ? page.getSort().toList().get(0) : Sort.Order.by("ID");
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_BOARD_ID_PAGE,
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_BOARD_ID_PAGE,
                 articleRowMapper(), boardId, page.getPageSize(), page.getOffset());
     }
 
     public List<Article> findAll() {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_ALL, articleRowMapper());
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_ALL, articleRowMapper());
     }
 
     public List<Article> findByAuthorId(long id) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_AUTHOR_ID, articleRowMapper(), id);
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_AUTHOR_ID, articleRowMapper(), id);
     }
 
     public List<Article> findByTitle(String title) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE, articleRowMapper(), likeWrapper(title));
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_TITLE, articleRowMapper(), likeWrapper(title));
     }
 
     public List<Article> findByContent(String content) {
         return jdbcTemplate
-                .query(QueryConst.ARTICLE_FIND_BY_CONTENT, articleRowMapper(), likeWrapper(content));
+                .query(QueryConstant.ARTICLE_FIND_BY_CONTENT, articleRowMapper(), likeWrapper(content));
     }
 
     public List<Article> findByTitleAndContent(String title, String content) {
-        return jdbcTemplate.query(QueryConst.ARTICLE_FIND_BY_TITLE_AND_CONTENT,
+        return jdbcTemplate.query(QueryConstant.ARTICLE_FIND_BY_TITLE_AND_CONTENT,
                 articleRowMapper(), likeWrapper(title), likeWrapper(content));
     }
 
     public void allDelete() {
-        jdbcTemplate.update(QueryConst.ARTICLE_ALL_DELETE);
+        jdbcTemplate.update(QueryConstant.ARTICLE_ALL_DELETE);
     }
 
     public int count(long boardId) {
-        return jdbcTemplate.queryForObject(QueryConst.ARTICLE_COUNT, Integer.class, boardId);
+        return jdbcTemplate.queryForObject(QueryConstant.ARTICLE_COUNT, Integer.class, boardId);
     }
 
     public String likeWrapper(String string) {

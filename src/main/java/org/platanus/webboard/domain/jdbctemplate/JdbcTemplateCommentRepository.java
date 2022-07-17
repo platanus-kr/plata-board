@@ -1,9 +1,9 @@
-package org.platanus.webboard.domain.JdbcTemplate;
+package org.platanus.webboard.domain.jdbctemplate;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
-import org.platanus.webboard.domain.utils.QueryConst;
+import org.platanus.webboard.domain.utils.QueryConstant;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -42,42 +42,42 @@ public class JdbcTemplateCommentRepository implements CommentRepository {
     }
 
     public int delete(Comment comment) {
-        return jdbcTemplate.update(QueryConst.COMMENT_DELETE, comment.getId());
+        return jdbcTemplate.update(QueryConstant.COMMENT_DELETE, comment.getId());
     }
 
     public int deleteByBoardId(long boardId) {
         return jdbcTemplate.
-                update(QueryConst.COMMENT_DELETE_BY_BOARD_ID, boardId);
+                update(QueryConstant.COMMENT_DELETE_BY_BOARD_ID, boardId);
     }
 
     public int update(Comment comment) {
-        return jdbcTemplate.update(QueryConst.COMMENT_UPDATE,
+        return jdbcTemplate.update(QueryConstant.COMMENT_UPDATE,
                 comment.getContent(), comment.getModifiedDate(), comment.getId());
     }
 
     public int updateDeleteFlag(Comment comment) {
-        return jdbcTemplate.update(QueryConst.COMMENT_UPDATE_DELETE_FLAG, comment.isDeleted(), comment.getId());
+        return jdbcTemplate.update(QueryConstant.COMMENT_UPDATE_DELETE_FLAG, comment.isDeleted(), comment.getId());
     }
 
     public Optional<Comment> findById(long id) {
-        List<Comment> result = jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ID, commentRowMapper(), id);
+        List<Comment> result = jdbcTemplate.query(QueryConstant.COMMENT_FIND_BY_ID, commentRowMapper(), id);
         return result.stream().findAny();
     }
 
     public List<Comment> findByArticleId(long id) {
-        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
+        return jdbcTemplate.query(QueryConstant.COMMENT_FIND_BY_ARTICLE_ID, commentRowMapper(), id);
     }
 
     public int findCountByArticleId(long id) {
-        return jdbcTemplate.queryForObject(QueryConst.COMMENT_FIND_COUNT_BY_ARTICLE_ID, Integer.class, id);
+        return jdbcTemplate.queryForObject(QueryConstant.COMMENT_FIND_COUNT_BY_ARTICLE_ID, Integer.class, id);
     }
 
     public List<Comment> findByContent(String content) {
-        return jdbcTemplate.query(QueryConst.COMMENT_FIND_BY_CONTENT, commentRowMapper(), "%" + content + "%");
+        return jdbcTemplate.query(QueryConstant.COMMENT_FIND_BY_CONTENT, commentRowMapper(), "%" + content + "%");
     }
 
     public List<Comment> findAll() {
-        return jdbcTemplate.query(QueryConst.COMMENT_FIND_ALL, commentRowMapper());
+        return jdbcTemplate.query(QueryConstant.COMMENT_FIND_ALL, commentRowMapper());
     }
 
     public RowMapper<Comment> commentRowMapper() {

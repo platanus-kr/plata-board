@@ -3,7 +3,7 @@ package org.platanus.webboard.domain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.platanus.webboard.domain.JdbcTemplate.JdbcTemplateBoardRepository;
+import org.platanus.webboard.domain.jdbctemplate.JdbcTemplateBoardRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
