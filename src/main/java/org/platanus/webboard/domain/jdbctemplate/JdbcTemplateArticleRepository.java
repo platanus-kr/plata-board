@@ -120,20 +120,18 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     public RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setId(rs.getLong("id"));
-            article.setBoardId(rs.getLong("board_id"));
-            article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("content"));
-            article.setAuthorId(rs.getLong("author_id"));
-            article.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
-            article.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
-            article.setDeleted(rs.getBoolean("deleted"));
-            article.setRecommend(rs.getLong("recommend"));
-            article.setViewCount(rs.getLong("view_count"));
-            return article;
-        };
+        return (rs, rowNum) -> Article.builder()
+                .id(rs.getLong("id"))
+                .boardId(rs.getLong("board_id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .authorId(rs.getLong("author_id"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .modifiedDate(rs.getTimestamp("modified_date").toLocalDateTime())
+                .deleted(rs.getBoolean("deleted"))
+                .recommend(rs.getLong("recommend"))
+                .viewCount(rs.getLong("view_count"))
+                .build();
     }
 
 
