@@ -6,7 +6,7 @@ import org.platanus.webboard.controller.board.ArticleRecommendService;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.CommentService;
-import org.platanus.webboard.controller.board.dto.ArticleViewDto;
+import org.platanus.webboard.controller.board.dto.ArticleResponseDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.CommentWriteDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
@@ -55,7 +55,7 @@ public class ArticleWebController {
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
-        model.addAttribute("article", ArticleViewDto.fromView(article, authorNickname));
+        model.addAttribute("article", ArticleResponseDto.fromView(article, authorNickname));
         model.addAttribute("comment", commentWriteDto);
         model.addAttribute("comments", commentsResponse);
         model.addAttribute("comments_quantity", commentsResponse.size());
@@ -87,7 +87,7 @@ public class ArticleWebController {
         model.addAttribute("board_id", boardId);
         model.addAttribute("article_id", articleId);
         model.addAttribute("board_name", boardName);
-        model.addAttribute("article", ArticleViewDto.fromModify(article));
+        model.addAttribute("article", ArticleResponseDto.fromModify(article));
         return "board/board_modify";
     }
 

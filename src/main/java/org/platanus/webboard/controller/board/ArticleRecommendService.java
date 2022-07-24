@@ -25,4 +25,8 @@ public class ArticleRecommendService {
         return result;
     }
 
+    public int countByArticleId(long articleId) {
+        return articleRecommendRepository.countByArticleId(articleId);
+    }
+
 }
