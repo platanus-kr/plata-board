@@ -1,12 +1,12 @@
 package org.platanus.webboard.controller.board.rest.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.board.ArticleRecommendService;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
+import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.ArticleResponseDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
@@ -28,11 +28,18 @@ public class ArticleRestControllerV1 {
     private final BoardService boardService;
     private final ArticleService articleService;
     private final ArticleRecommendService articleRecommendService;
+    private final CommentService commentService;
     private final UserService userService;
-    private final ObjectMapper objectMapper;
 
+    /**
+     * Get a article
+     *
+     * @param articleId
+     * @return
+     * @throws JsonProcessingException
+     */
     @GetMapping(value = "/{articleId}")
-    public ResponseEntity getArticle(@PathVariable("articleId") long articleId) throws JsonProcessingException {
+    public ResponseEntity getArticle(@PathVariable("articleId") long articleId) {
         Article article;
         String authorNickname;
         List<Comment> commentsResponse;
@@ -51,7 +58,7 @@ public class ArticleRestControllerV1 {
         }
         if (article.getId() < 0) {
             ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage("개시글이 없습니다.").build();
-            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(errorDto));
+            return ResponseEntity.badRequest().body(errorDto);
         }
         ArticleResponseDto resDto;
         resDto = ArticleResponseDto.builder()
@@ -66,11 +73,19 @@ public class ArticleRestControllerV1 {
                 .modifiedDate(article.getModifiedDate())
                 .recommend(recommendCount)
                 .build();
+        return ResponseEntity.ok(resDto);
+    }
+
+    @GetMapping(value = "/{articleId}/comments")
+    public ResponseEntity getComment(@PathVariable("articleId") long articleId) {
+        List<Comment> comments;
         try {
-            return ResponseEntity.ok(objectMapper.writeValueAsString(resDto));
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            comments = commentService.findCommentsByArticleId(articleId);
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errorDto);
         }
+        return ResponseEntity.ok(comments);
     }
 
 }

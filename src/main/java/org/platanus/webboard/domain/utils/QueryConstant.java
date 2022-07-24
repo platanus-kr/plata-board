@@ -32,10 +32,8 @@ public class QueryConstant {
     public static final String COMMENT_DELETE_BY_BOARD_ID = "delete from COMMENTS where ARTICLE_ID in (select ID from ARTICLES where BOARD_ID = ?)";
     public static final String COMMENT_UPDATE = "update COMMENTS set CONTENT = ?, MODIFIED_DATE=? where ID = ?";
     public static final String COMMENT_UPDATE_DELETE_FLAG = "update COMMENTS set DELETED = ? where ID = ?";
-    //    public static final String COMMENT_FIND_BY_ID = "select * from COMMENTS where ID = ?";
-    public static final String COMMENT_FIND_BY_ID = "select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C, USERS U where C.ID = ? AND C.AUTHOR_ID = U.ID AND C.DELETED = 0";
-    //    public static final String COMMENT_FIND_BY_ARTICLE_ID = "select * from COMMENTS where ARTICLE_ID = ? AND DELETED = 0";
-    public static final String COMMENT_FIND_BY_ARTICLE_ID = "select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C, USERS U where C.ARTICLE_ID = ? AND C.AUTHOR_ID = U.ID AND C.DELETED = 0";
+    public static final String COMMENT_FIND_BY_ID = "select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C left join USERS U on U.ID = C.AUTHOR_ID where C.ID = ? AND C.DELETED = 0";
+    public static final String COMMENT_FIND_BY_ARTICLE_ID = "select C.ID, C.ARTICLE_ID, C.CONTENT, C.AUTHOR_ID, C.CREATED_DATE, C.MODIFIED_DATE, C.DELETED, U.NICKNAME as AUTHOR_NICKNAME from COMMENTS C left join USERS U on  U.ID = C.AUTHOR_ID where C.ARTICLE_ID = ? AND C.DELETED = 0";
     public static final String COMMENT_FIND_COUNT_BY_ARTICLE_ID = "select count(*) from COMMENTS where ARTICLE_ID = ? and DELETED = 0";
     public static final String COMMENT_FIND_BY_CONTENT = "select * from COMMENTS where CONTENT like ?";
     public static final String COMMENT_FIND_ALL = "select * from COMMENTS";

@@ -5,9 +5,7 @@ import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.user.UserService;
-import org.platanus.webboard.domain.Board;
-import org.platanus.webboard.domain.User;
-import org.platanus.webboard.domain.UserRole;
+import org.platanus.webboard.domain.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -44,43 +42,47 @@ public class DataInitTest {
             System.out.println(e.getMessage());
         }
 
-//        User user2 = new User();
-//        user2.setUsername("test");
-//        user2.setEmail("test@test.com");
-//        user2.setPassword("test");
-//        user2.setNickname("test");
-//        user2.setRole(UserRole.USER);
-//        try {
-//            user2 = userService.join(user2);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
+        User user2 = new User();
+        user2.setUsername("test");
+        user2.setEmail("test@test.com");
+        user2.setPassword("test");
+        user2.setNickname("test");
+        user2.setRole(UserRole.USER);
+        try {
+            user2 = userService.join(user2);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-//
-//        Article article = new Article();
-//        article.setTitle("제목입니다");
-//        article.setBoardId(board.getId());
-//        article.setAuthorId(user.getId());
-//        article.setContent("내용입니다");
-//        for (int i = 1; i <= 100; i++) {
-//            try {
-//                article.setTitle(i + "번째 제목입니다");
-//                articleService.write(article);
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//        Comment comment = new Comment();
-//        comment.setContent("## 댓글 내용 입니다.");
-//        comment.setArticleId(10L);
-//        comment.setAuthorId(1L);
-//        comment.setDeleted(false);
-//        for (int i = 0; i < 5; i++) {
-//            try {
-//                commentService.write(comment);
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
+
+        for (int i = 1; i <= 100; i++) {
+            try {
+                Article article = Article.builder()
+                        .title(i + "번째 제목입니다")
+                        .boardId(board.getId())
+                        .authorId(user.getId())
+                        .content("내용입니다.")
+                        .build();
+                articleService.write(article);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        for (int i = 0; i <= 100; i++) {
+            for (int j = 0; j < 5; j++) {
+                try {
+                    Comment comment = new Comment();
+                    comment.setContent(j + " 번째 댓글 내용 입니다.");
+                    comment.setArticleId(i);
+                    comment.setAuthorId(1L);
+                    comment.setDeleted(false);
+                    commentService.write(comment);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
     }
 }

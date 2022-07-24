@@ -93,8 +93,6 @@ public class CommentService {
 
     public List<Comment> findCommentsByArticleId(long articleId) {
         List<Comment> comments = commentRepository.findByArticleId(articleId);
-//        List<Comment> returnComments = new ArrayList<>();
-//        comments.stream().filter(c -> !c.isDeleted()).forEach(c -> returnComments.add(c));
         return comments;
     }
 
