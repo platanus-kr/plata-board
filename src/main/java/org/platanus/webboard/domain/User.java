@@ -1,7 +1,7 @@
 package org.platanus.webboard.domain;
 
 import lombok.Data;
-import org.platanus.webboard.web.login.dto.UserSessionDto;
+import org.platanus.webboard.controller.login.dto.UserSessionDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

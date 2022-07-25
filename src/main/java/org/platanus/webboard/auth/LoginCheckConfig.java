@@ -1,6 +1,6 @@
 package org.platanus.webboard.auth;
 
-import org.platanus.webboard.web.login.argumentresolver.LoginArgumentResolver;
+import org.platanus.webboard.controller.login.argumentresolver.LoginArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

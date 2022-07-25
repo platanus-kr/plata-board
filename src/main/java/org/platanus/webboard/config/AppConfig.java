@@ -2,8 +2,7 @@ package org.platanus.webboard.config;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.*;
-import org.platanus.webboard.domain.JdbcTemplate.*;
-import org.platanus.webboard.domain.MyBatis.*;
+import org.platanus.webboard.domain.jdbctemplate.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,11 +11,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @RequiredArgsConstructor
 public class AppConfig {
     public final JdbcTemplate jdbcTemplate;
-    public final BoardMapper boardMapper;
-    public final UserMapper userMapper;
-    public final ArticleMapper articleMapper;
-    public final CommentMapper commentMapper;
-    public final ArticleRecommendMapper articleRecommendMapper;
+//    public final BoardMapper boardMapper;
+//    public final UserMapper userMapper;
+//    public final ArticleMapper articleMapper;
+//    public final CommentMapper commentMapper;
+//    public final ArticleRecommendMapper articleRecommendMapper;
 
     @Bean
     public BoardRepository boardRepository() {
