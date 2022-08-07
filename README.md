@@ -6,26 +6,36 @@
 
 ## 💻 개발 환경
 
-- Java 11
-- MariaDB 10.x / H2 Database
-- Gradle 7.1.1
-- Spring Boot 2.5.2
-    - Spring JDBC (JdbcTemplate)
-    - Spring Security + JSON Web Token
-    - Thymeleaf 3.0.12
-- Hibernate Validator
-- commonmark-java (Markdown Parser)
+```
+Java 11
+MariaDB 10.x / H2 Database
+Gradle 7.1.1
+Spring Boot 2.6.6
+Spring JDBC (JdbcTemplate)
+Spring Security 5.6.2
+JWT 4.0.0
+Thymeleaf 3.0.15
+Hibernate Validator
+commonmark-java (Markdown Parser)
+```
 
 ## 🛠️ 기능 구현
 
-- 기본적인 게시판 기능
-    - 게시판 / 게시물 / 코멘트
-    - Markdown 포맷
-    - 회원가입 / 로그인
-- 관리자 페이지
-    - 게시판 관리
-    - 사용자 관리
+**회원 기능** : 회원 가입
 
+**게시판 가능** : 게시물 작성/수정/삭제, 댓글 작성/수정/삭제
+
+**관리자 기능** : 게시판 생성/삭제
+
+**REST API** : JWT 인증/인가, 회원 기능, 게시판 기능
+
+## 🪧 버전 히스토리
+
+**2021.08.26** version 1 : Spring Boot + Thymeleaf 기본 게시판
+
+**2022.08.27** version 2 : REST API, Spring Security, JWT, React
+
+<!--
 ## 💡 서비스 구조
 
 작성중
@@ -37,6 +47,7 @@
 ## 🔥 개발 과정
 
 - 프로젝트에 대한 제작 과정과 소개는 [이 문서](https://platanus.me/post/1592) 를 참고해 주세요.
+-->
 
 * * *
 
@@ -115,7 +126,7 @@ java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar --spring.config.location=classp
 
 * * *
 
-## 🔁 Continuous Deploy
+## 🪄 Continuous Deploy
 
 GitHub Actions을 활용하여 지속적인 배포를 할 수 있습니다. master 브랜치에 merge가 되면 자동 배포를 합니다.
 
