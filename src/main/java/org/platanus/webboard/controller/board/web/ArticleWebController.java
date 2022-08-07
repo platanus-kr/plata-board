@@ -117,10 +117,11 @@ public class ArticleWebController {
             log.info("ArticleController comment-write #{} : {}", articleId, bindingResult);
             return "error/has_message";
         }
-        Comment comment = new Comment();
-        comment.setArticleId(articleId);
-        comment.setAuthorId(user.getId());
-        comment.setContent(commentRequest.getContent());
+        Comment comment = Comment.builder()
+                .articleId(articleId)
+                .authorId(user.getId())
+                .content(commentRequest.getContent())
+                .build();
         try {
             commentService.write(comment);
         } catch (Exception e) {
@@ -133,9 +134,10 @@ public class ArticleWebController {
     public String articleRecommendUpdate(@PathVariable("articleId") long articleId,
                                          @Login UserSessionDto user,
                                          @ModelAttribute("error") ErrorDto errorDto) {
-        ArticleRecommend articleRecommend = new ArticleRecommend();
-        articleRecommend.setArticleId(articleId);
-        articleRecommend.setUserId(user.getId());
+        ArticleRecommend articleRecommend = ArticleRecommend.builder()
+                .articleId(articleId)
+                .userId(user.getId())
+                .build();
         try {
             articleRecommendService.save(articleRecommend);
         } catch (Exception e) {

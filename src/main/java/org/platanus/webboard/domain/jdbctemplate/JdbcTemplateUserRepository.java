@@ -88,16 +88,15 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setUsername(rs.getString("username"));
-            user.setPassword(rs.getString("password"));
-            user.setNickname(rs.getString("nickname"));
-            user.setEmail(rs.getString("email"));
-            user.setDeleted(rs.getBoolean(("deleted")));
-            user.setRole(UserRole.valueOf(rs.getString("role")));
-            return user;
-        };
+        return (rs, rowNum) -> User.builder()
+                .id(rs.getLong("id"))
+                .username(rs.getString("username"))
+                .password(rs.getString("password"))
+                .nickname(rs.getString("nickname"))
+                .email(rs.getString("email"))
+                .deleted(rs.getBoolean("deleted"))
+                .role(UserRole.valueOf(rs.getString("role")))
+                .build();
+
     }
 }

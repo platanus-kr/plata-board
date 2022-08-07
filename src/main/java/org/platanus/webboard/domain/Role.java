@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ArticleRecommend {
-    private long id;
-    private long articleId;
-    private long userId;
+public class Role {
+    private UserRole roleName;
+    private Long userId;
 }

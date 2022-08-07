@@ -60,12 +60,10 @@ public class JdbcTemplateArticleRecommendRepository implements ArticleRecommendR
     }
 
     public RowMapper<ArticleRecommend> articleRecommendRowMapper() {
-        return (rs, rowNum) -> {
-            ArticleRecommend articleRecommend = new ArticleRecommend();
-            articleRecommend.setId(rs.getLong("id"));
-            articleRecommend.setArticleId(rs.getLong("article_id"));
-            articleRecommend.setUserId(rs.getLong("user_id"));
-            return articleRecommend;
-        };
+        return (rs, rowNum) -> ArticleRecommend.builder()
+                .id(rs.getLong("id"))
+                .articleId(rs.getLong("article_id"))
+                .userId(rs.getLong("user_id"))
+                .build();
     }
 }

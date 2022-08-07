@@ -18,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
         if (session != null && userSessionDto != null) {
-            if (userSessionDto.getRole() == UserRole.ADMIN) {
+            if (userSessionDto.getRole() == UserRole.ROLE_ADMIN) {
                 return true;
             } else {
                 response.sendRedirect("/");

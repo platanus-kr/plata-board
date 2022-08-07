@@ -30,7 +30,7 @@ public class AdminBoardWebController {
 
     @GetMapping(value = "/create")
     public String createForm(Model model) {
-        model.addAttribute("board", new Board());
+        model.addAttribute("board", new Board(null, "", ""));
         return "admin/board_create";
     }
 
@@ -42,9 +42,10 @@ public class AdminBoardWebController {
             log.info("Admin : Create board #{} by User #{} : {}", boardRequest.getId(), user.getId(), bindingResult);
             return "admin/board_create";
         }
-        Board board = new Board();
-        board.setName(boardRequest.getName());
-        board.setDescription((boardRequest.getDescription()));
+        Board board = Board.builder()
+                .name(boardRequest.getName())
+                .description(boardRequest.getDescription())
+                .build();
         try {
             board = boardService.create(board);
         } catch (Exception e) {

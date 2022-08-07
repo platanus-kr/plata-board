@@ -56,11 +56,11 @@ public class AdminUserWebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (findUser.getRole() == UserRole.USER) {
-            userService.updateRoleByUserId(userId, UserRole.ADMIN);
+        if (findUser.getRole() == UserRole.ROLE_USER) {
+            userService.updateRoleByUserId(userId, UserRole.ROLE_ADMIN);
         }
-        if (findUser.getRole() == UserRole.ADMIN) {
-            userService.updateRoleByUserId(userId, UserRole.USER);
+        if (findUser.getRole() == UserRole.ROLE_ADMIN) {
+            userService.updateRoleByUserId(userId, UserRole.ROLE_USER);
         }
         return "redirect:/admin/user";
     }

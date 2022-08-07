@@ -46,13 +46,11 @@ public class JdbcTemplateCommentRepository implements CommentRepository {
     }
 
     public int deleteByBoardId(long boardId) {
-        return jdbcTemplate.
-                update(QueryConstant.COMMENT_DELETE_BY_BOARD_ID, boardId);
+        return jdbcTemplate.update(QueryConstant.COMMENT_DELETE_BY_BOARD_ID, boardId);
     }
 
     public int update(Comment comment) {
-        return jdbcTemplate.update(QueryConstant.COMMENT_UPDATE,
-                comment.getContent(), comment.getModifiedDate(), comment.getId());
+        return jdbcTemplate.update(QueryConstant.COMMENT_UPDATE, comment.getContent(), comment.getModifiedDate(), comment.getId());
     }
 
     public int updateDeleteFlag(Comment comment) {
@@ -81,18 +79,17 @@ public class JdbcTemplateCommentRepository implements CommentRepository {
     }
 
     public RowMapper<Comment> commentRowMapper() {
-        return (rs, rowNum) -> {
-            Comment comment = new Comment();
-            comment.setId(rs.getLong("id"));
-            comment.setArticleId(rs.getLong("article_id"));
-            comment.setContent(rs.getString("content"));
-            comment.setAuthorId(rs.getLong("author_id"));
-            comment.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
-            comment.setModifiedDate(rs.getTimestamp("modified_date").toLocalDateTime());
-            comment.setDeleted(rs.getBoolean("deleted"));
-            comment.setAuthorNickname(rs.getString("author_nickname"));
-            return comment;
-        };
+        return (rs, rowNum) -> Comment.builder()
+                .id(rs.getLong("id"))
+                .articleId(rs.getLong("article_id"))
+                .content(rs.getString("content"))
+                .authorId(rs.getLong("author_id"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .modifiedDate(rs.getTimestamp("modified_date").toLocalDateTime())
+                .deleted(rs.getBoolean("deleted"))
+                .authorNickname(rs.getString("author_nickname"))
+                .build();
+
     }
 
 

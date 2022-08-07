@@ -36,7 +36,7 @@ public class UserWebController {
             log.info("User Controller : {}", bindingResult);
             return "user/join_form";
         }
-        user.setRole(UserRole.USER);
+        user.setRole(UserRole.ROLE_USER);
         try {
             userService.join(user);
             log.info("User Controller #{}: join {} user", user.getId(), user.getUsername());
