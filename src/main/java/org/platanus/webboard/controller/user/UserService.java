@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     public User join(User user) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent()) {
@@ -39,6 +41,7 @@ public class UserService implements UserDetailsService {
 //        MessageDigest md = MessageDigest.getInstance(("SHA-256"));
 //        md.update(user.getPassword().getBytes());
 //        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDeleted(false);
 //        user.setRole(UserRole.USER);
         user = userRepository.save(user);
