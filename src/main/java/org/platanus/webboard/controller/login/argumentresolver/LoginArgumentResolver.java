@@ -1,7 +1,7 @@
 package org.platanus.webboard.controller.login.argumentresolver;
 
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.auth.SessionConst;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

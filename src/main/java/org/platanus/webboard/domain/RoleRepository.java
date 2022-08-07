@@ -5,7 +5,9 @@ import java.util.List;
 public interface RoleRepository {
     Role save(Role save);
 
-    int delete(Role role);
+    int delete(UserRole userRole, long userId);
 
     List<Role> findAll();
+
+    List<Role> findByUserId(long userId);
 }

@@ -3,11 +3,10 @@ package org.platanus.webboard.controller.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
-import org.platanus.webboard.controller.login.argumentresolver.Login;
-import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,8 @@ public class AdminUserWebController {
 
     @GetMapping(value = "/{userId}/change")
     public String changeRoleConfirm(@PathVariable("userId") long userId,
-                                    @Login UserSessionDto user,
+                                    //@Login UserSessionDto user,
+                                    @AuthenticationPrincipal Object principal,
                                     @ModelAttribute("error") ErrorDto errorDto,
                                     Model model) {
         User findUser = new User();
@@ -39,7 +39,7 @@ public class AdminUserWebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (user.getId() == findUser.getId()) {
+        if (principal.toString().equals(findUser.getUsername())) {
             errorDto.setErrorMessage("자기 자신은 권한을 변경할 수 없습니다.");
             return "error/has_message";
         }
@@ -49,7 +49,8 @@ public class AdminUserWebController {
 
     @PostMapping(value = "/{userId}/change")
     public String changeRole(@PathVariable("userId") long userId,
-                             @Login UserSessionDto user) {
+                             //@Login UserSessionDto user,
+                             @AuthenticationPrincipal Object principal) {
         User findUser = new User();
         try {
             findUser = userService.findById(userId);
@@ -67,7 +68,8 @@ public class AdminUserWebController {
 
     @GetMapping(value = "/{userId}/delete")
     public String deleteConfirm(@PathVariable("userId") long userId,
-                                @Login UserSessionDto user,
+                                //@Login UserSessionDto user,
+                                @AuthenticationPrincipal Object principal,
                                 @ModelAttribute("error") ErrorDto errorDto) {
         User findUser = new User();
         try {
@@ -75,7 +77,7 @@ public class AdminUserWebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (user.getId() == findUser.getId()) {
+        if (principal.toString().equals(findUser.getUsername())) {
             errorDto.setErrorMessage("자기 자신은 삭제를 할 수 없습니다.");
             return "error/has_message";
         }
@@ -84,7 +86,8 @@ public class AdminUserWebController {
 
     @PostMapping(value = "/{userId}/delete")
     public String delete(@PathVariable("userId") long userId,
-                         @Login UserSessionDto user,
+                         //@Login UserSessionDto user,
+                         @AuthenticationPrincipal Object principal,
                          @ModelAttribute("error") ErrorDto errorDto) {
         User findUser = new User();
         try {
@@ -92,7 +95,7 @@ public class AdminUserWebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (user.getId() == findUser.getId()) {
+        if (principal.toString().equals(findUser.getUsername())) {
             errorDto.setErrorMessage("자기 자신은 삭제를 할 수 없습니다.");
             return "error/has_message";
         }

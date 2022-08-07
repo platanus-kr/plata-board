@@ -1,6 +1,5 @@
 package org.platanus.webboard.auth;
 
-import org.platanus.webboard.auth.utils.SessionConst;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.springframework.web.servlet.HandlerInterceptor;
 

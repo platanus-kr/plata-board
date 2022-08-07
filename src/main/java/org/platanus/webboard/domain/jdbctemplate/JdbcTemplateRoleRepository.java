@@ -31,29 +31,31 @@ public class JdbcTemplateRoleRepository implements RoleRepository {
     @Override
     public Role save(Role role) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ROLENAME", role.getRoleName());
+        parameters.put("ROLENAME", role.getRole());
         parameters.put("USER_ID", role.getUserId());
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
         return role;
     }
 
     @Override
-    public int delete(Role role) {
-        return jdbcTemplate.update(QueryConstant.ROLE_DELETE, role.getRoleName(), role.getUserId());
+    public int delete(UserRole userRole, long userId) {
+        return jdbcTemplate.update(QueryConstant.ROLE_DELETE, userRole, userId);
     }
-
-    public final static String ROLE_FIND_ALL = "select * from roles";
 
     @Override
     public List<Role> findAll() {
-        return jdbcTemplate.query(ROLE_FIND_ALL, roleRowMapper());
+        return jdbcTemplate.query(QueryConstant.ROLE_FIND_ALL, roleRowMapper());
+    }
+
+    @Override
+    public List<Role> findByUserId(long userId) {
+        return jdbcTemplate.query(QueryConstant.ROLE_FIND_BY_USER_ID, roleRowMapper(), userId);
     }
 
     private RowMapper<Role> roleRowMapper() {
         return (rs, rowNum) -> Role.builder()
-                .roleName(UserRole.valueOf(rs.getString("rolename")))
+                .role(UserRole.valueOf(rs.getString("rolename")))
                 .userId(rs.getLong("user_id"))
                 .build();
-
     }
 }

@@ -1,6 +1,6 @@
 package org.platanus.webboard.controller.admin;
 
-import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.auth.SessionConst;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.domain.UserRole;
 import org.springframework.web.servlet.HandlerInterceptor;

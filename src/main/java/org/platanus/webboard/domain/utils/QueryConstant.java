@@ -48,4 +48,6 @@ public class QueryConstant {
     public static final String USER_FIND_ALL = "select * from USERS where DELETED = 0";
     public static final String USER_ALL_DELETE = "delete from USERS";
     public final static String ROLE_DELETE = "delete from ROLES where ROLENAME = ? and USER_ID = ?";
+    public final static String ROLE_FIND_BY_USER_ID = "select * ROLES where USER_ID = ?";
+    public final static String ROLE_FIND_ALL = "select * from roles";
 }

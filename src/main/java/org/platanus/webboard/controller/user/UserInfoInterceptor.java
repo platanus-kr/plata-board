@@ -2,7 +2,7 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.auth.SessionConst;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.springframework.web.servlet.HandlerInterceptor;
 

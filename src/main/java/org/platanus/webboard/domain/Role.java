@@ -8,6 +8,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class Role {
-    private UserRole roleName;
+    private UserRole role;
     private Long userId;
 }

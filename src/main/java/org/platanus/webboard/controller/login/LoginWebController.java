@@ -2,7 +2,7 @@ package org.platanus.webboard.controller.login;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.auth.utils.SessionConst;
+import org.platanus.webboard.auth.SessionConst;
 import org.platanus.webboard.controller.login.dto.UserLoginDto;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.domain.User;

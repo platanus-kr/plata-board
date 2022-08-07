@@ -1,16 +1,23 @@
 package org.platanus.webboard.controller.front;
 
-import org.platanus.webboard.controller.login.argumentresolver.Login;
+import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class FrontWebController {
+    private final UserService userService;
+
     @GetMapping(value = "/")
-    public String front(@Login User user,
-                        Model model) {
+    public String front(//@Login User user,
+                        @AuthenticationPrincipal Object principal,
+                        Model model) throws Exception {
+        User user = userService.findByUsername(principal.toString());
         model.addAttribute("user", user);
         return "redirect:/board/1";
     }

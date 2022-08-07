@@ -5,16 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
 import org.platanus.webboard.domain.UserRole;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
-    public final UserRepository userRepository;
+public class UserService implements UserDetailsService {
+    private final UserRepository userRepository;
+    private final RoleService roleService;
 
     public User join(User user) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent()) {
@@ -130,5 +137,21 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if (optUser.isEmpty()) {
+            log.error("사용자를 찾을 수 없음");
+            throw new UsernameNotFoundException("사용자를 찾을 수 없음");
+        }
+        User user = optUser.get();
+        log.info("사용자 로그인 : {}", user.getUsername());
+        Collection<SimpleGrantedAuthority> authorites = roleService.findByUser(user).stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole().getKey()))
+                .collect(Collectors.toList());
+        log.info("{} 의 권한 : {}", user.getUsername(), authorites.toString());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorites);
     }
 }

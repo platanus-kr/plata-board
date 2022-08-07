@@ -3,9 +3,8 @@ package org.platanus.webboard.controller.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.board.BoardService;
-import org.platanus.webboard.controller.login.argumentresolver.Login;
-import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.domain.Board;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,9 +36,11 @@ public class AdminBoardWebController {
     @PostMapping(value = "/create")
     public String create(@Valid @ModelAttribute("board") Board boardRequest,
                          BindingResult bindingResult,
-                         @Login UserSessionDto user) {
+                         //@Login UserSessionDto user,
+                         @AuthenticationPrincipal Object principal) {
         if (bindingResult.hasErrors()) {
-            log.info("Admin : Create board #{} by User #{} : {}", boardRequest.getId(), user.getId(), bindingResult);
+//            log.info("Admin : Create board #{} by User #{} : {}", boardRequest.getId(), user.getId(), bindingResult);
+            log.info("Admin : Create board #{} by User #{} : {}", boardRequest.getId(), principal, bindingResult);
             return "admin/board_create";
         }
         Board board = Board.builder()

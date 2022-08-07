@@ -2,11 +2,10 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.controller.login.argumentresolver.Login;
-import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.controller.user.dto.UserModifyDto;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +49,9 @@ public class UserWebController {
 
     @GetMapping(value = "/modify")
     public String view(@ModelAttribute("modify") User modifyUser,
-                       @Login UserSessionDto user) throws Exception {
+                       //@Login UserSessionDto user,
+                       @AuthenticationPrincipal Object principal) throws Exception {
+        User user = userService.findByUsername(principal.toString());
         modifyUser.setId(user.getId());
         modifyUser.setUsername(user.getUsername());
         modifyUser.setDeleted(false);
@@ -62,7 +63,9 @@ public class UserWebController {
     @PostMapping(value = "/modify")
     public String modifyUser(@Valid @ModelAttribute("modify") UserModifyDto modifyUser,
                              BindingResult bindingResult,
-                             @Login UserSessionDto user) throws Exception {
+                             //@Login UserSessionDto user,
+                             @AuthenticationPrincipal Object principal) throws Exception {
+        User user = userService.findByUsername(principal.toString());
         if (bindingResult.hasErrors()) {
             log.error("User Controller #{} : {}", user.getId(), bindingResult);
             return "user/modify_form";

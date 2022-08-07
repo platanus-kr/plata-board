@@ -1,8 +1,6 @@
-# Plata Board Project
+# Plata Board
 
-<img src="https://user-images.githubusercontent.com/6806008/132082255-cd3cc4f0-a8a8-4545-9013-a0e9f85c67c6.png" width="600px">
-
-- Spring Boot와 JdbcTemplate, MyBatis로 구현한 회원 관리 기능을 가진 게시판 입니다.
+- Spring Boot와 JdbcTemplate로 구현한 회원 관리 기능을 가진 게시판 입니다.
 
 * * *
 
@@ -12,8 +10,8 @@
 - MariaDB 10.x / H2 Database
 - Gradle 7.1.1
 - Spring Boot 2.5.2
-    - Spring Data
     - Spring JDBC (JdbcTemplate)
+    - Spring Security + JSON Web Token
     - Thymeleaf 3.0.12
 - Hibernate Validator
 - commonmark-java (Markdown Parser)
@@ -30,11 +28,11 @@
 
 ## 💡 서비스 구조
 
-![service-flow](https://user-images.githubusercontent.com/6806008/132082548-897afdd5-b375-4e42-a37f-8562d4d2f056.png)
+작성중
 
 ## 🗃 DB 스키마 구조
 
-<img src="https://user-images.githubusercontent.com/6806008/130445595-b7b287de-2050-4c77-ab9d-4e536c573806.png" width="600px">
+작성중
 
 ## 🔥 개발 과정
 
