@@ -3,7 +3,7 @@ package org.platanus.webboard.domain.jdbctemplate;
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.ArticleRepository;
-import org.platanus.webboard.domain.utils.QueryConstant;
+import org.platanus.webboard.domain.jdbctemplate.constant.QueryConstant;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
