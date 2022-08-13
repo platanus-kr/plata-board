@@ -1,17 +1,35 @@
+### 게시판 조회
 GET http://localhost:8080/api/v1/board/1
 
-###
-
+### 게시판 페이지 조회
 GET http://localhost:8080/api/v1/board/1?page=5
 
-###
-
+### 게시글 조회
 GET http://localhost:8080/api/v1/article/1
 
-###
-
+### 댓글 조회
 GET http://localhost:8080/api/v1/comment/1
 
-###
-
+### 게시글의 댓글 조회
 GET http://localhost:8080/api/v1/article/1/comments
+
+### 사용자 로그인
+POST http://localhost:8080/api/login?username=admin&password=admin
+Content-Type: application/x-www-form-urlencoded
+
+### auth test
+GET http://localhost:8080/api/v1/test/auth
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MDM4NjI2OH0.bOVX5-lL5RXpGGmBznCpTDwI8HDnZuvpvRZtGWt_lOA
+
+### 게시글 작성
+POST http://localhost:8080/api/v1/board/1/write
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MDM4ODEzM30.Xz2qez7CtdcCBywzlPtnobBlPsJsg04RRBOXgqJWs9Y
+Content-Type: application/json
+
+{
+  "title": "Test Title",
+  "content": "Contents"
+}
+
+### 게시글 조회
+GET http://localhost:8080/api/v1/article/101

@@ -1,13 +1,13 @@
 package org.platanus.webboard.controller.front.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.controller.user.UserService;
-import org.platanus.webboard.domain.User;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class FrontWebController {
@@ -15,10 +15,9 @@ public class FrontWebController {
 
     @GetMapping(value = "/")
     public String front(//@Login User user,
-                        @AuthenticationPrincipal Object principal,
                         Model model) throws Exception {
-        User user = userService.findByUsername(principal.toString());
-        model.addAttribute("user", user);
+//        User user = userService.findByUsername((Object) principal);
+//        model.addAttribute("user", user);
         return "redirect:/board/1";
     }
 

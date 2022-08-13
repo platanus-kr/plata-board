@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS users
 -- role Table Create SQL
 CREATE TABLE `roles`
 (
-    `ROLENAME` VARCHAR(255) NOT NULL,
-    `USER_ID`  INT          NOT NULL,
+    `ROLENAME` VARCHAR(50) NOT NULL,
+    `USER_ID`  INT         NOT NULL,
     CONSTRAINT PK_rolename_userid PRIMARY KEY (ROLENAME, USER_ID)
 );
 

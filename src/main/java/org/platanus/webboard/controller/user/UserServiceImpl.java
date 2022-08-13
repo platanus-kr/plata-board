@@ -39,12 +39,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
             throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
         }
-//        MessageDigest md = MessageDigest.getInstance(("SHA-256"));
-//        md.update(user.getPassword().getBytes());
-//        user.setPassword(String.format("%064x", new BigInteger(1, md.digest())));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDeleted(false);
-//        user.setRole(UserRole.USER);
         user = userRepository.save(user);
         log.info("User join #{}, {}", user.getId(), user.getUsername());
         return user;
@@ -124,6 +120,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User findByUsername(Object principal) throws Exception {
+        org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) principal;
+        log.info("Get principal : " + userDetails.getUsername());
+        Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
+        if (user.isEmpty() || user.get().isDeleted()) {
+            log.info("User findByUsername - {}: 없는 회원 입니다.", principal);
+            throw new IllegalArgumentException("없는 회원 입니다.");
+        }
+        return user.get();
+    }
+
+    @Override
     public User findByNickname(String nickname) throws Exception {
         Optional<User> user = userRepository.findByNickname(nickname);
         if (user.isEmpty() || user.get().isDeleted()) {
@@ -157,8 +165,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
-            log.error("사용자를 찾을 수 없음");
-            throw new UsernameNotFoundException("사용자를 찾을 수 없음");
+            log.error("loadUserByUsername : 사용자를 찾을 수 없음");
+            throw new UsernameNotFoundException("loadUserByUsername : 사용자를 찾을 수 없음");
         }
         User user = optUser.get();
         log.info("사용자 로그인 : {}", user.getUsername());

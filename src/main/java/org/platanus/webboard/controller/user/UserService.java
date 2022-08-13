@@ -21,6 +21,8 @@ public interface UserService {
 
     User findByUsername(String username) throws Exception;
 
+    User findByUsername(Object principal) throws Exception;
+
     User findByNickname(String nickname) throws Exception;
 
     User findByEmail(String email) throws Exception;

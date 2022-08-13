@@ -2,16 +2,19 @@ package org.platanus.webboard.controller.board.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.permission.HasUserRole;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.ArticlesResponseDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +26,7 @@ import javax.validation.Valid;
 public class BoardRestControllerV1 {
     private final BoardService boardService;
     private final ArticleService articleService;
+    private final UserService userService;
 
     /**
      * Return article list in a board by boardId
@@ -59,17 +63,28 @@ public class BoardRestControllerV1 {
      * @param articleRequest
      * @return
      */
-    @PreAuthorize("hasRole(UserRole.USER)")
     @PostMapping(value = "/{id}/write")
+    @HasUserRole
     public ResponseEntity write(@PathVariable("id") long boardId,
-                                @Valid @ModelAttribute("article") ArticleWriteDto articleRequest) {
-        Article article = Article.fromWriteDto(articleRequest);
+                                @AuthenticationPrincipal Object principal,
+                                @Valid @RequestBody ArticleWriteDto articleRequest) {
+        User user;
         try {
-            articleService.write(article);
+            user = userService.findByUsername((String) principal);
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
             return ResponseEntity.badRequest().body(errorDto);
         }
-        return ResponseEntity.ok(200);
+        Article article = Article.fromWriteDto(articleRequest);
+        article.setBoardId(boardId);
+        article.setAuthorId(user.getId());
+        Article writtenArticle;
+        try {
+            writtenArticle = articleService.write(article);
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        return ResponseEntity.ok(writtenArticle.getId());
     }
 }

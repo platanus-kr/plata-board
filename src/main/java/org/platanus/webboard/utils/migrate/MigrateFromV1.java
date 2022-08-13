@@ -21,6 +21,8 @@ public class MigrateFromV1 {
     @GetMapping("/toV2")
     public ResponseEntity<?> migrateFromV1() {
 
+        log.info("Start Migrate from V1 to V2");
+
 
         return ResponseEntity.ok("200");
     }

@@ -69,7 +69,7 @@ public class DataInitializer {
             log.info(v.toString());
         });
 
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 2; i++) {
             try {
                 Article article = Article.builder()
                         .title(i + "번째 제목입니다")
@@ -83,7 +83,7 @@ public class DataInitializer {
             }
         }
 
-        for (int i = 0; i <= 100; i++) {
+        for (int i = 0; i <= 2; i++) {
             for (int j = 0; j < 5; j++) {
                 try {
                     Comment comment = Comment.builder()
