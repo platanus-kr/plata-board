@@ -58,6 +58,7 @@ public class SpringSecurityConfig {
                 .hasAnyAuthority(UserRole.ROLE_USER.getKey());
         // For Legacy Web Page
         http.authorizeRequests().antMatchers("/board/**", "/article/**", "/login/**", "/user/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/migrate/**").hasAnyAuthority(UserRole.ROLE_ADMIN.getKey());
         http.authorizeRequests().antMatchers("/admin/**").denyAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authFilter);

@@ -65,6 +65,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User update(User user) throws Exception {
+        if (userRepository.update(user) == 1)
+            return userRepository.findById(user.getId()).get();
+        else {
+            log.info("User update #{}: Repository Error.", user.getId());
+            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+        }
+    }
+
+    @Override
     public User updateRoleByUserId(long id, UserRole role) {
         User user = userRepository.findById(id).get();
         if (role == UserRole.ROLE_USER)

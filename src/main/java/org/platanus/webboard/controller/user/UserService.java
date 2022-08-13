@@ -10,6 +10,8 @@ public interface UserService {
 
     User update(User user, User sessionUser) throws Exception;
 
+    User update(User user) throws Exception;
+
     User updateRoleByUserId(long id, UserRole role);
 
     void revoke(User user) throws Exception;
