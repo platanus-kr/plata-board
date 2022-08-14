@@ -89,6 +89,6 @@ jobs:
           script: |
             cd ${{ secrets.DIST_PATH }}
             rm -rf repo
-            git pull https://github.com/platanus-kr/plata-board.git repo
+            git clone https://github.com/platanus-kr/plata-board.git repo
             mv ./repo/scripts/deploy.sh ./deploy.sh
             sh deploy.sh
