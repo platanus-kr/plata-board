@@ -14,9 +14,10 @@ Spring Boot 2.6.6
 Spring JDBC (JdbcTemplate)
 Spring Security 5.6.2
 JWT 4.0.0
-Thymeleaf 3.0.15
+Thymeleaf 3.0.15 - deprecated
 Hibernate Validator
 commonmark-java (Markdown Parser)
+React V6
 ```
 
 ## 🛠️ 기능 구현
@@ -27,7 +28,7 @@ commonmark-java (Markdown Parser)
 
 **관리자 기능** : 게시판 생성/삭제
 
-**REST API** : JWT 인증/인가, 회원 기능, 게시판 기능
+(v2 추가) **REST API** : JWT 인증/인가, 회원 기능, 게시판 기능
 
 ## 🪧 버전 히스토리
 
@@ -53,6 +54,10 @@ commonmark-java (Markdown Parser)
 
 ## ⚙️ 실행과 배포
 
+```
+현재 프론트 분리 작업중이기 때문에 제대로 실행되지 않을 수 있습니다. (2022.09 완료 예정)
+```
+
 서비스를 실행하기 위해 3가지 옵션이 준비되어 있습니다.
 
 1. 로컬 실행
@@ -62,16 +67,22 @@ commonmark-java (Markdown Parser)
 
 ### 1. 로컬 실행
 
+<details>
+<summary> 구) Thymeleaf 프론트 실행</summary>
+
+
 Java 11만 준비되어 있다면, 내장된 gradle을 통해 아래와 같이 쉽게 로컬에서 실행할 수 있습니다.
 
 - Linux/OS X
 
 ```bash
-sh gradlew build
-java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar
+sh gradlew bootJar
+java -jar build/libs/plata-board-0.0.2.jar
 ```
 
 이후 다른 작업 없이 `http://localhost:8080`로 바로 접속 가능합니다. 기록한 데이터는 서버가 종료되면 모두 사라집니다. (H2 메모리 데이터베이스)
+
+</details>
 
 ### 2. 서버 실행 (서버 및 인스턴스)
 
@@ -114,15 +125,20 @@ source ~/.bash_profile
 모든 환경이 준비되었다면 아래의 명령어로 쉽게 실행할 수 있습니다.
 
 ```bash
-sh gradlew build
-java -jar build/libs/webboard-0.0.1-SNAPSHOT.jar --spring.config.location=classpath:/application.properties --spring.profiles.active=release
+sh gradlew bootJar
+java -jar build/libs/plata-baord-0.0.2.jar --spring.config.location=classpath:/application.properties --spring.profiles.active=release
 ```
 
 #### 웹에 개시하기
 
+<details>
+<summary>구) Thymeleaf 프론트</summary>
+
 웹 게시판 서비스는 8080포트로 서버 로컬 실행 됩니다.
 
 만약 도메인이나 80포트 또는 SSL 통신이 필요하다면 [이 문서](https://platanus.me/post/1590) 를 통해서 Reverse proxy 설정을 할 수 있습니다.
+</details>
+
 
 * * *
 
@@ -132,9 +148,10 @@ GitHub Actions을 활용하여 지속적인 배포를 할 수 있습니다. mast
 
 GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
-|Secret|설명|
-| --- | --- |
-|WEBBOARD_HOST|호스트의 주소|
-|WEBBOARD_PORT|호스트의 SSH 포트|
-|WEBBOARD_ID|호스트의 계정|
-|WEBBOARD_KEY|호스트의 SSH KEY|
+|Secret| 설명           |
+| --- |--------------|
+|WEBBOARD_HOST| 호스트의 주소      |
+|WEBBOARD_PORT| 호스트의 SSH 포트  |
+|WEBBOARD_ID| 호스트의 계정      |
+|WEBBOARD_KEY| 호스트의 SSH KEY |
+|DIST_PATH| 호스트에서 실행할 경로 |
