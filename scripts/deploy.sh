@@ -2,7 +2,7 @@
 
 source ~/.bash_profile
 
-APP_NAME=webboard
+APP_NAME=plata-board
 REPOSITORY=`pwd`
 RELEASE=release
 
