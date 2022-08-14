@@ -1,23 +1,94 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+## 2022 github.com/platanus-kr
 
-name: remote ssh command for release deploy
+name: Deploy service for production (Gradle)
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
 
 jobs:
+  ## 1. 빌드
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using key
+      ## 형상 다운로드
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      ## 빌드
+      - name: Build package
+        run: ./gradlew bootJar
+      ## 빌드 아티팩트 확인
+      - name: Show structure of artifact files
+        run: ls -ahl ./build/libs/*.jar
+      ## 빌드 아티팩트 업로드
+      - name: Upload build artifact for job
+        uses: actions/upload-artifact@v3
+        with:
+          ## 업로드 키 값 (임의지정)
+          name: project_artifact
+          ## Gradle의 경우
+          path: "./build/libs/*.jar"
+  ## 2. 배포
+  distribute:
+    ## 빌드가 선행되야함.
+    #    if: ${{ always() }}
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      ## 아티팩트 전송을 위한 임시 공간
+      - name: Create distribute
+        run: mkdir ~/dist
+      ## 빌드 한 아티팩트 다운로드
+      - name: Download build artifact for job
+        uses: actions/download-artifact@v3
+        with:
+          name: project_artifact
+          path: dist
+      ## 아티팩트 확인
+      - name: Show structure of downloaded files
+        run: |
+          ls -alh dist
+      ## 서버에 아티팩트 전송
+      - name: Transfer artifact
+        uses: appleboy/scp-action@master
+        with:
+          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          rm: true
+          source: "dist/*.jar"
+          target: ${{ secrets.DIST_PATH }}
+          ## 작업에 사용했던 dist 디렉토리를 경로상에서 제거
+          strip_components: 1
+      ## 전송된 아티팩트 확인
+      - name: Show structure of transfer files
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
           script: |
-            cd repo/webboard/scripts
+            cd ${{ secrets.DIST_PATH }}
+            ls -alh
+  ## 3. 서비스 재기동
+  service_restart:
+    ## 앞 작업이 선행되고 성공해야 함
+    needs: [ build, distribute ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call service restart
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          ## 배포 스크립트를 저장소로부터 항상 최신으로 가져오고, 실행.
+          script: |
+            cd ${{ secrets.DIST_PATH }}
+            rm -rf repo
+            git pull https://github.com/platanus-kr/plata-board.git repo
+            mv ./repo/scripts/deploy.sh ./deploy.sh
             sh deploy.sh

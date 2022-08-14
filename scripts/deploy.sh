@@ -2,21 +2,12 @@
 
 source ~/.bash_profile
 
-cd ..
-
-APP_NAME=webboard
+APP_NAME=plata-board
 REPOSITORY=`pwd`
 RELEASE=release
 
-# 저장소로부터 소스를 업데이트 받습니다.
-git pull
-
-# gradle 빌드와 jar 파일 패키징 작업을 합니다. (작업 완료시 .jar파일 생성)
-sh gradlew build
-
 # .jar 파일 타겟팅
-JAR_NAME=$(ls $REPOSITORY/build/libs | grep jar | tail -n 1)
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+JAR_NAME=$(ls $REPOSITORY | grep jar)
 
 # 현재 실행중인 서버가 있으면 잡아서 종료 시킵니다.
 CURRENT_PID=$(pgrep -f $APP_NAME)
@@ -30,8 +21,9 @@ else
 fi
 
 # .jar 파일 java 실행합니다.
-echo ">>>> $JAR_PATH java execute."
-nohup java -jar $JAR_PATH --spring.config.location=classpath:/application.properties --spring.profiles.active=$RELEASE > /dev/null 2> /dev/null < /dev/null &
+echo ">>>> $JAR_NAME java execute."
+nohup java -jar ./$JAR_NAME --spring.config.location=classpath:/application.properties --spring.profiles.active=$RELEASE > /dev/null 2> /dev/null < /dev/null &
+## java -jar ./plata-board-0.0.2.jar --spring.config.location=classpath:/application.properties --spring.profiles.active=release > /dev/null 2> /dev/null < /dev/null &
 sleep 15
 CURRENT_PID=$(pgrep -f $APP_NAME)
 echo ">>>> New PID: $CURRENT_PID"

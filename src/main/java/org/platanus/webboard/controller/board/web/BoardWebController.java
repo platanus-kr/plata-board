@@ -6,10 +6,11 @@ import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
-import org.platanus.webboard.controller.login.argumentresolver.Login;
-import org.platanus.webboard.controller.login.dto.UserSessionDto;
+import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.domain.User;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 public class BoardWebController {
     private final BoardService boardService;
     private final ArticleService articleService;
+    private final UserService userService;
 
     @GetMapping(value = "/{id}")
     public String list(@PathVariable("id") long boardId,
@@ -39,7 +41,8 @@ public class BoardWebController {
 
     @GetMapping(value = "/{id}/write")
     public String writeForm(@PathVariable("id") long id,
-                            @Login UserSessionDto user,
+                            //@Login UserSessionDto user,
+                            @AuthenticationPrincipal Object principal,
                             Model model) throws Exception {
         String boardName = boardService.findById(id).getName();
         model.addAttribute("board_id", id);
@@ -52,8 +55,9 @@ public class BoardWebController {
     public String write(@PathVariable("id") long id,
                         @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
                         BindingResult bindingResult,
-                        @Login UserSessionDto user) {
-
+                        //@Login UserSessionDto user
+                        @AuthenticationPrincipal Object principal) throws Exception {
+        User user = userService.findByUsername(principal.toString());
         if (bindingResult.hasErrors()) {
             log.info("Board write #{} by User #{} : {}", id, user.getId(), bindingResult);
             return "board/board_write";

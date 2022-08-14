@@ -20,13 +20,13 @@ public class UserModifyDto {
     private String email;
 
     public static User from(UserModifyDto userModifyDto) {
-        User user = new User();
-        user.setId(userModifyDto.getId());
-        user.setUsername(userModifyDto.getUsername());
-        user.setPassword(userModifyDto.getPassword());
-        user.setNickname(userModifyDto.getNickname());
-        user.setEmail(userModifyDto.getEmail());
-        user.setDeleted(false);
-        return user;
+        return User.builder()
+                .id(userModifyDto.getId())
+                .username(userModifyDto.getUsername())
+                .password(userModifyDto.getPassword())
+                .nickname(userModifyDto.getNickname())
+                .email(userModifyDto.getEmail())
+                .deleted(false)
+                .build();
     }
 }

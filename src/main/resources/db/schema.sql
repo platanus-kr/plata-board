@@ -12,6 +12,15 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 
+-- role Table Create SQL
+CREATE TABLE `roles`
+(
+    `ROLENAME` VARCHAR(50) NOT NULL,
+    `USER_ID`  INT         NOT NULL,
+    CONSTRAINT PK_rolename_userid PRIMARY KEY (ROLENAME, USER_ID)
+);
+
+
 -- boards Table Create SQL
 CREATE TABLE IF NOT EXISTS boards
 (

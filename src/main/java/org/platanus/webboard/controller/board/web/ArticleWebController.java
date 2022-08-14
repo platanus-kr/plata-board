@@ -11,13 +11,12 @@ import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.CommentWriteDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
 import org.platanus.webboard.controller.board.utils.MarkdownParser;
-import org.platanus.webboard.controller.login.argumentresolver.Login;
-import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.ArticleRecommend;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -64,10 +63,12 @@ public class ArticleWebController {
 
     @GetMapping(value = "/{articleId}/delete")
     public String remove(@PathVariable("articleId") long articleId,
-                         @Login UserSessionDto user) throws Exception {
+                         //@Login UserSessionDto user,
+                         @AuthenticationPrincipal Object principal) throws Exception {
         Article article = articleService.findById(articleId);
         long redirectBoardId = article.getBoardId();
-        User userFromDto = User.fromLoginSessionDto(user);
+//        User userFromDto = User.fromLoginSessionDto(user);
+        User userFromDto = userService.findByUsername(principal.toString());
         if (!articleService.updateDeleteFlag(article, userFromDto))
             log.info("ArticleController remove #{}: Service Error.", article.getId());
         return "redirect:/board/" + redirectBoardId;
@@ -75,10 +76,14 @@ public class ArticleWebController {
 
     @GetMapping(value = "/{articleId}/modify")
     public String articleModifyView(@PathVariable("articleId") long articleId,
-                                    @Login UserSessionDto user,
+                                    //@Login UserSessionDto user,
+                                    @AuthenticationPrincipal Object principal,
                                     Model model) throws Exception {
-        if (user.getId() != articleService.findById(articleId).getAuthorId()) {
-            log.info("ArticleController modify #{}: 글쓴이가 아닙니다. by User {}", articleId, user.getId());
+//        if (user.getId() != articleService.findById(articleId).getAuthorId()) {
+        long authorId = articleService.findById(articleId).getAuthorId();
+        User userByAuthor = userService.findById(authorId);
+        if (principal.toString().equals(userByAuthor.getUsername())) {
+            log.info("ArticleController modify #{}: 글쓴이가 아닙니다. by User {}", articleId, userByAuthor.getId());
             return "redirect:/article/{articleId}";
         }
         Article article = articleService.findById(articleId);
@@ -93,7 +98,8 @@ public class ArticleWebController {
 
     @PostMapping(value = "/{articleId}/modify")
     public String articleModify(@PathVariable("articleId") long articleId,
-                                @Login UserSessionDto user,
+                                //@Login UserSessionDto user,
+                                @AuthenticationPrincipal Object principal,
                                 @Valid @ModelAttribute("article") ArticleWriteDto articleRequest,
                                 BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -103,24 +109,28 @@ public class ArticleWebController {
         Article article = articleService.findById(articleId);
         article.setTitle(articleRequest.getTitle());
         article.setContent(articleRequest.getContent());
-        User userFromDto = User.fromLoginSessionDto(user);
+//        User userFromDto = User.fromLoginSessionDto(user);
+        User userFromDto = userService.findByUsername(principal.toString());
         articleService.update(article, userFromDto);
         return "redirect:/article/{articleId}";
     }
 
     @PostMapping(value = "/{articleId}")
     public String commentWrite(@PathVariable("articleId") long articleId,
-                               @Login UserSessionDto user,
+                               //@Login UserSessionDto user,
+                               @AuthenticationPrincipal Object principal,
                                @Valid @ModelAttribute("comment") CommentWriteDto commentRequest,
-                               BindingResult bindingResult) {
+                               BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
             log.info("ArticleController comment-write #{} : {}", articleId, bindingResult);
             return "error/has_message";
         }
-        Comment comment = new Comment();
-        comment.setArticleId(articleId);
-        comment.setAuthorId(user.getId());
-        comment.setContent(commentRequest.getContent());
+        User user = userService.findByUsername(principal.toString());
+        Comment comment = Comment.builder()
+                .articleId(articleId)
+                .authorId(user.getId())
+                .content(commentRequest.getContent())
+                .build();
         try {
             commentService.write(comment);
         } catch (Exception e) {
@@ -131,11 +141,14 @@ public class ArticleWebController {
 
     @GetMapping(value = "/{articleId}/recommend")
     public String articleRecommendUpdate(@PathVariable("articleId") long articleId,
-                                         @Login UserSessionDto user,
-                                         @ModelAttribute("error") ErrorDto errorDto) {
-        ArticleRecommend articleRecommend = new ArticleRecommend();
-        articleRecommend.setArticleId(articleId);
-        articleRecommend.setUserId(user.getId());
+                                         //@Login UserSessionDto user,
+                                         @AuthenticationPrincipal Object principal,
+                                         @ModelAttribute("error") ErrorDto errorDto) throws Exception {
+        User user = userService.findByUsername(principal.toString());
+        ArticleRecommend articleRecommend = ArticleRecommend.builder()
+                .articleId(articleId)
+                .userId(user.getId())
+                .build();
         try {
             articleRecommendService.save(articleRecommend);
         } catch (Exception e) {
