@@ -23,6 +23,7 @@ fi
 # .jar 파일 java 실행합니다.
 echo ">>>> $JAR_NAME java execute."
 nohup java -jar ./$JAR_NAME --spring.config.location=classpath:/application.properties --spring.profiles.active=$RELEASE > /dev/null 2> /dev/null < /dev/null &
+## java -jar ./plata-board-0.0.2.jar --spring.config.location=classpath:/application.properties --spring.profiles.active=release > /dev/null 2> /dev/null < /dev/null &
 sleep 15
 CURRENT_PID=$(pgrep -f $APP_NAME)
 echo ">>>> New PID: $CURRENT_PID"

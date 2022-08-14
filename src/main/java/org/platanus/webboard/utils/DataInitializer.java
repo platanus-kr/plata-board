@@ -10,8 +10,6 @@ import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.*;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class DataInitializer {
     private final ArticleService articleService;
     private final CommentService commentService;
 
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         User user = User.builder()
                 .username("admin")
