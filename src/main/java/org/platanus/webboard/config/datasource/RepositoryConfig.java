@@ -1,4 +1,4 @@
-package org.platanus.webboard.config;
+package org.platanus.webboard.config.datasource;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.*;

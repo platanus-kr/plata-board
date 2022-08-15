@@ -39,7 +39,7 @@ public class ArticleRestControllerV1 {
      * @throws JsonProcessingException
      */
     @GetMapping(value = "/{articleId}")
-    public ResponseEntity getArticle(@PathVariable("articleId") long articleId) {
+    public ResponseEntity<?> getArticle(@PathVariable("articleId") long articleId) {
         Article article;
         String authorNickname;
         List<Comment> commentsResponse;
@@ -49,7 +49,6 @@ public class ArticleRestControllerV1 {
         try {
             article = articleService.findById(articleId);
             authorNickname = userService.findById(article.getAuthorId()).getNickname();
-//            commentsResponse = commentService.findCommentsByArticleId(articleId);
             boardName = boardService.findById(article.getBoardId()).getName();
             recommendCount = articleRecommendService.countByArticleId(article.getId());
         } catch (Exception e) {
@@ -77,7 +76,7 @@ public class ArticleRestControllerV1 {
     }
 
     @GetMapping(value = "/{articleId}/comments")
-    public ResponseEntity getComment(@PathVariable("articleId") long articleId) {
+    public ResponseEntity<?> getComment(@PathVariable("articleId") long articleId) {
         List<Comment> comments;
         try {
             comments = commentService.findCommentsByArticleId(articleId);

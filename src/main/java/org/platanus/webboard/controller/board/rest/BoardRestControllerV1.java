@@ -2,7 +2,7 @@ package org.platanus.webboard.controller.board.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.config.permission.HasUserRole;
+import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
@@ -38,7 +38,7 @@ public class BoardRestControllerV1 {
      */
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public ResponseEntity list(@PathVariable("id") long boardId, @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
+    public ResponseEntity<?> list(@PathVariable("id") long boardId, @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
         String boardName;
         Page<ArticleListDto> articles;
         try {
@@ -65,9 +65,9 @@ public class BoardRestControllerV1 {
      */
     @PostMapping(value = "/{id}/write")
     @HasUserRole
-    public ResponseEntity write(@PathVariable("id") long boardId,
-                                @AuthenticationPrincipal Object principal,
-                                @Valid @RequestBody ArticleWriteDto articleRequest) {
+    public ResponseEntity<?> write(@PathVariable("id") long boardId,
+                                   @AuthenticationPrincipal Object principal,
+                                   @Valid @RequestBody ArticleWriteDto articleRequest) {
         User user;
         try {
             user = userService.findByUsername((String) principal);

@@ -7,10 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class WebboardApplication {
+//@ConfigurationPropertiesScan("org.platanus.webboard.config")
+public class PlataBoardApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebboardApplication.class, args);
+        SpringApplication.run(PlataBoardApplication.class, args);
     }
 
     @Bean

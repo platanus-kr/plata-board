@@ -6,7 +6,7 @@ import org.platanus.webboard.domain.User;
 import java.util.List;
 
 public interface RoleService {
-    Role join(Role role);
+    Role add(Role role);
 
     int remove(Role role);
 

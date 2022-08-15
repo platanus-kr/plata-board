@@ -1,4 +1,4 @@
-package org.platanus.webboard.config.filter;
+package org.platanus.webboard.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

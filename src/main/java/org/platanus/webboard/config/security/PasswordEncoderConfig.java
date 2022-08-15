@@ -1,4 +1,4 @@
-package org.platanus.webboard.config;
+package org.platanus.webboard.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
