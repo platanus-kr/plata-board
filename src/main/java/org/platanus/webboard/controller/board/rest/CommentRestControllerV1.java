@@ -23,7 +23,7 @@ public class CommentRestControllerV1 {
     private final UserService userService;
 
     @GetMapping(value = "/{commentId}")
-    public ResponseEntity getComment(@PathVariable("commentId") long commentId) {
+    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId) {
         Comment comment;
         User user;
         try {

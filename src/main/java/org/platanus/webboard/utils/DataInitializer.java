@@ -2,13 +2,17 @@ package org.platanus.webboard.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.ConfigConstant;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.user.RoleService;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @Slf4j
 @Component
@@ -20,49 +24,48 @@ public class DataInitializer {
     private final BoardService boardService;
     private final ArticleService articleService;
     private final CommentService commentService;
+    @Value("${plataboard.environment.profile}")
+    private String profile;
 
-    // @PostConstruct
+    @Value("${plataboard.environment.frontend-address}")
+    private String feAddress;
+
+    @PostConstruct
     public void init() {
-        User user = User.builder()
-                .username("admin")
-                .password("admin")
-                .email("admin@admin.net")
-                .nickname("admin")
-                .role(UserRole.ROLE_ADMIN)
-                .build();
+        // properties 파일 내 plataboard.environment.profile이 local 일 때만 실행됨.
+        if (profile.equals(ConfigConstant.PROPERTY_ENV_PROFILE_PRODUCTION)) {
+            return;
+        }
+
+        log.info("Frontend address for CORS allow : {}", feAddress);
+
+
+        // 테스트 운영자 생성
+        User user = null;
         try {
-            user = userService.join(user);
+            user = userService.join(new User(null, "admin", "admin", "운영자", "admin@admin.net", false, UserRole.ROLE_ADMIN));
+//            roleService.add(new Role(UserRole.ROLE_ADMIN, user.getId()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-        Board board = Board.builder()
-                .name("Board")
-                .description("the board")
-                .build();
+        // 테스트 유저 생성
+        User user2;
         try {
-            board = boardService.create(board);
+            user2 = userService.join(new User(null, "user", "user", "유저", "user@user.com", false, UserRole.ROLE_ADMIN));
+//            roleService.add(new Role(UserRole.ROLE_USER, user2.getId()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-        User user2 = User.builder()
-                .username("user")
-                .password("user")
-                .email("user@user.com")
-                .nickname("user")
-                .role(UserRole.ROLE_USER)
-                .build();
+        // 테스트 보드 생성
+        Board board = null;
         try {
-            user2 = userService.join(user2);
+            board = boardService.create(new Board(null, "Board", "the Board"));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-
-        roleService.join(new Role(UserRole.ROLE_USER, user.getId()));
-        roleService.join(new Role(UserRole.ROLE_ADMIN, user.getId()));
-        roleService.join(new Role(UserRole.ROLE_USER, user2.getId()));
         roleService.findAll().stream().forEach(v -> {
             log.info(v.toString());
         });

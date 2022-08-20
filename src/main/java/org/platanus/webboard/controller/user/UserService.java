@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserService {
     User join(User user) throws Exception;
 
+    User add(User user) throws Exception;
+
     User update(User user, User sessionUser) throws Exception;
 
     User update(User user) throws Exception;

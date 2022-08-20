@@ -1,4 +1,4 @@
-package org.platanus.webboard.config.filter;
+package org.platanus.webboard.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 인증을 위한 Spring Security 필터
+ */
 @Slf4j
 public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private static AuthenticationManager authenticationManager;
@@ -55,8 +58,6 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-//        response.setHeader("access_token", access_token);
-//        response.setHeader("refresh_token", refresh_token);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);

@@ -2,31 +2,46 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
 import org.platanus.webboard.domain.UserRole;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public User join(User user) throws Exception {
+        User addedUser;
+        try {
+            // 회원 추가
+            addedUser = add(user);
+            // 회원 역할 추가
+            roleService.add(new Role(UserRole.ROLE_USER, user.getId()));
+            // 관리자의 경우 관리자 역할 추가
+            if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
+                roleService.add(new Role(UserRole.ROLE_ADMIN, user.getId()));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("회원가입에 실패 했습니다.");
+        }
+        return addedUser;
+    }
+
+    @Override
+    public User add(User user) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent()) {
             log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
             throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
@@ -169,21 +184,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optUser = userRepository.findByUsername(username);
-        if (optUser.isEmpty()) {
-            log.error("loadUserByUsername : 사용자를 찾을 수 없음");
-            throw new UsernameNotFoundException("loadUserByUsername : 사용자를 찾을 수 없음");
-        }
-        User user = optUser.get();
-        log.info("사용자 로그인 : {}", user.getUsername());
-        Collection<SimpleGrantedAuthority> authorites = roleService.findByUser(user).stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole().getKey()))
-                .collect(Collectors.toList());
-        log.info("{} 의 권한 : {}", user.getUsername(), authorites.toString());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorites);
     }
 }

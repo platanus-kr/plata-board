@@ -1,8 +1,6 @@
-package org.platanus.webboard.config;
+package org.platanus.webboard.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.platanus.webboard.config.filter.UserAuthenticationFilter;
-import org.platanus.webboard.config.filter.UserAuthorizationFilter;
 import org.platanus.webboard.domain.UserRole;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

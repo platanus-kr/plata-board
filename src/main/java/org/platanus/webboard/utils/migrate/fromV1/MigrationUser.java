@@ -1,11 +1,14 @@
 package org.platanus.webboard.utils.migrate.fromV1;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
 
-@Data
+@Getter
+@Setter
 public class MigrationUser extends User {
+
     private String v1UserRole;
     private UserRole v2UserRole;
 

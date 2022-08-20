@@ -107,6 +107,7 @@ MariaDB연결을 위해 아래의 환경변수 설정이 필요합니다.
 WEBBOARD_MARIADB_JDBC
 WEBBOARD_MARIADB_ID
 WEBBOARD_MARIADB_PASSWORD
+WEBBOARD_FRONTEND_ADDRESS
 ```
 
 다음은 예시 입니다. (Bash를 사용하는 Linux 환경)
@@ -116,6 +117,7 @@ cat << "EOF" >> ~/.bash_profile
 export WEBBOARD_MARIADB_JDBC=jdbc:mariadb://localhost:3306/webboard
 export WEBBOARD_MARIADB_ID=webboard
 export WEBBOARD_MARIADB_PASSWORD=webboardPassword
+export WEBBOARD_FRONTEND_ADDRESS=http://localhost:3000
 EOF
 source ~/.bash_profile
 ```
@@ -148,10 +150,10 @@ GitHub Actions을 활용하여 지속적인 배포를 할 수 있습니다. mast
 
 GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
-|Secret| 설명           |
-| --- |--------------|
-|WEBBOARD_HOST| 호스트의 주소      |
-|WEBBOARD_PORT| 호스트의 SSH 포트  |
-|WEBBOARD_ID| 호스트의 계정      |
-|WEBBOARD_KEY| 호스트의 SSH KEY |
-|DIST_PATH| 호스트에서 실행할 경로 |
+|Secret| 설명                  |
+| --- |---------------------|
+|WEBBOARD_HOST| 호스트의 주소             |
+|WEBBOARD_PORT| 호스트의 SSH 포트         |
+|WEBBOARD_ID| 호스트의 계정             |
+|WEBBOARD_KEY| 호스트의 SSH KEY        |
+|DIST_PATH| 호스트에서 실행할 경로        |
