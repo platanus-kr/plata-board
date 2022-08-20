@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+/**
+ * JDBCTemplate 를 Repository 에 주입하기 위한 설정
+ */
 @Configuration
 @RequiredArgsConstructor
 public class RepositoryConfig {

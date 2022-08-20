@@ -27,12 +27,18 @@ public class DataInitializer {
     @Value("${plataboard.environment.profile}")
     private String profile;
 
+    @Value("${plataboard.environment.frontend-address}")
+    private String feAddress;
+
     @PostConstruct
     public void init() {
         // properties 파일 내 plataboard.environment.profile이 local 일 때만 실행됨.
         if (profile.equals(ConfigConstant.PROPERTY_ENV_PROFILE_PRODUCTION)) {
             return;
         }
+
+        log.info("Frontend address for CORS allow : {}", feAddress);
+
 
         // 테스트 운영자 생성
         User user = null;

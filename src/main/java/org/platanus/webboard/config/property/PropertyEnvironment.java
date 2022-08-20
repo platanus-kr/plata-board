@@ -12,4 +12,5 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 public class PropertyEnvironment {
 
     private final String profile;
+    private final String frontendAddress;
 }

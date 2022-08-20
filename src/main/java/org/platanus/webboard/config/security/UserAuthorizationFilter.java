@@ -26,6 +26,9 @@ import java.util.Map;
 
 import static java.util.Arrays.stream;
 
+/**
+ * 페이지 진입시 토큰 유효성 검증
+ */
 @Slf4j
 public class UserAuthorizationFilter extends OncePerRequestFilter {
     @Override
@@ -34,6 +37,7 @@ public class UserAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            // "Bearer " 로 시작하는 prefix는 JWT 스팩임.
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
