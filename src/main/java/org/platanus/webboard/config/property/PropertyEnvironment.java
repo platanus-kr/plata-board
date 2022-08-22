@@ -13,4 +13,5 @@ public class PropertyEnvironment {
 
     private final String profile;
     private final String frontendAddress;
+    private final String attachFileStoragePath;
 }

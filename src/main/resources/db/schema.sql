@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT PK_users PRIMARY KEY (ID)
 );
 
-
 -- role Table Create SQL
 CREATE TABLE `roles`
 (
@@ -19,7 +18,6 @@ CREATE TABLE `roles`
     `USER_ID`  INT         NOT NULL,
     CONSTRAINT PK_rolename_userid PRIMARY KEY (ROLENAME, USER_ID)
 );
-
 
 -- boards Table Create SQL
 CREATE TABLE IF NOT EXISTS boards
@@ -29,7 +27,6 @@ CREATE TABLE IF NOT EXISTS boards
     `DESCRIPTION` VARCHAR(255) NULL,
     CONSTRAINT PK_boards PRIMARY KEY (ID)
 );
-
 
 -- articles Table Create SQL
 CREATE TABLE IF NOT EXISTS articles
@@ -53,9 +50,8 @@ CREATE TABLE IF NOT EXISTS articles_recommend
     `ID`         INT NOT NULL AUTO_INCREMENT,
     `ARTICLE_ID` INT NULL,
     `USER_ID`    INT NULL,
-    PRIMARY KEY (ID)
+    CONSTRAINT PK_articles_recommend PRIMARY KEY (ID)
 );
-
 
 -- comments Table Create SQL
 CREATE TABLE IF NOT EXISTS comments
@@ -71,3 +67,22 @@ CREATE TABLE IF NOT EXISTS comments
     CONSTRAINT PK_comments PRIMARY KEY (ID)
 );
 
+-- files Table Create SQL
+CREATE TABLE `files`
+(
+    `ID`                  INT          NOT NULL AUTO_INCREMENT,
+    `USER_ID`             INT          NOT NULL,
+    `ORIGINAL_FILENAME`   VARCHAR(255) NULL,
+    `ORIGINAL_EXTENSION`  VARCHAR(128) NULL,
+    `MANAGEMENT_FILENAME` VARCHAR(255) NULL,
+    `CREATE_DATE`         DATETIME     NULL,
+    `DELETED`             TINYINT      NULL,
+    `EXPIRE_DATE`         DATETIME     NULL,
+    CONSTRAINT PK_files PRIMARY KEY (ID)
+);
+
+CREATE INDEX IDX_files_by_management_filename ON files
+    (`MANAGEMENT_FILENAME`);
+
+CREATE INDEX IDX_files_by_user_id ON files
+    (`USER_ID`);

@@ -3,6 +3,7 @@ package org.platanus.webboard.utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.constant.ConfigConstant;
+import org.platanus.webboard.config.property.PropertyEnvironment;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.CommentService;
@@ -24,6 +25,11 @@ public class DataInitializer {
     private final BoardService boardService;
     private final ArticleService articleService;
     private final CommentService commentService;
+
+    /**
+     * Properties 는 두 가지 방법으로 획득 할 수 있다
+     */
+    private final PropertyEnvironment propertyEnvironment;
     @Value("${plataboard.environment.profile}")
     private String profile;
 
@@ -32,6 +38,8 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
+        log.info("storage path : {} ", propertyEnvironment.getAttachFileStoragePath());
+
         // properties 파일 내 plataboard.environment.profile이 local 일 때만 실행됨.
         if (profile.equals(ConfigConstant.PROPERTY_ENV_PROFILE_PRODUCTION)) {
             return;

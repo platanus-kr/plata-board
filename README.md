@@ -7,16 +7,10 @@
 ## 💻 개발 환경
 
 ```
-Java 11
+Java 11, Gradle 7.1.1
+Spring Boot 2.6.6, Spring JDBC (JdbcTemplate)
+Spring Security 5.6.2, JWT 4.0.0
 MariaDB 10.x / H2 Database
-Gradle 7.1.1
-Spring Boot 2.6.6
-Spring JDBC (JdbcTemplate)
-Spring Security 5.6.2
-JWT 4.0.0
-Thymeleaf 3.0.15 - deprecated
-Hibernate Validator
-commonmark-java (Markdown Parser)
 React V6
 ```
 
@@ -34,7 +28,8 @@ React V6
 
 **2021.08.26** version 1 : Spring Boot + Thymeleaf 기본 게시판
 
-**2022.08.27** version 2 : REST API, Spring Security, JWT, React
+**2022.08.27** version 2 : REST API, Spring Security, JWT,
+React ([frontend project](https://github.com/platanus-kr/plata-board-front))
 
 <!--
 ## 💡 서비스 구조
@@ -68,10 +63,10 @@ React V6
 ### 1. 로컬 실행
 
 <details>
-<summary> 구) Thymeleaf 프론트 실행</summary>
+<summary> 구) Thymeleaf 실행</summary>
 
 
-Java 11만 준비되어 있다면, 내장된 gradle을 통해 아래와 같이 쉽게 로컬에서 실행할 수 있습니다.
+Java 11만 준비되어 있다면, 내장된 `gradlew`를 통해 아래와 같이 쉽게 로컬에서 실행할 수 있습니다.
 
 - Linux/OS X
 
@@ -86,14 +81,14 @@ java -jar build/libs/plata-board-0.0.2.jar
 
 ### 2. 서버 실행 (서버 및 인스턴스)
 
-로컬실행은 메모리DB로 서버가 종료되면 데이터가 모두 사라지는 대신 release로 구분된 이 환경은 MariaDB를 통해 데이터를 영속할 수 있습니다.
+로컬실행은 메모리DB로 서버가 종료되면 데이터가 모두 사라지는 대신 `release`로 구분된 이 환경은 MariaDB를 통해 데이터를 영속할 수 있습니다.
 
 준비된 서버나 인스턴스가 없다면 [이 문서](https://platanus.me/post/1586) 를 통해서 참고할 수 있습니다. (CentOS 기준) 만약 준비가 가능하다면 Java 11버전과 MariaDB
 10버전을 설치해 주시고 적절한 데이터베이스 하나만 만들어주시면 됩니다.
 
 #### DB 준비
 
-스미카 정보는 src/main/resources/db/schema.sql 파일에 위치합니다. 이 스키마를 이용하여 테이블을 생성할 수 있습니다.
+스키마 정보는 `src/main/resources/db/schema.sql`에 위치합니다. 이 스키마를 이용하여 테이블을 생성할 수 있습니다.
 
 ```bash
 mysql -u USER -p PASSWORD < src/main/resources/db/schema.sql
@@ -101,16 +96,16 @@ mysql -u USER -p PASSWORD < src/main/resources/db/schema.sql
 
 #### DB 연결을 위한 환경변수 설정
 
-MariaDB연결을 위해 아래의 환경변수 설정이 필요합니다.
+MariaDB 연결을 위해 아래의 환경변수 설정이 필요합니다.
 
-```bash
-WEBBOARD_MARIADB_JDBC
-WEBBOARD_MARIADB_ID
-WEBBOARD_MARIADB_PASSWORD
-WEBBOARD_FRONTEND_ADDRESS
-```
+- `WEBBOARD_MARIADB_JDBC` : Database jdbc 주소
+- `WEBBOARD_MARIADB_ID` : DB 접근 아이디
+- `WEBBOARD_MARIADB_PASSWORD` : DB 접근 비밀번호
+- `WEBBOARD_FRONTEND_ADDRESS` : CORS 허용을 위한 프론트엔드 주소 (http 포함한 주소)
+- `WEBBOARD_ATTACH_FILE_STORAGE_PATH` : 첨부파일 저장을 위한 파일시스템 경로 (절대경로)
+- `WEBBOARD_LOGGING_STORAGE_PATH` : 로그 저장을 위한 파일시스템 경로 (절대경로)
 
-다음은 예시 입니다. (Bash를 사용하는 Linux 환경)
+다음은 예시 입니다. (Bash 를 사용하는 Linux 환경)
 
 ```bash
 cat << "EOF" >> ~/.bash_profile
@@ -118,6 +113,8 @@ export WEBBOARD_MARIADB_JDBC=jdbc:mariadb://localhost:3306/webboard
 export WEBBOARD_MARIADB_ID=webboard
 export WEBBOARD_MARIADB_PASSWORD=webboardPassword
 export WEBBOARD_FRONTEND_ADDRESS=http://localhost:3000
+export WEBBOARD_ATTACH_FILE_STORAGE_PATH=$PWD/attach
+export WEBBOARD_LOGGING_STORAGE_PATH=$PWD/log
 EOF
 source ~/.bash_profile
 ```
@@ -144,9 +141,9 @@ java -jar build/libs/plata-baord-0.0.2.jar --spring.config.location=classpath:/a
 
 * * *
 
-## 🪄 Continuous Deploy
+## 🪄 지속적 배포
 
-GitHub Actions을 활용하여 지속적인 배포를 할 수 있습니다. master 브랜치에 merge가 되면 자동 배포를 합니다.
+GitHub Actions 을 활용하여 Continuous Deploy 를 할 수 있습니다. master 브랜치에 merge 가 되면 자동 배포를 합니다.
 
 GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
