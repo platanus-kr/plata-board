@@ -19,11 +19,11 @@ Content-Type: application/x-www-form-urlencoded
 
 ### auth test
 GET http://localhost:8080/api/v1/test/auth
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MDUzMDc0MX0.iSmGBO5xpBffbZQz06gumXLP0bZK4PDVkWkhask8jos
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTU5Mjg3MX0.PYnDcUHGtSGqoFbgVDPtQ_Y1CLDNKqvu1y9Pgg3o2Iw
 
 ### 게시글 작성
 POST http://localhost:8080/api/v1/board/1/write
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MDUzMDc0MX0.iSmGBO5xpBffbZQz06gumXLP0bZK4PDVkWkhask8jos
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTU5MTM1Mn0.xPJGaUADVOXK8p5Imc-AijD90-VZvbyKNq6uXS8tyrg
 Content-Type: application/json
 
 {
@@ -36,3 +36,19 @@ GET http://localhost:8080/api/v1/article/3
 
 ### GET ENV
 GET http://localhost:8080/api/v1/test/env
+
+### 파일 업로드
+POST http://localhost:8080/api/v1/media/upload
+Content-Type: multipart/form-data; boundary=PLATABOARDTEST
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTYxODcyNH0.IypEZvSnyaYXgTXdBEX5tDTSF0t3vA3ESttJwjYr5zE
+
+--PLATABOARDTEST
+Content-Disposition: form-data; name="expireDate"
+
+2022-08-28T01:26:46.653101
+--PLATABOARDTEST
+Content-Disposition: form-data; name="files"; filename="test.xml"
+Content-Type: application/xml
+
+< ./checkstyle-google-4depth.xml
+--PLATABOARDTEST--

@@ -15,6 +15,8 @@ public class File {
     private String originalFilename;
     private String originalExtension;
     private String managementFilename;
+    private String storePathPrefix;
+    private Long size;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private Boolean deleted;

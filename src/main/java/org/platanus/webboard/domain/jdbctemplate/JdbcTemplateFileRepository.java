@@ -33,6 +33,8 @@ public class JdbcTemplateFileRepository implements FileRepository {
         parameters.put("original_filename", file.getOriginalFilename());
         parameters.put("original_extension", file.getOriginalExtension());
         parameters.put("management_filename", file.getManagementFilename());
+        parameters.put("store_path_prefix", file.getStorePathPrefix());
+        parameters.put("size", file.getSize());
         parameters.put("create_date", file.getCreateDate());
         parameters.put("update_date", file.getUpdateDate());
         parameters.put("deleted", file.getDeleted());
@@ -84,6 +86,8 @@ public class JdbcTemplateFileRepository implements FileRepository {
                 .originalFilename(rs.getString("original_filename"))
                 .originalExtension(rs.getString("original_extension"))
                 .managementFilename(rs.getString("managementFilename"))
+                .storePathPrefix(rs.getString("storePathPrefix"))
+                .size(rs.getLong("size"))
                 .createDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .updateDate(rs.getTimestamp("update_date").toLocalDateTime())
                 .deleted(rs.getBoolean("deleted"))

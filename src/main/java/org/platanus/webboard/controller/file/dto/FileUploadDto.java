@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,6 +13,6 @@ import java.util.List;
 public class FileUploadDto {
     private Long userId;
     private List<MultipartFile> files;
-    private LocalDateTime expireDate;
+    private String expireDate;
     private Boolean deleted;
 }
