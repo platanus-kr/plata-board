@@ -40,14 +40,24 @@ GET http://localhost:8080/api/v1/test/env
 ### 파일 업로드
 POST http://localhost:8080/api/v1/media/upload
 Content-Type: multipart/form-data; boundary=PLATABOARDTEST
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTYxODcyNH0.IypEZvSnyaYXgTXdBEX5tDTSF0t3vA3ESttJwjYr5zE
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTY4MTQxOH0.GvDViF0hB5tVVJmQFCnD61WdKWYStHpJwN5z3ZCI25Q
 
 --PLATABOARDTEST
 Content-Disposition: form-data; name="expireDate"
 
 2022-08-28T01:26:46.653101
 --PLATABOARDTEST
-Content-Disposition: form-data; name="files"; filename="test.xml"
+Content-Disposition: form-data; name="files"; filename="imageuploadtest.jpg"
+Content-Type: image/jpeg
+
+< ./IMG_5181.JPG
+--PLATABOARDTEST
+Content-Disposition: form-data; name="files"; filename="test2.xml"
+Content-Type: application/xml
+
+< ./checkstyle-google-4depth.xml
+--PLATABOARDTEST
+Content-Disposition: form-data; name="files"; filename="test3.xml"
 Content-Type: application/xml
 
 < ./checkstyle-google-4depth.xml

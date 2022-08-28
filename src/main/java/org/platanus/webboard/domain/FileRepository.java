@@ -1,6 +1,7 @@
 package org.platanus.webboard.domain;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface FileRepository {
 
@@ -12,9 +13,9 @@ public interface FileRepository {
 
     int updateDeleteFlag(File file);
 
-    int findById(long id);
+    Optional<File> findById(long id);
 
-    int findByManagementFilename(String mgntFilename);
+    Optional<File> findByManagementFilename(String mgntFilename);
 
     int findByExpireFromSourceDatetimeToDestinationDatetime(LocalDateTime srcDatetime, LocalDateTime destDatetime);
 

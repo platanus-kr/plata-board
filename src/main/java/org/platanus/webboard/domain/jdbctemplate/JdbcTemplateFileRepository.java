@@ -12,11 +12,16 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class JdbcTemplateFileRepository implements FileRepository {
+
+    public static final String FILE_FIND_BY_MANAGEMENT_FILENAME = "select * from FILES where MANAGEMENT_FILENAME = ?";
+    public static final String FILE_FIND_BY_ID = "select * from FILES where id = ?";
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 
@@ -60,13 +65,15 @@ public class JdbcTemplateFileRepository implements FileRepository {
     }
 
     @Override
-    public int findById(long id) {
-        return 0;
+    public Optional<File> findById(long id) {
+        List<File> query = jdbcTemplate.query(FILE_FIND_BY_ID, fileRowMapper(), id);
+        return query.stream().findAny();
     }
 
     @Override
-    public int findByManagementFilename(String mgntFilename) {
-        return 0;
+    public Optional<File> findByManagementFilename(String managementFilename) {
+        List<File> query = jdbcTemplate.query(FILE_FIND_BY_MANAGEMENT_FILENAME, fileRowMapper(), managementFilename);
+        return query.stream().findAny();
     }
 
     @Override
@@ -85,10 +92,10 @@ public class JdbcTemplateFileRepository implements FileRepository {
                 .userId(rs.getLong("user_id"))
                 .originalFilename(rs.getString("original_filename"))
                 .originalExtension(rs.getString("original_extension"))
-                .managementFilename(rs.getString("managementFilename"))
-                .storePathPrefix(rs.getString("storePathPrefix"))
+                .managementFilename(rs.getString("management_filename"))
+                .storePathPrefix(rs.getString("store_path_prefix"))
                 .size(rs.getLong("size"))
-                .createDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .createDate(rs.getTimestamp("create_date").toLocalDateTime())
                 .updateDate(rs.getTimestamp("update_date").toLocalDateTime())
                 .deleted(rs.getBoolean("deleted"))
                 .expireDate(rs.getTimestamp("expire_date").toLocalDateTime())

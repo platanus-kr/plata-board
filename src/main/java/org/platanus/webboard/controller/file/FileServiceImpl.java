@@ -2,6 +2,8 @@ package org.platanus.webboard.controller.file;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.property.PropertyEnvironment;
+import org.platanus.webboard.controller.file.dto.FileDownloadDto;
 import org.platanus.webboard.controller.file.dto.FileStoreDto;
 import org.platanus.webboard.controller.file.dto.FileUploadDto;
 import org.platanus.webboard.controller.user.UserService;
@@ -10,9 +12,12 @@ import org.platanus.webboard.domain.FileRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,6 +26,7 @@ public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
     private final StorageManagement storageManagement;
+    private final PropertyEnvironment propertyEnvironment;
     private final UserService userService;
 
     @Override
@@ -56,4 +62,32 @@ public class FileServiceImpl implements FileService {
         return uploadedFiles;
     }
 
+    @Override
+    public FileDownloadDto findById(Long fileId) {
+        Optional<File> findFile = fileRepository.findById(fileId);
+        if (findFile.isEmpty()) {
+            return null;
+        }
+        File file = findFile.get();
+        FileDownloadDto fileDto = FileDownloadDto.fromFile(file);
+        String originalFilename = fileDto.getOriginalFilename();
+        String managementFilename = fileDto.getManagementFilename();
+        Path storagePath = Paths.get(propertyEnvironment.getAttachFileStoragePath(), fileDto.getStorePathPrefix());
+        fileDto.setOriginalFilenameWithFullPath(storageManagement.getFileFullPath(storagePath, managementFilename));
+
+        return fileDto;
+    }
+
+    @Override
+    public String getStoreFullPathByFilename(String managementFilenameWithStorePathPrefix) {
+        // DB 에서 읽어올 일이 아니다.. 리소스는 다이렉트로 꽂아주자.
+        // Optional<File> findFile = fileRepository.findByManagementFilename(managementFilenameWithStorePathPrefix);
+        // if (findFile.isEmpty()) {
+        //     return null;
+        // }
+        return Paths.get(propertyEnvironment.getAttachFileStoragePath(),
+                        managementFilenameWithStorePathPrefix)
+                .toString();
+
+    }
 }

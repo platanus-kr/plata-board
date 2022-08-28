@@ -40,13 +40,13 @@ public class StorageManagement {
         }
         String originalFilename = file.getOriginalFilename();
         String managementFilename = createManagementFilename(originalFilename);
-        Path storeDirectoryPath = getStorePath();
+        Path storeDirectoryPath = getUploadStoragePath();
         String storePathWithManagementFilename = getFileFullPath(storeDirectoryPath, managementFilename);
         FileStoreDto storeFile = FileStoreDto.builder()
                 .originalFilename(originalFilename)
                 .originalExtension(extractExtensionFromOriginalFile(originalFilename))
                 .managementFilename(managementFilename)
-                .storePathPrefix(getStorePathPrefix().toString())
+                .storePathPrefix(getStoragePathPrefix().toString())
                 .fullPath(storePathWithManagementFilename)
                 .size(file.getSize())
                 .build();
@@ -66,15 +66,15 @@ public class StorageManagement {
         return storeFile;
     }
 
-    private Path getStorePath() {
+    private Path getUploadStoragePath() {
         return Paths.get(propertyEnvironment.getAttachFileStoragePath(),
-                getStorePathPrefix().toString());
+                getStoragePathPrefix().toString());
     }
 
-    private Path getStorePathPrefix() {
+    private Path getStoragePathPrefix() {
         String todayYear = String.valueOf(LocalDateTime.now().getYear());
-        String todayMonth = String.valueOf(LocalDateTime.now().getMonthValue());
-        String todayDay = String.valueOf(LocalDateTime.now().getDayOfMonth());
+        String todayMonth = getStringByInt(LocalDateTime.now().getMonthValue());
+        String todayDay = getStringByInt(LocalDateTime.now().getDayOfMonth());
         return Paths.get(todayYear, todayMonth, todayDay);
     }
 
@@ -113,4 +113,14 @@ public class StorageManagement {
         return originalFilenameWithExtension.substring(position + 1);
     }
 
+
+    private static String getStringByInt(int number) {
+        String numberToString;
+        if (number < 10) {
+            numberToString = "0" + number;
+        } else {
+            numberToString = String.valueOf(number);
+        }
+        return numberToString;
+    }
 }
