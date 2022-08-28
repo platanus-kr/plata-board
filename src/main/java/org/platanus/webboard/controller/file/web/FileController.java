@@ -18,6 +18,9 @@ import org.springframework.web.util.UriUtils;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 파일 다운로드를 위한 웹 컨트롤러
+ */
 @Slf4j
 @Controller
 @RequiredArgsConstructor

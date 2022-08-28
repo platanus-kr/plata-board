@@ -3,6 +3,7 @@ package org.platanus.webboard.controller.file;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.property.PropertyEnvironment;
+import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileStoreDto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +65,24 @@ public class StorageManagement {
         }
         log.info("Upload file : {} , filesize : {}", storePathWithManagementFilename, file.getSize());
         return storeFile;
+    }
+
+    /**
+     * 지정된 파일을 삭제한다.<br />
+     *
+     * @param fileDto managementFilename 와 storePathPrefix 가 표함된 DTO
+     * @return 삭제 시 1, 그외 0
+     */
+    public int deleteFile(FileDeleteDto fileDto) {
+        String fullPath = Paths.get(propertyEnvironment.getAttachFileStoragePath(),
+                        fileDto.getStorePathPrefix(),
+                        fileDto.getManagementFilename())
+                .toString();
+        File targetFile = new File(fullPath);
+        if (targetFile.delete()) {
+            return 1;
+        }
+        return 0;
     }
 
     private Path getUploadStoragePath() {

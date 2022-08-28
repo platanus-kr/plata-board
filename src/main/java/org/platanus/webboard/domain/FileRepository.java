@@ -7,7 +7,7 @@ public interface FileRepository {
 
     File upload(File file);
 
-    int delete(File file);
+    int delete(long id);
 
     int deleteByUserId(long userId);
 

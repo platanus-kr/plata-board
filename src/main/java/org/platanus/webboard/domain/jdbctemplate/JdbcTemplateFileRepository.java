@@ -22,6 +22,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
     public static final String FILE_FIND_BY_MANAGEMENT_FILENAME = "select * from FILES where MANAGEMENT_FILENAME = ?";
     public static final String FILE_FIND_BY_ID = "select * from FILES where id = ?";
+    public static final String FILE_UPDATE_DELETE_FLAG_BY_ID = "update FILES set deleted = ? where id = ?";
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 
@@ -50,7 +51,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
     }
 
     @Override
-    public int delete(File file) {
+    public int delete(long id) {
         return 0;
     }
 
@@ -61,7 +62,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
     @Override
     public int updateDeleteFlag(File file) {
-        return 0;
+        return jdbcTemplate.update(FILE_UPDATE_DELETE_FLAG_BY_ID, file.getDeleted(), file.getId());
     }
 
     @Override

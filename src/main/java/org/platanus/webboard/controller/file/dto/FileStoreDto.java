@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * 파일 저장을 위한 DTO
+ */
 @Data
 @Builder
 @AllArgsConstructor

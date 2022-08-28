@@ -64,7 +64,7 @@ public class DataInitializer {
         // 테스트 유저 생성
         User user2;
         try {
-            user2 = userService.join(new User(null, "user", "user", "유저", "user@user.com", false, UserRole.ROLE_ADMIN));
+            user2 = userService.join(new User(null, "user", "user", "유저", "user@user.com", false, UserRole.ROLE_USER));
 //            roleService.add(new Role(UserRole.ROLE_USER, user2.getId()));
         } catch (Exception e) {
             log.error(e.getMessage());
