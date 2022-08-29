@@ -36,7 +36,7 @@ public class FileController {
         FileDownloadDto fileDto = fileService.findById(fileId);
         UrlResource resource;
         try {
-            resource = new UrlResource("file:" + fileDto.getOriginalFilenameWithFullPath());
+            resource = new UrlResource("file:" + fileDto.getManagementFilenameWithFullPath());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

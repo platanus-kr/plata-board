@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 파일 업로드를 위한 컨트롤러
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +29,15 @@ public class FileRestControllerV1 {
     private final UserService userService;
     private final FileService fileService;
 
+    /**
+     * 파일 업로드를 위한 컨트롤러.<br />
+     * FileUploadDto 필드를 모두 만족해야 한다.<br />
+     * ROLE_USER 권한 필수<br />
+     *
+     * @param uploadDto FileUploadDto
+     * @param principal Spring Security
+     * @return 업로드 성공 시 fileId가 포함된 File 반환
+     */
     @PostMapping
     @ResponseBody
     @HasUserRole
@@ -57,6 +69,16 @@ public class FileRestControllerV1 {
         return ResponseEntity.ok().body(uploadedFiles);
     }
 
+    /**
+     * 파일 삭제를 위한 컨트롤러. <br />
+     * 저장소로부터 실제로 삭제는 하지 않고 DB에 deleted를 true로 업데이트 한다.<br />
+     * 유저 인터페이스와 관련 있기 때문에 파일 소유자만 삭제 할 수 있다. <br />
+     * ROLE_USER 권한 필수<br />
+     *
+     * @param fileId    삭제를 위한 파일ID (필수)
+     * @param principal Spring Security
+     * @return 파일 삭제 성공시 200 반환
+     */
     @DeleteMapping("/{fileId}")
     @ResponseBody
     @HasUserRole
@@ -99,6 +121,15 @@ public class FileRestControllerV1 {
         return ResponseEntity.ok().body("200");
     }
 
+    /**
+     * 파일을 저장소로부터 실제 삭제를 위한 컨트롤러 <br />
+     * DB에서 deleted를 true로 변환하고, 파일을 저장소로부터 <b>실제로 삭제</b>한다. (주의) <br />
+     * ROLE_ADMIN 필수 <br />
+     *
+     * @param fileId    삭제를 위한 파일ID (필수)
+     * @param principal Spring Security
+     * @return 파일 삭제 성공시 200 반환
+     */
     @DeleteMapping("/fileDeleteFromStorage/{fileId}")
     @ResponseBody
     @HasAdminRole

@@ -19,6 +19,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
+/**
+ * Plata Board Spring Security Configuration
+ */
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -27,11 +30,27 @@ public class SpringSecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationConfiguration authConfig;
 
+    /**
+     * WebSecurityConfigurerAdapter의 deprecated로 인한 AuthenticationManager Bean 주입. <br />
+     * 바로 위의 AuthenticationConfiguration를 먼저 DI 해야한다. <br />
+     * 출처 : <a href="http://disq.us/p/2oztbd7">reply in Spring Security without the WebSecurityConfigurerAdapter</a>
+     *
+     * @param authConfig
+     * @return
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    /**
+     * SecurityFilterChain Bean
+     *
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         UserAuthenticationFilter authFilter = new UserAuthenticationFilter(authenticationManager(authConfig));

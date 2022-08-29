@@ -25,6 +25,13 @@ public class StorageManagement {
 
     private final PropertyEnvironment propertyEnvironment;
 
+    /**
+     * Multipart 목록으로 부터 파일 추출하여 저장하는 메소드 <br />
+     *
+     * @param files 저장하고자 하는 파일 목록.
+     * @return 저장 성공 시 storePathPrefix가 포함된 FileStoreDto 목록 반환.
+     * @throws IOException
+     */
     public List<FileStoreDto> storeFiles(List<MultipartFile> files) throws IOException {
         List<FileStoreDto> storeFiles = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -35,6 +42,13 @@ public class StorageManagement {
         return storeFiles;
     }
 
+    /**
+     * 파일을 실제로 저장하는 메소드 <br />
+     *
+     * @param file
+     * @return 저장 성공 시 storePathPrefix가 포함된 FileStoreDto 반환.
+     * @throws IOException
+     */
     private FileStoreDto storeFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return null;
@@ -43,23 +57,25 @@ public class StorageManagement {
         String managementFilename = createManagementFilename(originalFilename);
         Path storeDirectoryPath = getUploadStoragePath();
         String storePathWithManagementFilename = getFileFullPath(storeDirectoryPath, managementFilename);
+        // 사용자가 업로드한 원래 파일명에서 확장자를 분리하고 UUID 파일명을 생성.
+        // 실제 저장할 경로 지정.
         FileStoreDto storeFile = FileStoreDto.builder()
                 .originalFilename(originalFilename)
                 .originalExtension(extractExtensionFromOriginalFile(originalFilename))
                 .managementFilename(managementFilename)
                 .storePathPrefix(getStoragePathPrefix().toString())
-                .fullPath(storePathWithManagementFilename)
+                .managementFilenameWithFullPath(storePathWithManagementFilename)
                 .size(file.getSize())
                 .build();
-        // 디렉토리 없으면 만드는 부분
+        // 지정된 경로에 디렉토리가 없으면 만드는 부분.
         File pathAsFile = new File(storeDirectoryPath.toString());
         if (!Files.exists(Paths.get(storeDirectoryPath.toString()))) {
             Files.createDirectories(storeDirectoryPath);
             //pathAsFile.mkdirs();
         }
-        // Write.
+        // 저장소에 파일 저장
         try {
-            file.transferTo(new File(storeFile.getFullPath()));
+            file.transferTo(new File(storeFile.getManagementFilenameWithFullPath()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -68,7 +84,7 @@ public class StorageManagement {
     }
 
     /**
-     * 지정된 파일을 삭제한다.<br />
+     * 지정된 파일을 저장소에서 삭제한다.<br />
      *
      * @param fileDto managementFilename 와 storePathPrefix 가 표함된 DTO
      * @return 삭제 시 1, 그외 0
@@ -85,11 +101,21 @@ public class StorageManagement {
         return 0;
     }
 
+    /**
+     * 저장 디렉토리 경로를 생성하는 메소드 <br />
+     *
+     * @return /{저장소경로}/{년}/{월}/{일}
+     */
     private Path getUploadStoragePath() {
         return Paths.get(propertyEnvironment.getAttachFileStoragePath(),
                 getStoragePathPrefix().toString());
     }
 
+    /**
+     * 저장 디렉토리 경로 중 날짜 구분 경로를 생성하는 메소드 <br />
+     *
+     * @return {년}/{월}/{일}
+     */
     private Path getStoragePathPrefix() {
         String todayYear = String.valueOf(LocalDateTime.now().getYear());
         String todayMonth = getStringByInt(LocalDateTime.now().getMonthValue());
@@ -131,8 +157,7 @@ public class StorageManagement {
         int position = originalFilenameWithExtension.lastIndexOf(".");
         return originalFilenameWithExtension.substring(position + 1);
     }
-
-
+    
     private static String getStringByInt(int number) {
         String numberToString;
         if (number < 10) {

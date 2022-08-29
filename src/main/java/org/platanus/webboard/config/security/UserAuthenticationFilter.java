@@ -34,6 +34,15 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * 응답 받아서 인증을 위한 메소드 <br />
+     *
+     * @param request  from which to extract parameters and perform the authentication
+     * @param response the response, which may be needed if the implementation has to do a
+     *                 redirect as part of a multi-stage authentication process (such as OpenID).
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
@@ -43,6 +52,17 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         return authenticationManager.authenticate(authenticationToken);
     }
 
+    /**
+     * 인증 후 JWT 토큰 생성하여 응답 내려주는 메소드 <br />
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @param authentication the object returned from the <tt>attemptAuthentication</tt>
+     *                       method.
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();

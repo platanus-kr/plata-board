@@ -75,7 +75,7 @@ public class FileServiceImpl implements FileService {
         String originalFilename = fileDto.getOriginalFilename();
         String managementFilename = fileDto.getManagementFilename();
         Path storagePath = Paths.get(propertyEnvironment.getAttachFileStoragePath(), fileDto.getStorePathPrefix());
-        fileDto.setOriginalFilenameWithFullPath(storageManagement.getFileFullPath(storagePath, managementFilename));
+        fileDto.setManagementFilenameWithFullPath(storageManagement.getFileFullPath(storagePath, managementFilename));
 
         return fileDto;
     }

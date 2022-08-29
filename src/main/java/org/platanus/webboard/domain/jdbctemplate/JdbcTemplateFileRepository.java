@@ -3,6 +3,7 @@ package org.platanus.webboard.domain.jdbctemplate;
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.domain.File;
 import org.platanus.webboard.domain.FileRepository;
+import org.platanus.webboard.domain.jdbctemplate.constant.QueryConstant;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,9 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcTemplateFileRepository implements FileRepository {
 
-    public static final String FILE_FIND_BY_MANAGEMENT_FILENAME = "select * from FILES where MANAGEMENT_FILENAME = ?";
-    public static final String FILE_FIND_BY_ID = "select * from FILES where id = ?";
-    public static final String FILE_UPDATE_DELETE_FLAG_BY_ID = "update FILES set deleted = ? where id = ?";
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 
@@ -62,18 +60,18 @@ public class JdbcTemplateFileRepository implements FileRepository {
 
     @Override
     public int updateDeleteFlag(File file) {
-        return jdbcTemplate.update(FILE_UPDATE_DELETE_FLAG_BY_ID, file.getDeleted(), file.getId());
+        return jdbcTemplate.update(QueryConstant.FILE_UPDATE_DELETE_FLAG_BY_ID, file.getDeleted(), file.getId());
     }
 
     @Override
     public Optional<File> findById(long id) {
-        List<File> query = jdbcTemplate.query(FILE_FIND_BY_ID, fileRowMapper(), id);
+        List<File> query = jdbcTemplate.query(QueryConstant.FILE_FIND_BY_ID, fileRowMapper(), id);
         return query.stream().findAny();
     }
 
     @Override
     public Optional<File> findByManagementFilename(String managementFilename) {
-        List<File> query = jdbcTemplate.query(FILE_FIND_BY_MANAGEMENT_FILENAME, fileRowMapper(), managementFilename);
+        List<File> query = jdbcTemplate.query(QueryConstant.FILE_FIND_BY_MANAGEMENT_FILENAME, fileRowMapper(), managementFilename);
         return query.stream().findAny();
     }
 

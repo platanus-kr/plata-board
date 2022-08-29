@@ -33,6 +33,16 @@ public class MigrateToV2 {
     @Value("${plataboard.environment.profile}")
     private String profile;
 
+    /**
+     * v1에서 v2로 마이그레이션 하는 컨트롤러. <br />
+     * 프로덕션에서 실행시 소스 수정 필요 <br /><br />
+     * <b>v2 변경사항</b> <br />
+     * - 패스워드 암호화 (변경) <br />
+     * - 사용자 권한 ROLE 추가 <br />
+     *
+     * @return 마이그레이션 결과
+     * @throws Exception
+     */
     @GetMapping("/toV2")
     @Transactional
     public ResponseEntity<?> migrateFromV1() throws Exception {

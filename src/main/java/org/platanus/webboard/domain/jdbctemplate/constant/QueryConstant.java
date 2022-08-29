@@ -50,4 +50,7 @@ public class QueryConstant {
     public final static String ROLE_DELETE = "delete from ROLES where ROLENAME = ? and USER_ID = ?";
     public final static String ROLE_FIND_BY_USER_ID = "select * from ROLES where USER_ID = ?";
     public final static String ROLE_FIND_ALL = "select * from roles";
+    public static final String FILE_FIND_BY_MANAGEMENT_FILENAME = "select * from FILES where MANAGEMENT_FILENAME = ?";
+    public static final String FILE_FIND_BY_ID = "select * from FILES where id = ?";
+    public static final String FILE_UPDATE_DELETE_FLAG_BY_ID = "update FILES set deleted = ? where id = ?";
 }
