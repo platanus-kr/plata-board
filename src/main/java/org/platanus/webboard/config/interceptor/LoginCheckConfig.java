@@ -27,7 +27,8 @@ public class LoginCheckConfig implements WebMvcConfigurer {
                         "/*.ico",
                         "/error",
                         "/session_error",
-                        "/api/**"
+                        "/api/**",
+                        "/media/**"
                 );
     }
 

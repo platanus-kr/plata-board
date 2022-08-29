@@ -215,3 +215,7 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,java-web,macos,windows,intellij,gradle
+
+
+## Project addon (2022.08.22)
+plataboard_local/
