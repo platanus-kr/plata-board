@@ -29,7 +29,8 @@ public class BoardRestControllerV1 {
     private final UserService userService;
 
     /**
-     * Return article list in a board by boardId
+     * 게시판 조회<br />
+     * 게시판에 포함된 게시글 목록 조회 </br />
      *
      * @param boardId
      * @param pageNum
@@ -38,7 +39,8 @@ public class BoardRestControllerV1 {
      */
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public ResponseEntity<?> list(@PathVariable("id") long boardId, @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
+    public ResponseEntity<?> list(@PathVariable("id") long boardId,
+                                  @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
         String boardName;
         Page<ArticleListDto> articles;
         try {
@@ -57,7 +59,7 @@ public class BoardRestControllerV1 {
     }
 
     /**
-     * Post article in a board by boardId
+     * 게시글 작성
      *
      * @param boardId
      * @param articleRequest

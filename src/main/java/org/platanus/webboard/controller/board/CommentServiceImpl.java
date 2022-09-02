@@ -32,11 +32,11 @@ public class CommentServiceImpl implements CommentService {
     public Comment update(Comment comment, User user) throws Exception {
         comment.setCreatedDate(findById(comment.getId()).getCreatedDate());
         comment.setModifiedDate(LocalDateTime.now());
-        Optional<Comment> getComment = commentRepository.findById(comment.getId());
-        if (getComment.isEmpty()) {
-            log.info("Comment update #{}: 없는 댓글 입니다.", comment.getId());
-            throw new IllegalArgumentException("없는 댓글 입니다.");
-        }
+//        Optional<Comment> getComment = commentRepository.findById(comment.getId());
+//        if (getComment.isEmpty()) {
+//            log.info("Comment update #{}: 없는 댓글 입니다.", comment.getId());
+//            throw new IllegalArgumentException("없는 댓글 입니다.");
+//        }
         if (comment.getAuthorId() != user.getId()) {
             log.info("Comment update #{}: 작성자가 아닙니다. by User #{}", comment.getId(), user.getId());
             throw new IllegalArgumentException("작성자가 아닙니다.");

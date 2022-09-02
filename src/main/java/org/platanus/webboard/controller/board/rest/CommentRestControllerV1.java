@@ -2,17 +2,19 @@ package org.platanus.webboard.controller.board.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.CommentViewDto;
+import org.platanus.webboard.controller.board.dto.CommentWriteDto;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -22,8 +24,17 @@ public class CommentRestControllerV1 {
     private final CommentService commentService;
     private final UserService userService;
 
-    @GetMapping(value = "/{commentId}")
-    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId) {
+    /**
+     * 코멘트 1개 조회<br />
+     * 회원만 조회가 가능한 이유는 무분별한 크롤링 방지<br />
+     *
+     * @param commentId
+     * @return
+     */
+    @GetMapping("/{commentId}")
+    @HasUserRole
+    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId,
+                                        @AuthenticationPrincipal Object principal) {
         Comment comment;
         User user;
         try {
@@ -35,5 +46,73 @@ public class CommentRestControllerV1 {
         }
         CommentViewDto commentDto = CommentViewDto.from(comment, user.getNickname());
         return ResponseEntity.ok(commentDto);
+    }
+
+    /**
+     * 코멘트 수정 <br />
+     *
+     * @param commentId
+     * @param principal
+     * @return
+     */
+    @PostMapping("/{commentId}/update")
+    @HasUserRole
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") long commentId,
+                                           @AuthenticationPrincipal Object principal,
+                                           @Valid @RequestBody CommentWriteDto commentRequest) {
+        User user;
+        try {
+            user = userService.findByUsername(principal.toString());
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .errorId(999)
+                    .errorCode("")
+                    .errorMessage(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        Comment comment;
+        try {
+            comment = commentService.findById(commentId);
+            comment.setContent(commentRequest.getContent());
+            comment = commentService.update(comment, user);
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        return ResponseEntity.ok(comment);
+    }
+
+    /**
+     * 코멘트 삭제 <br />
+     *
+     * @param commentId
+     * @param principal
+     * @return
+     */
+    @DeleteMapping("/{commentId}")
+    @HasUserRole
+    public ResponseEntity<?> deleteComment(@PathVariable("commentId") long commentId,
+                                           @AuthenticationPrincipal Object principal) {
+        User user;
+        try {
+            user = userService.findByUsername(principal.toString());
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .errorId(999)
+                    .errorCode("")
+                    .errorMessage(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        Comment comment;
+        try {
+            comment = commentService.findById(commentId);
+            commentService.updateDeleteFlag(comment, user);
+        } catch (Exception e) {
+            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+        return ResponseEntity.ok().build();
     }
 }

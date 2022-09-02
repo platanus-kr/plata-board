@@ -41,13 +41,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article update(Article article, User user) throws Exception {
-        article.setCreatedDate(findById(article.getId()).getCreatedDate());
+//        article.setCreatedDate(findById(article.getId()).getCreatedDate());
         article.setModifiedDate(LocalDateTime.now());
-        Optional<Article> getArticle = articleRepository.findById(article.getId());
-        if (getArticle.isEmpty()) {
-            log.info("Article update #{}: 없는 게시물 입니다.", article.getId());
-            throw new IllegalArgumentException("없는 게시물 입니다.");
-        }
+//        Optional<Article> getArticle = articleRepository.findById(article.getId());
+//        if (getArticle.isEmpty()) {
+//            log.info("Article update #{}: 없는 게시물 입니다.", article.getId());
+//            throw new IllegalArgumentException("없는 게시물 입니다.");
+//        }
         if (article.getAuthorId() != user.getId()) {
             log.info("Article update #{}: 작성자가 아닙니다.", article.getId());
             throw new IllegalArgumentException("작성자가 아닙니다");
