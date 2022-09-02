@@ -29,8 +29,15 @@ public class User {
     @Email
     private String email;
     private boolean deleted;
+    /**
+     * 대표 롤
+     */
     private UserRole role;
 
+    /**
+     * 사용자가 갖고 있는 모든 롤
+     **/
+//    private List<Role> roles;
     public static User fromLoginSessionDto(UserSessionDto userSessionDto) {
         return User.builder()
                 .id(userSessionDto.getId())

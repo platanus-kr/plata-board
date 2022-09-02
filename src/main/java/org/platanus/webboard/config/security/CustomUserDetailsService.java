@@ -1,23 +1,23 @@
-package org.platanus.webboard.controller.user;
+package org.platanus.webboard.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.controller.user.RoleService;
+import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
@@ -30,10 +30,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         User user = optUser.get();
         log.info("사용자 로그인 : {}", user.getUsername());
-        Collection<SimpleGrantedAuthority> authorites = roleService.findByUser(user).stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole().getKey()))
-                .collect(Collectors.toList());
-        log.info("{} 의 권한 : {}", user.getUsername(), authorites.toString());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorites);
+        List<Role> roles = roleService.findByUser(user);
+//        Collection<SimpleGrantedAuthority> authorites = byUser.stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRole().getKey()))
+//                .collect(Collectors.toList());
+//        log.info("{} 의 권한 : {}", user.getUsername(), authorites.toString());
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorites);
+        return UserAdapter.from(user, roles);
+//        return new UserDetailsServiceImpl(user, roles);
     }
 }
