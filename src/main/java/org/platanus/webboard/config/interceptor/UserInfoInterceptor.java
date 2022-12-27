@@ -22,7 +22,7 @@ public class UserInfoInterceptor implements HandlerInterceptor {
         String requestUserAgent = request.getHeader("user-agent");
         String requestIp = request.getRemoteAddr();
         HttpSession session = request.getSession();
-        UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
+        UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER_INTERCEPTOR);
         if (session != null && userSessionDto != null) {
             request.setAttribute("user",
                     userSessionDto.from(userService.findById(userSessionDto.getId()), requestUserAgent, requestIp));

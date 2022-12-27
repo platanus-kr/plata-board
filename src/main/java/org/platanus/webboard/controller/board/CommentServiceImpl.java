@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.CommentRepository;
 import org.platanus.webboard.domain.User;
@@ -39,11 +40,11 @@ public class CommentServiceImpl implements CommentService {
 //        }
         if (comment.getAuthorId() != user.getId()) {
             log.info("Comment update #{}: 작성자가 아닙니다. by User #{}", comment.getId(), user.getId());
-            throw new IllegalArgumentException("작성자가 아닙니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_AUTHOR);
         }
         if (commentRepository.update(comment) != 1) {
             log.info("Comment update #{}: Repository Error.", comment.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
         log.info("Comment update #{} by User #{}", comment.getId(), user.getId());
         return comment;
@@ -53,16 +54,16 @@ public class CommentServiceImpl implements CommentService {
     public boolean updateDeleteFlag(Comment comment, User user) throws Exception {
         if (commentRepository.findById(comment.getId()).get().isDeleted()) {
             log.info("Comment deleteflag #{}: 이미 삭제된 댓글 입니다.", comment.getId());
-            throw new IllegalArgumentException("이미 삭제된 댓글 입니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMENT_ALREADY_DELETED);
         }
         if (comment.getAuthorId() != user.getId()) {
             log.info("Comment deleteflag #{}: 작성자가 아닙니다. by User #{}", comment.getId(), user.getId());
-            throw new IllegalArgumentException("작성자가 아닙니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_AUTHOR);
         }
         comment.setDeleted(true);
         if (commentRepository.updateDeleteFlag(comment) != 1) {
             log.info("Comment deleteflag #{}: Repository Error.", comment.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
         log.info("Comment deleteflag #{} by User #{}", comment.getId(), user.getId());
         return true;
@@ -72,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
     public void delete(Comment comment) throws Exception {
         if (commentRepository.delete(comment) != 1) {
             log.info("Comment delete #{}: Repository Error.", comment.getId());
-            throw new IllegalArgumentException("완전 삭제에 문제가 생겼습니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_DELETE_ERROR);
         }
         log.info("Comment delete #{}", comment.getId());
     }
@@ -109,7 +110,7 @@ public class CommentServiceImpl implements CommentService {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isEmpty() || comment.get().isDeleted()) {
             log.info("Comment findById #{}: 없는 댓글 입니다.", id);
-            throw new IllegalArgumentException("없는 댓글 입니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_FOUND);
         }
         return comment.get();
     }

@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.utils.PageConst;
 import org.platanus.webboard.controller.user.UserService;
@@ -50,11 +51,11 @@ public class ArticleServiceImpl implements ArticleService {
 //        }
         if (article.getAuthorId() != user.getId()) {
             log.info("Article update #{}: 작성자가 아닙니다.", article.getId());
-            throw new IllegalArgumentException("작성자가 아닙니다");
+            throw new IllegalArgumentException(MessageConstant.ARTICLE_NOT_AUTHOR);
         }
         if (articleRepository.update(article) != 1) {
             log.info("Article update #{}: Repository Error.", article.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
         log.info("Article update #{} by User #{}", article.getId(), user.getId());
         return article;
@@ -70,11 +71,11 @@ public class ArticleServiceImpl implements ArticleService {
     public boolean updateDeleteFlag(Article article, User user) throws Exception {
         if (articleRepository.findById(article.getId()).get().isDeleted()) {
             log.info("Article deleteflag #{}: 이미 삭제된 게시물 입니다..", article.getId());
-            throw new IllegalArgumentException("이미 삭제된 게시물 입니다.");
+            throw new IllegalArgumentException(MessageConstant.ARTICLE_ALREADY_DELETED);
         }
         if (article.getAuthorId() != user.getId()) {
             log.info("Article deleteflag #{}: 작성자가 아닙니다.", article.getId());
-            throw new IllegalArgumentException("작성자가 아닙니다");
+            throw new IllegalArgumentException(MessageConstant.ARTICLE_NOT_AUTHOR);
         }
         List<Comment> comments = commentService.findCommentsByArticleId(article.getId());
         comments.stream().filter(c -> !c.isDeleted()).forEach(c -> {
@@ -88,7 +89,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDeleted(true);
         if (articleRepository.updateDeleteFlag(article) != 1) {
             log.info("Article deleteflag #{}: Repository Error.", article.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
         log.info("Article deleteflag #{} by User #{}", article.getId(), user.getId());
         return true;
@@ -177,7 +178,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article findById(long id) throws Exception {
         Optional<Article> article = articleRepository.findById(id);
-        if (article.isEmpty() || article.get().isDeleted()) throw new IllegalArgumentException("없는 게시물 입니다.");
+        if (article.isEmpty() || article.get().isDeleted())
+            throw new IllegalArgumentException(MessageConstant.ARTICLE_NOT_FOUND);
         return article.get();
     }
 

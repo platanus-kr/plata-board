@@ -30,6 +30,6 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         HttpSession session = request.getSession(false);
         if (session == null)
             return null;
-        return session.getAttribute(SessionConst.LOGIN_USER);
+        return session.getAttribute(SessionConst.LOGIN_USER_INTERCEPTOR);
     }
 }

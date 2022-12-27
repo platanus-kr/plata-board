@@ -5,7 +5,7 @@ GET http://localhost:8080/api/v1/board/1
 GET http://localhost:8080/api/v1/board/1?page=5
 
 ### 게시글 조회
-GET http://localhost:8080/api/v1/article/1
+GET http://localhost:8080/api/v1/article/4
 
 ### 댓글 조회
 GET http://localhost:8080/api/v1/comment/1
@@ -23,11 +23,11 @@ Content-Type: application/x-www-form-urlencoded
 
 ### auth test
 GET http://localhost:8080/api/v1/test/auth
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTA3NzF9.kwWrP2lvi-SFW6uGz9fM0QCWuAEJVUL4uZ9tgkpJB9Y
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 ### 게시글 작성
 POST http://localhost:8080/api/v1/board/1/write
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 Content-Type: application/json
 
 {
@@ -39,12 +39,12 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1/article/3
 
 ### 게시글 추천
-POST http://localhost:8080/api/v1/article/3/recommend
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+POST http://localhost:8080/api/v1/article/2/recommend
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 ### 게시글 수정
-POST http://localhost:8080/api/v1/article/2/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+POST http://localhost:8080/api/v1/article/3/update
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 Content-Type: application/json
 
 {
@@ -55,14 +55,14 @@ Content-Type: application/json
 
 ### 게시글 삭제
 DELETE http://localhost:8080/api/v1/article/4
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTAwMzN9.tDORADr7vP9kGueBNDlmRwUkKC1Bazb7LWHO24PDYvc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 ### 코멘트 조회
 GET http://localhost:8080/api/v1/article/3/comments
 
 ### 코멘트 작성
 POST http://localhost:8080/api/v1/article/3/comment
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 Content-Type: application/json
 
 {
@@ -71,7 +71,7 @@ Content-Type: application/json
 
 ### 코멘트 수정
 POST http://localhost:8080/api/v1/comment/16/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 Content-Type: application/json
 
 {
@@ -79,8 +79,8 @@ Content-Type: application/json
 }
 
 ### 코멘트 삭제
-DELETE http://localhost:8080/api/v1/comment/13
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjIxMTI2NTd9.Zae3omYFAmQ_0dtx6qw6GZxXcHSwL8NyBTt6lF0MWJM
+DELETE http://localhost:8080/api/v1/comment/16
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 
 ### GET ENV
@@ -89,7 +89,7 @@ GET http://localhost:8080/api/v1/test/env
 ### 파일 업로드
 POST http://localhost:8080/api/v1/media
 Content-Type: multipart/form-data; boundary=PLATABOARDTEST
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTY5MDUyMn0.Oa5EboKtIwS1iF6MpVL2UmPXrXzEQeFzRECUaoLubg4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 --PLATABOARDTEST
 Content-Disposition: form-data; name="expireDate"
@@ -120,12 +120,12 @@ GET http://localhost:8080/media/image/2022/08/28/ec7b0c5d-88fb-461e-b284-d52a0db
 
 ### media delete
 DELETE http://localhost:8080/api/v1/media/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NjE2OTA0OTB9.TdJtOH3j5Xe9paVZVrrX3-LWM1YAxi2AfvLOlAuQb7g
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 ### media delete2
-DELETE http://localhost:8080/api/v1/media/2
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTY5MDMwMH0.JbkvAyrZPEO8AZkXh8rslV56wBrECGGhVgxXWKcENaw
+DELETE http://localhost:8080/api/v1/media/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
 
 ### medie real delete (관리자 권한)
 DELETE http://localhost:8080/api/v1/media/fileDeleteFromStorage/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY2MTY5MDUyMn0.Oa5EboKtIwS1iF6MpVL2UmPXrXzEQeFzRECUaoLubg4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
