@@ -40,7 +40,7 @@ public class BoardRestControllerV1 {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public ResponseEntity<?> list(@PathVariable("id") long boardId,
-                                  @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) throws Exception {
+                                  @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) {
         String boardName;
         Page<ArticleListDto> articles;
         try {
@@ -62,6 +62,7 @@ public class BoardRestControllerV1 {
      * 게시글 작성
      *
      * @param boardId
+     * @param user
      * @param articleRequest
      * @return
      */
@@ -70,13 +71,6 @@ public class BoardRestControllerV1 {
     public ResponseEntity<?> write(@PathVariable("id") long boardId,
                                    @AuthenticationPrincipal UserClaimDto user,
                                    @Valid @RequestBody ArticleWriteDto articleRequest) {
-//        User user = userAdapter.getUser();
-//        log.info("{} {} {} {} {}",
-//                user.getId(),
-//                user.getUsername(),
-//                user.getNickname(),
-//                user.getEmail(),
-//                user.getRole());
         Article article = Article.fromWriteDto(articleRequest);
         article.setBoardId(boardId);
         article.setAuthorId(user.getId());

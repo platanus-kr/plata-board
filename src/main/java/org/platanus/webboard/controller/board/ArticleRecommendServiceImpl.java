@@ -1,6 +1,7 @@
 package org.platanus.webboard.controller.board;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.domain.ArticleRecommend;
 import org.platanus.webboard.domain.ArticleRecommendRepository;
 import org.platanus.webboard.domain.ArticleRepository;
@@ -19,7 +20,7 @@ public class ArticleRecommendServiceImpl implements ArticleRecommendService {
         Optional<ArticleRecommend> findResult = articleRecommendRepository.findByArticleIdAndUserId(
                 articleRecommend.getArticleId(), articleRecommend.getUserId());
         if (findResult.isPresent()) {
-            throw new IllegalArgumentException("이미 추천된 게시물 입니다");
+            throw new IllegalArgumentException(MessageConstant.ARTICLE_ALREADY_RECOMMEND);
         }
         ArticleRecommend result = articleRecommendRepository.save(articleRecommend);
         articleRepository.updateRecommend(articleRecommend.getArticleId());

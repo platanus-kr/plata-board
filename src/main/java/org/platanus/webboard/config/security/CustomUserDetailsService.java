@@ -2,6 +2,7 @@ package org.platanus.webboard.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.controller.user.RoleService;
 import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * UserDetailsService 구현 <br />
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,11 +29,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (optUser.isEmpty()) {
-            log.error("loadUserByUsername : 사용자를 찾을 수 없음");
-            throw new UsernameNotFoundException("loadUserByUsername : 사용자를 찾을 수 없음");
+            log.error(MessageConstant.UDS_USER_NOT_FOUND);
+            throw new UsernameNotFoundException(MessageConstant.UDS_USER_NOT_FOUND);
         }
         User user = optUser.get();
-        log.info("사용자 로그인 : {}", user.getUsername());
+        log.info(MessageConstant.UDS_USER_LOGIN, user.getUsername());
         List<Role> roles = roleService.findByUser(user);
 //        Collection<SimpleGrantedAuthority> authorites = byUser.stream()
 //                .map(role -> new SimpleGrantedAuthority(role.getRole().getKey()))

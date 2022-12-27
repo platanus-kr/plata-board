@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 
 import javax.validation.constraints.Email;
@@ -45,6 +46,13 @@ public class User {
                 .nickname(userSessionDto.getNickname())
                 .email(userSessionDto.getEmail())
                 .role(userSessionDto.getRole())
+                .build();
+    }
+
+    public static User fromUserClaimDto(UserClaimDto userClaimDto) {
+        return User.builder().id(userClaimDto.getId())
+                .username(userClaimDto.getUsername())
+                .role(UserRole.valueOf(userClaimDto.getRoleKeys().get(0)))
                 .build();
     }
 }

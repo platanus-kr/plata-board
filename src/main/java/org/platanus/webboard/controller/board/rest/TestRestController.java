@@ -3,6 +3,7 @@ package org.platanus.webboard.controller.board.rest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.property.PropertyEnvironment;
+import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class TestRestController {
 
     @GetMapping("/auth")
     @HasUserRole
-    public ResponseEntity<?> doTest(@AuthenticationPrincipal Object principal) {
+    public ResponseEntity<?> doTest(@AuthenticationPrincipal UserClaimDto user) {
         log.info("authTest OK");
-        log.info((String) principal);
+        log.info(user.toString());
         return ResponseEntity.ok("200");
     }
 

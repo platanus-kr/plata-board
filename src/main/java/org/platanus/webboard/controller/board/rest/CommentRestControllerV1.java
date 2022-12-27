@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.board.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.CommentViewDto;
@@ -33,8 +34,7 @@ public class CommentRestControllerV1 {
      */
     @GetMapping("/{commentId}")
     @HasUserRole
-    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId,
-                                        @AuthenticationPrincipal Object principal) {
+    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId) {
         Comment comment;
         User user;
         try {
@@ -52,30 +52,20 @@ public class CommentRestControllerV1 {
      * 코멘트 수정 <br />
      *
      * @param commentId
-     * @param principal
+     * @param user
      * @return
      */
     @PostMapping("/{commentId}/update")
     @HasUserRole
     public ResponseEntity<?> updateComment(@PathVariable("commentId") long commentId,
-                                           @AuthenticationPrincipal Object principal,
+                                           @AuthenticationPrincipal UserClaimDto user,
                                            @Valid @RequestBody CommentWriteDto commentRequest) {
-        User user;
-        try {
-            user = userService.findByUsername(principal.toString());
-        } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
+        User userFromClaim = User.fromUserClaimDto(user);
         Comment comment;
         try {
             comment = commentService.findById(commentId);
             comment.setContent(commentRequest.getContent());
-            comment = commentService.update(comment, user);
+            comment = commentService.update(comment, userFromClaim);
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
             return ResponseEntity.badRequest().body(errorDto);
@@ -87,28 +77,18 @@ public class CommentRestControllerV1 {
      * 코멘트 삭제 <br />
      *
      * @param commentId
-     * @param principal
+     * @param user
      * @return
      */
     @DeleteMapping("/{commentId}")
     @HasUserRole
     public ResponseEntity<?> deleteComment(@PathVariable("commentId") long commentId,
-                                           @AuthenticationPrincipal Object principal) {
-        User user;
-        try {
-            user = userService.findByUsername(principal.toString());
-        } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
+                                           @AuthenticationPrincipal UserClaimDto user) {
+        User userFromClaim = User.fromUserClaimDto(user);
         Comment comment;
         try {
             comment = commentService.findById(commentId);
-            commentService.updateDeleteFlag(comment, user);
+            commentService.updateDeleteFlag(comment, userFromClaim);
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
             return ResponseEntity.badRequest().body(errorDto);

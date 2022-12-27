@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * UserDetails.User 구현 -> UserAdapter <br />
+ */
 @Getter
 public class UserAdapter extends org.springframework.security.core.userdetails.User {
 

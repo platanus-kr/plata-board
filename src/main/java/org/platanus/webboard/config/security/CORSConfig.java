@@ -1,4 +1,4 @@
-package org.platanus.webboard.config.interceptor;
+package org.platanus.webboard.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.platanus.webboard.config.property.PropertyEnvironment;

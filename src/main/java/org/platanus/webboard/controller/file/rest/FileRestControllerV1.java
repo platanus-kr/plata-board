@@ -2,6 +2,8 @@ package org.platanus.webboard.controller.file.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
+import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.config.security.permission.HasAdminRole;
 import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.dto.ErrorDto;
@@ -10,7 +12,6 @@ import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileUploadDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.File;
-import org.platanus.webboard.domain.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -35,34 +36,23 @@ public class FileRestControllerV1 {
      * ROLE_USER 권한 필수<br />
      *
      * @param uploadDto FileUploadDto
-     * @param principal Spring Security
+     * @param user
      * @return 업로드 성공 시 fileId가 포함된 File 반환
      */
     @PostMapping
     @ResponseBody
     @HasUserRole
     public ResponseEntity<?> uploadFile(@ModelAttribute FileUploadDto uploadDto,
-                                        @AuthenticationPrincipal Object principal) {
-        User user;
+                                        @AuthenticationPrincipal UserClaimDto user) {
         List<File> uploadedFiles;
-        try {
-            user = userService.findByUsername(principal.toString());
-            uploadDto.setUserId(user.getId());
-        } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
+        uploadDto.setUserId(user.getId());
         try {
             uploadedFiles = fileService.uploadFiles(uploadDto);
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder()
                     .errorId(999)
-                    .errorCode("파일 업로드 에러")
-                    .errorMessage("파일 업로드에 실패 했습니다.")
+                    .errorCode(MessageConstant.FILE_STORE_UPLOAD_ERROR_CODE)
+                    .errorMessage(MessageConstant.FILE_STORE_UPLOAD_ERROR_MSG)
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
@@ -75,31 +65,20 @@ public class FileRestControllerV1 {
      * 유저 인터페이스와 관련 있기 때문에 파일 소유자만 삭제 할 수 있다. <br />
      * ROLE_USER 권한 필수<br />
      *
-     * @param fileId    삭제를 위한 파일ID (필수)
-     * @param principal Spring Security
+     * @param fileId 삭제를 위한 파일ID (필수)
+     * @param user   Spring Security
      * @return 파일 삭제 성공시 200 반환
      */
     @DeleteMapping("/{fileId}")
     @ResponseBody
     @HasUserRole
     public ResponseEntity<?> updateDeleteFlag(@PathVariable Long fileId,
-                                              @AuthenticationPrincipal Object principal) {
-        User user;
-        try {
-            user = userService.findByUsername(principal.toString());
-        } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
+                                              @AuthenticationPrincipal UserClaimDto user) {
         if (fileId < 1 || fileId == null) {
             ErrorDto errorDto = ErrorDto.builder()
                     .errorId(999)
-                    .errorCode("")
-                    .errorMessage("파일 아이디가 없습니다.")
+                    .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
+                    .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID)
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
@@ -113,8 +92,8 @@ public class FileRestControllerV1 {
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder()
                     .errorId(999)
-                    .errorCode("")
-                    .errorMessage("파일이 존재하지 않습니다.")
+                    .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
+                    .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE)
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
@@ -126,32 +105,20 @@ public class FileRestControllerV1 {
      * DB에서 deleted를 true로 변환하고, 파일을 저장소로부터 <b>실제로 삭제</b>한다. (주의) <br />
      * ROLE_ADMIN 필수 <br />
      *
-     * @param fileId    삭제를 위한 파일ID (필수)
-     * @param principal Spring Security
+     * @param fileId 삭제를 위한 파일ID (필수)
+     * @param user
      * @return 파일 삭제 성공시 200 반환
      */
     @DeleteMapping("/fileDeleteFromStorage/{fileId}")
     @ResponseBody
     @HasAdminRole
     public ResponseEntity<?> realFileDelete(@PathVariable Long fileId,
-                                            @AuthenticationPrincipal Object principal) {
-        User user;
-
-        try {
-            user = userService.findByUsername(principal.toString());
-        } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
+                                            @AuthenticationPrincipal UserClaimDto user) {
         if (fileId < 1 || fileId == null) {
             ErrorDto errorDto = ErrorDto.builder()
                     .errorId(999)
-                    .errorCode("")
-                    .errorMessage("파일 아이디가 없습니다.")
+                    .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
+                    .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID)
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
@@ -166,8 +133,8 @@ public class FileRestControllerV1 {
         } catch (Exception e) {
             ErrorDto errorDto = ErrorDto.builder()
                     .errorId(999)
-                    .errorCode("")
-                    .errorMessage("파일이 존재하지 않습니다.")
+                    .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
+                    .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE)
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }

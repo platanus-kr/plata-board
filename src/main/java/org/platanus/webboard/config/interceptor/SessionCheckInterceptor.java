@@ -18,7 +18,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         String requestUserAgent = request.getHeader("user-agent");
         String requestIp = IPUtils.getRemoteAddr(request);
         HttpSession session = request.getSession();
-        UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER);
+        UserSessionDto userSessionDto = (UserSessionDto) session.getAttribute(SessionConst.LOGIN_USER_INTERCEPTOR);
         if (session != null && userSessionDto != null) {
             if (!userSessionDto.getUserIp().equals(requestIp)) {
                 log.info("Interceptor detected session change IP : #{} {} - origin: {} / hijack: {}",
