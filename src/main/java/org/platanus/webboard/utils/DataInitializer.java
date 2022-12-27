@@ -11,12 +11,11 @@ import org.platanus.webboard.controller.user.RoleService;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class DataInitializer {
 
