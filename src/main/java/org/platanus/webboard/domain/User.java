@@ -1,44 +1,50 @@
 package org.platanus.webboard.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
+    /* 회원 번호 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /* 회원 아이디 */
     @NotBlank
     private String username;
 
+    /* 회원 비밀번호 */
     @NotBlank
     private String password;
 
+    /* 회원 닉네임 */
     @NotBlank
     private String nickname;
 
+    /* 회원 이메일 */
     @NotBlank
     @Email
     private String email;
+
+    /* 회원 탈퇴여부 */
     private boolean deleted;
-    /**
-     * 대표 롤
-     */
+
+    /* 회원 롤 */
+    @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    /**
-     * 사용자가 갖고 있는 모든 롤
-     **/
-//    private List<Role> roles;
     public static User fromLoginSessionDto(UserSessionDto userSessionDto) {
         return User.builder()
                 .id(userSessionDto.getId())

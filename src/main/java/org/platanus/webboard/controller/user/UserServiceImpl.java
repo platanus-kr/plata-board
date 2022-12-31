@@ -29,10 +29,10 @@ public class UserServiceImpl implements UserService {
             // 회원 추가
             addedUser = add(user);
             // 회원 역할 추가
-            roleService.add(new Role(UserRole.ROLE_USER, user.getId()));
+            roleService.add(new Role(null, UserRole.ROLE_USER, user.getId()));
             // 관리자의 경우 관리자 역할 추가
             if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
-                roleService.add(new Role(UserRole.ROLE_ADMIN, user.getId()));
+                roleService.add(new Role(null, UserRole.ROLE_ADMIN, user.getId()));
             }
         } catch (Exception e) {
             throw new RuntimeException("회원가입에 실패 했습니다.");

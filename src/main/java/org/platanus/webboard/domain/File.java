@@ -1,19 +1,25 @@
 package org.platanus.webboard.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class File {
-    /**
-     * 파일을 구분짓는 유니크
-     */
+    /* 파일을 구분 짓는 유니크 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     /**
      * 파일을 업로드 유저, 소유자.
      */
