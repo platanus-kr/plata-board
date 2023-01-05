@@ -1,6 +1,5 @@
 package org.platanus.webboard.config.datasource;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -10,7 +9,7 @@ import javax.sql.DataSource;
  */
 //@Configuration
 public class JdbcTemplateConfig {
-    @Bean
+    //    @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }

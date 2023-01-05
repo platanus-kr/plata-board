@@ -18,6 +18,8 @@ public class ArticleRecommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private long articleId;
+    
     private long userId;
 }

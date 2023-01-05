@@ -2,10 +2,7 @@ package org.platanus.webboard.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -52,11 +49,13 @@ public class File {
     /**
      * 파일 생성(업로드) 일자
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
     /**
      * 파일 레코드 수정 일자 <br />
      * ex) 파일 삭제
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
     /**
      * 파일 삭제 여부<br />
@@ -67,5 +66,6 @@ public class File {
      * 파일 만료 일자 <br />
      * 만료 일자를 가지고 배치를 통해 실제 파일 삭제.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime expireDate;
 }
