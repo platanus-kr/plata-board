@@ -2,6 +2,8 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
                 roleService.add(new Role(null, UserRole.ROLE_ADMIN, user.getId()));
             }
         } catch (Exception e) {
-            throw new RuntimeException("회원가입에 실패 했습니다.");
+            throw new RuntimeException(MessageConstant.USER_JOIN_FAILED);
         }
         return addedUser;
     }
@@ -43,39 +45,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public User add(User user) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
-            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_NICKNAME_LOG, user.getUsername(), user.getNickname());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_NICKNAME);
         }
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 아이디 입니다.", user.getUsername());
-            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_USERNAME_LOG, user.getUsername());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_USERNAME);
         }
         if (userRepository.findByEmail((user.getEmail())).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_EMAIL_LOG, user.getUsername(), user.getEmail());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_EMAIL);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDeleted(false);
         user = userRepository.save(user);
-        log.info("User join #{}, {}", user.getId(), user.getUsername());
+        log.info(MessageConstant.USER_JOIN_SUCCESS_LOG, user.getId(), user.getUsername());
         return user;
     }
 
     @Override
     public User update(User user, User sessionUser) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent() && !user.getNickname().equals(sessionUser.getNickname())) {
-            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
-            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_NICKNAME_LOG, user.getUsername(), user.getNickname());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_NICKNAME);
         }
         if (userRepository.findByEmail((user.getEmail())).isPresent() && !user.getEmail().equals(sessionUser.getEmail())) {
-            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_EMAIL_LOG, user.getUsername(), user.getEmail());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_EMAIL);
         }
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info("User update #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.info(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
 
@@ -84,8 +86,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info("User update #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.info(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
 
@@ -103,13 +105,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void revoke(User user) throws Exception {
         if (userRepository.findById(user.getId()).get().isDeleted()) {
-            log.info("User revoke #{}: 이미 탈퇴한 회원 입니다.", user.getId());
-            throw new IllegalArgumentException("이미 탈퇴한 회원입니다");
+            log.info(MessageConstant.USER_ALREADY_REVOKE_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_REVOKE);
         }
         user.setDeleted(true);
         if (userRepository.updateDeleteFlag(user) != 1) {
-            log.info("User revoke #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.info(MessageConstant.USER_REVOKE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_REVOKE_FAILED);
         }
         log.info("User revoke #{}", user.getId());
     }

@@ -5,6 +5,22 @@ package org.platanus.webboard.config.constant;
  */
 public class MessageConstant {
 
+    /* UserService */
+    public static final String USER_JOIN_FAILED = "회원가입에 실패 했습니다.";
+    public static final String USER_ALREADY_USE_NICKNAME_LOG = "User join #{}: 이미 존재하는 닉네임 입니다. - {}";
+    public static final String USER_ALREADY_USE_NICKNAME = "이미 존재하는 닉네임 입니다.";
+    public static final String USER_ALREADY_USE_USERNAME_LOG = "User join #{}: 이미 존재하는 아이디 입니다.";
+    public static final String USER_ALREADY_USE_USERNAME = "이미 존재하는 아이디 입니다.";
+    public static final String USER_ALREADY_USE_EMAIL_LOG = "User join #{}: 이미 존재하는 이메일 입니다. - {}";
+    public static final String USER_ALREADY_USE_EMAIL = "이미 존재하는 이메일 입니다.";
+    public static final String USER_JOIN_SUCCESS_LOG = "User join #{}, {}";
+    public static final String USER_UPDATE_FAILED_LOG = "User update #{}: Repository Error.";
+    public static final String USER_UPDATE_FAILED = "정보 변경에 문제가 생겼습니다.";
+    public static final String USER_ALREADY_REVOKE_LOG = "User revoke #{}: 이미 탈퇴한 회원 입니다.";
+    public static final String USER_ALREADY_REVOKE = "이미 탈퇴한 회원입니다";
+    public static final String USER_REVOKE_FAILED_LOG = "User revoke #{}: Repository Error.";
+    public static final String USER_REVOKE_FAILED = "정보 변경에 문제가 생겼습니다.";
+
     /* UserDetailsService */
     public static final String UDS_USER_NOT_FOUND = "loadUserByUsername : 사용자를 찾을 수 없음";
     public static final String UDS_USER_LOGIN = "사용자 로그인 : {}";
