@@ -60,7 +60,7 @@ public class FileServiceImpl implements FileService {
                     .updateDate(LocalDateTime.now())
                     .build();
             uploadedFiles.add(uploadedFile);
-            fileRepository.upload(uploadedFile);
+            fileRepository.save(uploadedFile);
         }
         return uploadedFiles;
     }

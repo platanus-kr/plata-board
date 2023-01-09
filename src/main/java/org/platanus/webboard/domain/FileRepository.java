@@ -1,31 +1,24 @@
 package org.platanus.webboard.domain;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    // 이거는 save로 가야할것 같은데 일단 쟁여놓기
-    //File upload(File file);
-
-    // 기본 구현 되어있음
-    //int delete(long id);
-
-    int deleteByUserId(long userId);
-
-    // 이것도 save로 퉁쳐야할듯
-    //int updateDeleteFlag(File file);
+    /* 변경감지를 통해 JPA가 영속성을 관리 할 수 있도록 제거 할 것. 일단은 코드가 돌아야 하니.. */
+    @Deprecated
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update File f set f.deleted = :deleted where f.id = :id")
+    int updateDeleteFlag(File file);
 
     Optional<File> findById(long id);
 
-    // 이거 될거같은데 왜 활성화가 안되지?
-    Optional<File> findByManagementFilename(String mgntFilename);
+    // 두고 봅시다.
+    // Optional<File> findByManagementFilename(String mgntFilename);
 
-    // 이건 JPQL.
+    // 두고 봅시다.
     //int findByExpireFromSourceDatetimeToDestinationDatetime(LocalDateTime srcDatetime, LocalDateTime destDatetime);
-
-    // 고쳐요
-    //int findAll();
 }

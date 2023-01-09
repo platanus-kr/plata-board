@@ -143,9 +143,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<ArticleListDto> findPageOfArticlesByBoardId(long boardId, int pageNum) {
         PageRequest pageable = PageRequest.of(pageNum, PageConst.PAGE_OFFSET);
-        List<Article> articles = articleRepository.findByBoardIdPagination(pageable, boardId);
+        List<Article> articles = articleRepository.findByBoardId(boardId, pageable);
         List<ArticleListDto> returnArticles = getArticlesListDtoPage(articles);
-        return new PageImpl<ArticleListDto>(returnArticles, pageable, articleRepository.count(boardId));
+        Long count = articleRepository.countById(boardId);
+        return new PageImpl<ArticleListDto>(returnArticles, pageable, count);
     }
 
     private List<ArticleListDto> getArticlesListDtoPage(List<Article> articles) {

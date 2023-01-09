@@ -71,7 +71,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(Comment comment) throws Exception {
-        if (commentRepository.delete(comment) != 1) {
+        try {
+            commentRepository.delete(comment);
+        } catch (IllegalArgumentException e) {
             log.info(MessageConstant.COMMENT_FAILED_DELETE_LOG, comment.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_DELETE_ERROR);
         }
@@ -117,7 +119,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int countByArticleId(long articleId) {
-        return commentRepository.findCountByArticleId(articleId);
+        // 고쳐야 할 부분
+        return Math.toIntExact(commentRepository.countById(articleId));
     }
 
     @Override
