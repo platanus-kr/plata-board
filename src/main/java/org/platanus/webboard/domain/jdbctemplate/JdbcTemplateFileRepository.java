@@ -18,7 +18,8 @@ import java.util.Optional;
 
 //@Repository
 @RequiredArgsConstructor
-public class JdbcTemplateFileRepository implements FileRepository {
+//public class JdbcTemplateFileRepository implements FileRepository {
+public class JdbcTemplateFileRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
@@ -29,7 +30,7 @@ public class JdbcTemplateFileRepository implements FileRepository {
         jdbcInsert.withTableName("FILES").usingGeneratedKeyColumns("id");
     }
 
-    @Override
+    //@Override
     public File upload(File file) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("user_id", file.getUserId());
@@ -47,39 +48,39 @@ public class JdbcTemplateFileRepository implements FileRepository {
         return file;
     }
 
-    @Override
+    //@Override
     public int delete(long id) {
         return 0;
     }
 
-    @Override
+    //@Override
     public int deleteByUserId(long userId) {
         return 0;
     }
 
-    @Override
+    //@Override
     public int updateDeleteFlag(File file) {
         return jdbcTemplate.update(QueryConstant.FILE_UPDATE_DELETE_FLAG_BY_ID, file.getDeleted(), file.getId());
     }
 
-    @Override
+    //@Override
     public Optional<File> findById(long id) {
         List<File> query = jdbcTemplate.query(QueryConstant.FILE_FIND_BY_ID, fileRowMapper(), id);
         return query.stream().findAny();
     }
 
-    @Override
+    //@Override
     public Optional<File> findByManagementFilename(String managementFilename) {
         List<File> query = jdbcTemplate.query(QueryConstant.FILE_FIND_BY_MANAGEMENT_FILENAME, fileRowMapper(), managementFilename);
         return query.stream().findAny();
     }
 
-    @Override
+    //@Override
     public int findByExpireFromSourceDatetimeToDestinationDatetime(LocalDateTime srcDatetime, LocalDateTime destDatetime) {
         return 0;
     }
 
-    @Override
+    //@Override
     public int findAll() {
         return 0;
     }

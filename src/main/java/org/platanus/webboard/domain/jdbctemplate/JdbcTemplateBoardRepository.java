@@ -17,7 +17,8 @@ import java.util.Optional;
 
 //@Repository
 @RequiredArgsConstructor
-public class JdbcTemplateBoardRepository implements BoardRepository {
+//public class JdbcTemplateBoardRepository implements BoardRepository {
+public class JdbcTemplateBoardRepository {
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 

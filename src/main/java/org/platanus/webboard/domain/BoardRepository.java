@@ -3,12 +3,15 @@ package org.platanus.webboard.domain;
 import java.util.List;
 import java.util.Optional;
 
-public interface BoardRepository {
-    Board save(Board board);
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    int delete(Board board);
+public interface BoardRepository extends JpaRepository<Board, Long> {
+    //Board save(Board board);
 
-    int update(Board board);
+    //int delete(Board board);
+
+    // save로 대체
+    //int update(Board board);
 
     List<Board> findAll();
 
@@ -16,5 +19,6 @@ public interface BoardRepository {
 
     Optional<Board> findByName(String name);
 
-    void allDelete();
+    // deleteAll로 변경하기
+    //void allDelete();
 }

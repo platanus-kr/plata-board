@@ -17,7 +17,8 @@ import java.util.Optional;
 
 //@Repository
 @RequiredArgsConstructor
-public class JdbcTemplateArticleRecommendRepository implements ArticleRecommendRepository {
+//public class JdbcTemplateArticleRecommendRepository implements ArticleRecommendRepository {
+public class JdbcTemplateArticleRecommendRepository {
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 

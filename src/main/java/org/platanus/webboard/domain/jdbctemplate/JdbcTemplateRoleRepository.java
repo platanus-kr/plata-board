@@ -17,7 +17,8 @@ import java.util.Map;
 
 //@Repository
 @RequiredArgsConstructor
-public class JdbcTemplateRoleRepository implements RoleRepository {
+//public class JdbcTemplateRoleRepository implements RoleRepository {
+public class JdbcTemplateRoleRepository {
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 
@@ -27,7 +28,7 @@ public class JdbcTemplateRoleRepository implements RoleRepository {
         jdbcInsert.withTableName("ROLES");
     }
 
-    @Override
+    //@Override
     public Role save(Role role) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ROLENAME", role.getRole());
@@ -36,17 +37,17 @@ public class JdbcTemplateRoleRepository implements RoleRepository {
         return role;
     }
 
-    @Override
+    //@Override
     public int delete(UserRole userRole, long userId) {
         return jdbcTemplate.update(QueryConstant.ROLE_DELETE, userRole, userId);
     }
 
-    @Override
+    //@Override
     public List<Role> findAll() {
         return jdbcTemplate.query(QueryConstant.ROLE_FIND_ALL, roleRowMapper());
     }
 
-    @Override
+    //@Override
     public List<Role> findByUserId(long userId) {
         return jdbcTemplate.query(QueryConstant.ROLE_FIND_BY_USER_ID, roleRowMapper(), userId);
     }

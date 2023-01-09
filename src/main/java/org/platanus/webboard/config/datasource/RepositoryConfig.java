@@ -15,32 +15,32 @@ public class RepositoryConfig {
 
     //    @Bean
     public BoardRepository boardRepository() {
-        return new JdbcTemplateBoardRepository(jdbcTemplate);
-//        return boardMapper;
+        //return new JdbcTemplateBoardRepository(jdbcTemplate);
+        return null;
     }
 
     //    @Bean
     public UserRepository userRepository() {
-        return new JdbcTemplateUserRepository(jdbcTemplate);
-//        return userMapper;
+        //return new JdbcTemplateUserRepository(jdbcTemplate);
+        return null;
     }
 
     //    @Bean
     public ArticleRepository articleRepository() {
-        return new JdbcTemplateArticleRepository(jdbcTemplate);
-//        return articleMapper;
+        //return new JdbcTemplateArticleRepository(jdbcTemplate);
+        return null;
     }
 
     //    @Bean
     public CommentRepository commentRepository() {
-        return new JdbcTemplateCommentRepository(jdbcTemplate);
-//        return commentMapper;
+        //return new JdbcTemplateCommentRepository(jdbcTemplate);
+        return null;
     }
 
     //    @Bean
     public ArticleRecommendRepository articleRecommendRepository() {
-        return new JdbcTemplateArticleRecommendRepository(jdbcTemplate);
-//        return articleRecommendMapper;
+        //return new JdbcTemplateArticleRecommendRepository(jdbcTemplate);
+        return null;
     }
 
 }

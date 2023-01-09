@@ -2,10 +2,13 @@ package org.platanus.webboard.domain;
 
 import java.util.List;
 
-public interface RoleRepository {
-    Role save(Role save);
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    int delete(UserRole userRole, long userId);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    // 기본 구현
+    //Role save(Role save);
+    // 기본 구현
+    //int delete(UserRole userRole, long userId);
 
     List<Role> findAll();
 

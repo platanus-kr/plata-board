@@ -3,22 +3,29 @@ package org.platanus.webboard.domain;
 import java.util.List;
 import java.util.Optional;
 
-public interface CommentRepository {
-    Comment save(Comment comment);
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    int delete(Comment comment);
+public interface CommentRepository extends JpaRepository<Comment, Long> {
+    // 기본 구현.
+    //Comment save(Comment comment);
+
+    // 마찬가지
+    //int delete(Comment comment);
 
     int deleteByBoardId(long boardId);
 
-    int update(Comment comment);
+    // save로 통합
+    //int update(Comment comment);
 
-    int updateDeleteFlag(Comment comment);
+    // 마찬가지
+    //int updateDeleteFlag(Comment comment);
 
     Optional<Comment> findById(long id);
 
     List<Comment> findByArticleId(long id);
 
-    int findCountByArticleId(long id);
+    // 이건 카운트 하는 방법 찾아서 바꾸기.
+    //int findCountByArticleId(long id);
 
     List<Comment> findByContent(String content);
 

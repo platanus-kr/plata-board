@@ -18,7 +18,8 @@ import java.util.Optional;
 
 //@Repository
 @RequiredArgsConstructor
-public class JdbcTemplateUserRepository implements UserRepository {
+//public class JdbcTemplateUserRepository implements UserRepository {
+public class JdbcTemplateUserRepository {
     private final JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
 
