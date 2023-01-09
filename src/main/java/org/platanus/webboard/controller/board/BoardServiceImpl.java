@@ -19,25 +19,25 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board create(Board board) throws Exception {
         if (boardRepository.findByName(board.getName()).isPresent()) {
-            log.info("Board create #{}: 이름이 같은 게시판이 존재합니다.", board.getId());
+            log.info(MessageConstant.BOARD_ALREADY_USE_BOARD_NAME_LOG, board.getId());
             throw new IllegalArgumentException(MessageConstant.BOARD_ALREADY_BOARD);
         }
         board = boardRepository.save(board);
-        log.info("Board create #{}: {}", board.getId(), board.getName());
+        log.info(MessageConstant.BOARD_SUCCESS_CREATE, board.getId(), board.getName());
         return board;
     }
 
     @Override
     public Board update(Board board) throws Exception {
         if (boardRepository.findById(board.getId()).isEmpty()) {
-            log.info("Board update #{}: 존재하지 않는 게시판 입니다.", board.getId());
+            log.info(MessageConstant.BOARD_NOT_FOUND_BY_ID_LOG, board.getId());
             throw new IllegalArgumentException(MessageConstant.BOARD_NOT_FOUND);
         }
         if (boardRepository.update(board) == 0) {
-            log.info("Board update #{}: Repository Error.", board.getId());
+            log.error(MessageConstant.BOARD_FAILED_UPDATE_LOG, board.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
-        log.info("Board create #{}: 게시판이 수정 되었습니다.", board.getId());
+        log.info(MessageConstant.BOARD_SUCCESS_UPDATE, board.getId());
         return board;
     }
 

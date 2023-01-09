@@ -2,7 +2,6 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            log.error(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
             throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
@@ -86,7 +85,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            log.error(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
             throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
@@ -110,7 +109,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setDeleted(true);
         if (userRepository.updateDeleteFlag(user) != 1) {
-            log.info(MessageConstant.USER_REVOKE_FAILED_LOG, user.getId());
+            log.error(MessageConstant.USER_REVOKE_FAILED_LOG, user.getId());
             throw new IllegalArgumentException(MessageConstant.USER_REVOKE_FAILED);
         }
         log.info("User revoke #{}", user.getId());
@@ -120,8 +119,8 @@ public class UserServiceImpl implements UserService {
     // todo: 사용자를 지울 때 작성 글과 코멘트 전부를 삭제되도록 할 것
     public void delete(User user) throws Exception {
         if (!user.isDeleted()) {
-            log.info("User delete #{}: 탈퇴되지 않은 회원입니다.", user.getId());
-            throw new IllegalArgumentException("탈퇴되지 않은 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_DELETED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_DELETED);
         }
         userRepository.delete(user);
     }
@@ -130,8 +129,8 @@ public class UserServiceImpl implements UserService {
     public User findById(long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findById #{}: 없는 회원 입니다.", id);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_ID_LOG, id);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_ID);
         }
         return user.get();
     }
@@ -140,8 +139,8 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) throws Exception {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByUsername - {}: 없는 회원 입니다.", username);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_USERNAME_LOG, username);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_USERNAME);
         }
         return user.get();
     }
@@ -152,8 +151,8 @@ public class UserServiceImpl implements UserService {
         log.info("Get principal : " + userDetails.getUsername());
         Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByUsername - {}: 없는 회원 입니다.", principal);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_USERNAME_LOG, principal);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_USERNAME);
         }
         return user.get();
     }
@@ -162,8 +161,8 @@ public class UserServiceImpl implements UserService {
     public User findByNickname(String nickname) throws Exception {
         Optional<User> user = userRepository.findByNickname(nickname);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByNickname - {}: 없는 회원 입니다.", nickname);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_NICKNAME_LOG, nickname);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_NICKNAME);
         }
         return user.get();
     }
@@ -172,8 +171,8 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByEmail - {}: 없는 회원 입니다.", email);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_EMAIL_LOG, email);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_EMAIL);
         }
         return user.get();
     }

@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setRecommend(0L);
         article.setViewCount(0L);
         article = articleRepository.save(article);
-        log.info("Article write #{} by User #{}", article.getId(), article.getAuthorId());
+        log.info(MessageConstant.ARTICLE_WRITE_SUCCESS, article.getId(), article.getAuthorId());
         return article;
     }
 
@@ -50,14 +50,14 @@ public class ArticleServiceImpl implements ArticleService {
 //            throw new IllegalArgumentException("없는 게시물 입니다.");
 //        }
         if (article.getAuthorId() != user.getId()) {
-            log.info("Article update #{}: 작성자가 아닙니다.", article.getId());
+            log.info(MessageConstant.ARTICLE_NOT_OWNER_UPDATE_LOG, article.getId());
             throw new IllegalArgumentException(MessageConstant.ARTICLE_NOT_AUTHOR);
         }
         if (articleRepository.update(article) != 1) {
-            log.info("Article update #{}: Repository Error.", article.getId());
+            log.error(MessageConstant.ARTICLE_UPDATE_FAILED_LOG, article.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
-        log.info("Article update #{} by User #{}", article.getId(), user.getId());
+        log.info(MessageConstant.ARTICLE_UPDATE_SUCCESS, article.getId(), user.getId());
         return article;
     }
 
@@ -70,11 +70,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public boolean updateDeleteFlag(Article article, User user) throws Exception {
         if (articleRepository.findById(article.getId()).get().isDeleted()) {
-            log.info("Article deleteflag #{}: 이미 삭제된 게시물 입니다..", article.getId());
+            log.info(MessageConstant.ARTICLE_ALREADY_DELETE_FLAG_LOG, article.getId());
             throw new IllegalArgumentException(MessageConstant.ARTICLE_ALREADY_DELETED);
         }
         if (article.getAuthorId() != user.getId()) {
-            log.info("Article deleteflag #{}: 작성자가 아닙니다.", article.getId());
+            log.info(MessageConstant.ARTICLE_NOT_OWNER_DELETE_FLAG_LOG, article.getId());
             throw new IllegalArgumentException(MessageConstant.ARTICLE_NOT_AUTHOR);
         }
         List<Comment> comments = commentService.findCommentsByArticleId(article.getId());
@@ -88,10 +88,10 @@ public class ArticleServiceImpl implements ArticleService {
         });
         article.setDeleted(true);
         if (articleRepository.updateDeleteFlag(article) != 1) {
-            log.info("Article deleteflag #{}: Repository Error.", article.getId());
+            log.info(MessageConstant.ARTICLE_DELETE_FLAG_FAILED, article.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
-        log.info("Article deleteflag #{} by User #{}", article.getId(), user.getId());
+        log.info(MessageConstant.ARTICLE_DELETE_FLAG_SUCCESS, article.getId(), user.getId());
         return true;
     }
 
