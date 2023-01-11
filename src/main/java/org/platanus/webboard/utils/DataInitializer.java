@@ -12,8 +12,6 @@ import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.*;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.PostConstruct;
-
 @Slf4j
 //@Component
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class DataInitializer {
     @Value("${plataboard.environment.frontend-address}")
     private String feAddress;
 
-    @PostConstruct
+    //    @PostConstruct
     public void init() {
         log.info("user upload file storage path : {}", propertyEnvironment.getAttachFileStoragePath());
         log.info("application logging path : {}", loggingPath);

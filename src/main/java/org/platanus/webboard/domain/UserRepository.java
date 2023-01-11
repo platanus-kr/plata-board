@@ -3,23 +3,26 @@ package org.platanus.webboard.domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /* 변경감지를 통해 JPA가 영속성을 관리 할 수 있도록 제거 할 것. 일단은 코드가 돌아야 하니.. */
     @Deprecated
     @Modifying(clearAutomatically = true)
-    @Query(value = "update User u set u.username = :username, u.password = :password, u.nickname = :nickname, u.email = :email, u.role = :role where u.id = :id")
-    int update(User user);
+    @Query(value = "update User u set u.username = :#{#user.username}, u.password = :#{#user.password}, u.nickname = :#{#user.nickname}, u.email = :#{#user.email}, u.role = :#{#user.role} where u.id = :#{#user.id}")
+    int update(@Param("user") User user);
 
     /* 변경감지를 통해 JPA가 영속성을 관리 할 수 있도록 제거 할 것. 일단은 코드가 돌아야 하니.. */
     @Deprecated
     @Modifying(clearAutomatically = true)
-    @Query(value = "update User u set u.deleted = :deleted where u.id = :id")
-    int updateDeleteFlag(User user);
+    @Query(value = "update User u set u.deleted = :#{#user.deleted} where u.id = :#{#user.id}")
+    int updateDeleteFlag(@Param("user") User user);
 
     Optional<User> findById(long id);
 

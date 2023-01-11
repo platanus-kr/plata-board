@@ -4,7 +4,10 @@ import lombok.*;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -19,7 +22,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private Long boardId;
 
     @NotBlank
@@ -30,10 +33,8 @@ public class Article {
 
     private Long authorId;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedDate;
 
     private boolean deleted;
