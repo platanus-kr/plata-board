@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "USERS")
 public class User {
 
     /* 회원 번호 */
