@@ -18,16 +18,16 @@ POST http://localhost:8080/api/login?username=admin&password=admin
 Content-Type: application/x-www-form-urlencoded
 
 ### 사용자 로그인
-POST http://localhost:8080/api/login?username=user&password=user
+POST http://localhost:8080/api/login?username=user&password=user123
 Content-Type: application/x-www-form-urlencoded
 
 ### auth test
 GET http://localhost:8080/api/v1/test/auth
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 
 ### 게시글 작성
 POST http://localhost:8080/api/v1/board/1/write
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 Content-Type: application/json
 
 {
@@ -39,12 +39,14 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1/article/3
 
 ### 게시글 추천
-POST http://localhost:8080/api/v1/article/2/recommend
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+POST http://localhost:8080/api/v1/article/4/recommend
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
+
+### Executing an update/delete query; nested exception is javax.persistence.TransactionRequiredException: Executing an update/delete query
 
 ### 게시글 수정
 POST http://localhost:8080/api/v1/article/3/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 Content-Type: application/json
 
 {
@@ -55,14 +57,14 @@ Content-Type: application/json
 
 ### 게시글 삭제
 DELETE http://localhost:8080/api/v1/article/4
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 
 ### 코멘트 조회
 GET http://localhost:8080/api/v1/article/3/comments
 
 ### 코멘트 작성
 POST http://localhost:8080/api/v1/article/3/comment
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 Content-Type: application/json
 
 {
@@ -71,7 +73,7 @@ Content-Type: application/json
 
 ### 코멘트 수정
 POST http://localhost:8080/api/v1/comment/16/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-WfsF
 Content-Type: application/json
 
 {

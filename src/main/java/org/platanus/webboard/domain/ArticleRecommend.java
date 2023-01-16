@@ -2,10 +2,7 @@ package org.platanus.webboard.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -13,6 +10,7 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "ARTICLES_RECOMMEND")
 public class ArticleRecommend {
 
     @Id
@@ -20,7 +18,7 @@ public class ArticleRecommend {
     private long id;
 
     private long articleId;
-    
+
     private long userId;
 
     @Override
