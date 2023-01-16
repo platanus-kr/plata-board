@@ -62,4 +62,17 @@ public class User {
                 .role(UserRole.valueOf(userClaimDto.getRoleKeys().get(0)))
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", deleted=" + deleted +
+                ", role=" + role +
+                '}';
+    }
 }

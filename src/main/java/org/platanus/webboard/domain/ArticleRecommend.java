@@ -22,4 +22,13 @@ public class ArticleRecommend {
     private long articleId;
     
     private long userId;
+
+    @Override
+    public String toString() {
+        return "ArticleRecommend{" +
+                "id=" + id +
+                ", articleId=" + articleId +
+                ", userId=" + userId +
+                '}';
+    }
 }

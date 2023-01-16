@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "ARTICLES")
 public class Article {
 
     @Id
@@ -62,5 +64,21 @@ public class Article {
                 .title(a.getTitle())
                 .content(a.getContent())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", boardId=" + boardId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", authorId=" + authorId +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", deleted=" + deleted +
+                ", recommend=" + recommend +
+                ", viewCount=" + viewCount +
+                '}';
     }
 }

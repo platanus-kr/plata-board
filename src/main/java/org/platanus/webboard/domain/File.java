@@ -77,4 +77,21 @@ public class File {
      * 만료 일자를 가지고 배치를 통해 실제 파일 삭제.
      */
     private LocalDateTime expireDate;
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", originalFilename='" + originalFilename + '\'' +
+                ", originalExtension='" + originalExtension + '\'' +
+                ", managementFilename='" + managementFilename + '\'' +
+                ", storePathPrefix='" + storePathPrefix + '\'' +
+                ", size=" + size +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                ", deleted=" + deleted +
+                ", expireDate=" + expireDate +
+                '}';
+    }
 }
