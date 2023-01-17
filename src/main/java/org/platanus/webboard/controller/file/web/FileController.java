@@ -33,12 +33,15 @@ public class FileController {
         if (fileId < 1) {
             return null;
         }
-        FileDownloadDto fileDto = fileService.findById(fileId);
+        FileDownloadDto fileDto;
         UrlResource resource;
         try {
+            fileDto = fileService.findById(fileId);
             resource = new UrlResource("file:" + fileDto.getManagementFilenameWithFullPath());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e); // 여기 보강할것 ExceptionHandler 새워야함.
         }
         String encodedOriginalFileName = UriUtils.encode(fileDto.getOriginalFilename(), StandardCharsets.UTF_8);
         String contentDisposition = "attachment; filename=\"" + encodedOriginalFileName + "\"";

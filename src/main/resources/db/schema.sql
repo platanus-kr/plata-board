@@ -1,5 +1,14 @@
+DROP TABLE users;
+DROP TABLE roles;
+DROP TABLE boards;
+DROP TABLE articles;
+DROP TABLE articles_recommend;
+DROP TABLE files;
+
+
+
 -- users Table Create SQL
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE IF NOT EXISTS `users`
 (
     `ID`       INT          NOT NULL AUTO_INCREMENT,
     `USERNAME` VARCHAR(255) NULL,
@@ -12,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 -- role Table Create SQL
-CREATE TABLE `roles`
+CREATE TABLE IF NOT EXISTS `roles`
 (
     `ID`       INT         NOT NULL AUTO_INCREMENT,
     `ROLENAME` VARCHAR(50) NOT NULL,
@@ -21,7 +30,7 @@ CREATE TABLE `roles`
 );
 
 -- boards Table Create SQL
-CREATE TABLE IF NOT EXISTS boards
+CREATE TABLE IF NOT EXISTS `boards`
 (
     `ID`          INT          NOT NULL AUTO_INCREMENT,
     `NAME`        VARCHAR(255) NULL,
@@ -30,7 +39,7 @@ CREATE TABLE IF NOT EXISTS boards
 );
 
 -- articles Table Create SQL
-CREATE TABLE IF NOT EXISTS articles
+CREATE TABLE IF NOT EXISTS `articles`
 (
     `ID`            INT          NOT NULL AUTO_INCREMENT,
     `BOARD_ID`      INT          NULL,
@@ -46,7 +55,7 @@ CREATE TABLE IF NOT EXISTS articles
 );
 
 -- articles_recommend Table Create SQL
-CREATE TABLE IF NOT EXISTS articles_recommend
+CREATE TABLE IF NOT EXISTS `articles_recommend`
 (
     `ID`         INT NOT NULL AUTO_INCREMENT,
     `ARTICLE_ID` INT NULL,
@@ -55,7 +64,7 @@ CREATE TABLE IF NOT EXISTS articles_recommend
 );
 
 -- comments Table Create SQL
-CREATE TABLE IF NOT EXISTS comments
+CREATE TABLE IF NOT EXISTS `comments`
 (
     `ID`            INT      NOT NULL AUTO_INCREMENT,
     `ARTICLE_ID`    INT      NULL,
@@ -69,7 +78,7 @@ CREATE TABLE IF NOT EXISTS comments
 );
 
 -- files Table Create SQL
-CREATE TABLE `files`
+CREATE TABLE IF NOT EXISTS `files`
 (
     `ID`                  INT          NOT NULL AUTO_INCREMENT,
     `USER_ID`             INT          NOT NULL,

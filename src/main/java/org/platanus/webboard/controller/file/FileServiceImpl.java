@@ -72,6 +72,9 @@ public class FileServiceImpl implements FileService {
             return null;
         }
         File file = findFile.get();
+        if (file.getDeleted()) {
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
         FileDownloadDto fileDto = FileDownloadDto.fromFile(file);
         String originalFilename = fileDto.getOriginalFilename();
         String managementFilename = fileDto.getManagementFilename();

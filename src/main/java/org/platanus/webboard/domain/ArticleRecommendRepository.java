@@ -17,9 +17,7 @@ public interface ArticleRecommendRepository extends JpaRepository<ArticleRecomme
 
     List<ArticleRecommend> findByUserId(long userId);
 
-    // 이거 어떻게 함?
     int countByArticleId(long articleId);
 
-    // 이것도.
     int countByUserId(long userId);
 }
