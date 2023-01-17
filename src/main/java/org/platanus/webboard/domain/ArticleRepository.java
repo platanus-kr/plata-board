@@ -1,5 +1,6 @@
 package org.platanus.webboard.domain;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -48,7 +49,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByBoardId(long id);
 
     // 페이지네이션 어떻게 하는지 함 볼것.
-    List<Article> findByBoardId(long boardId, Pageable page);
+    //List<Article> findByBoardId(long boardId, Pageable page);
+
+    Page<Article> findByBoardId(long boardId, Pageable page);
 
     List<Article> findAll();
 
