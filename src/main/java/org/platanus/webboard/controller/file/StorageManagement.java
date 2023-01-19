@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.file;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.config.property.PropertyEnvironment;
 import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileStoreDto;
@@ -79,7 +80,7 @@ public class StorageManagement {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        log.info("Upload file : {} , filesize : {}", storePathWithManagementFilename, file.getSize());
+        log.info(MessageConstant.STORE_SUCCESS_LOG, storePathWithManagementFilename, file.getSize());
         return storeFile;
     }
 
@@ -157,7 +158,7 @@ public class StorageManagement {
         int position = originalFilenameWithExtension.lastIndexOf(".");
         return originalFilenameWithExtension.substring(position + 1);
     }
-    
+
     private static String getStringByInt(int number) {
         String numberToString;
         if (number < 10) {

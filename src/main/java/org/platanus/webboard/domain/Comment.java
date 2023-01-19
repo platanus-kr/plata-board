@@ -1,27 +1,61 @@
 package org.platanus.webboard.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "COMMENTS")
 public class Comment {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private long articleId;
 
     @NotBlank
     private String content;
-    private long authorId;
+
+    private Long authorId;
+
     private LocalDateTime createdDate;
+    
     private LocalDateTime modifiedDate;
+
     private boolean deleted;
-    private long recommend;
+
+    private Long recommend;
 
     // add join
+    @Transient
     private String authorNickname;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", articleId=" + articleId +
+                ", content='" + content + '\'' +
+                ", authorId=" + authorId +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", deleted=" + deleted +
+                ", recommend=" + recommend +
+                ", authorNickname='" + authorNickname + '\'' +
+                '}';
+    }
 }

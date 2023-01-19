@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.file;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.config.property.PropertyEnvironment;
 import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileDownloadDto;
@@ -59,7 +60,7 @@ public class FileServiceImpl implements FileService {
                     .updateDate(LocalDateTime.now())
                     .build();
             uploadedFiles.add(uploadedFile);
-            fileRepository.upload(uploadedFile);
+            fileRepository.save(uploadedFile);
         }
         return uploadedFiles;
     }
@@ -71,6 +72,9 @@ public class FileServiceImpl implements FileService {
             return null;
         }
         File file = findFile.get();
+        if (file.getDeleted()) {
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
         FileDownloadDto fileDto = FileDownloadDto.fromFile(file);
         String originalFilename = fileDto.getOriginalFilename();
         String managementFilename = fileDto.getManagementFilename();
@@ -91,18 +95,18 @@ public class FileServiceImpl implements FileService {
     public FileDeleteDto updateDeleteFlagByUser(FileDeleteDto fileDto) throws Exception {
         Optional<File> findFile = fileRepository.findById(fileDto.getFileId());
         if (findFile.isEmpty()) {
-            log.error("삭제 할 파일을 찾을 수 없습니다. fileId : {}", fileDto.getFileId());
+            log.error(MessageConstant.FS_NOT_FOUND_TARGET_FILE_AS_DELETE_LOG, fileDto.getFileId());
             return null;
         }
         File file = findFile.get();
         if (!Objects.equals(fileDto.getUserId(), file.getUserId())) {
-            log.error("파일을 업로드 한 당사자가 아닙니다. {} / {}", fileDto.getFileId(), file.getUserId());
+            log.error(MessageConstant.FS_NOT_FILE_OWNER_LOG, fileDto.getFileId(), file.getUserId());
             return null;
         }
         file.setDeleted(fileDto.getDeleted());
         file.setUpdateDate(LocalDateTime.now());
         if (fileRepository.updateDeleteFlag(file) < 1) {
-            log.error("삭제 할 파일을 찾을 수 없습니다. fileId : {}", fileDto.getFileId());
+            log.error(MessageConstant.FS_NOT_FOUND_TARGET_FILE_AS_DELETE_LOG, fileDto.getFileId());
             return null;
         }
         return fileDto;
@@ -118,14 +122,14 @@ public class FileServiceImpl implements FileService {
     public int deleteFile(Long fileId) {
         Optional<File> findFile = fileRepository.findById(fileId);
         if (findFile.isEmpty()) {
-            log.error("삭제 할 파일을 찾을 수 없습니다. fileId : {}", fileId);
+            log.error(MessageConstant.FS_NOT_FOUND_TARGET_FILE_AS_DELETE_LOG, fileId);
             return 0;
         }
         File file = findFile.get();
         file.setDeleted(true);
         if (fileRepository.updateDeleteFlag(file) < 1) {
             // DB상 파일 정보를 찾을 수 없더라도 실제 파일 삭제는 진행한다.
-            log.error("삭제 할 파일을 찾을 수 없습니다. fileId : {}", fileId);
+            log.error(MessageConstant.FS_NOT_FOUND_TARGET_FILE_AS_DELETE_LOG, fileId);
         }
         FileDeleteDto fileDto = FileDeleteDto.builder()
                 .managementFilename(file.getManagementFilename())

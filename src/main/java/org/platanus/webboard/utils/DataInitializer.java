@@ -56,7 +56,11 @@ public class DataInitializer {
         User user = null;
         try {
             user = userService.join(new User(null, "admin", "admin", "운영자", "admin@admin.net", false, UserRole.ROLE_ADMIN));
-//            roleService.add(new Role(UserRole.ROLE_ADMIN, user.getId()));
+            Role role = Role.builder()
+                    .role(UserRole.ROLE_ADMIN)
+                    .userId(user.getId())
+                    .build();
+            roleService.add(role);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -65,7 +69,11 @@ public class DataInitializer {
         User user2;
         try {
             user2 = userService.join(new User(null, "user", "user", "유저", "user@user.com", false, UserRole.ROLE_USER));
-//            roleService.add(new Role(UserRole.ROLE_USER, user2.getId()));
+            Role role = Role.builder()
+                    .role(UserRole.ROLE_USER)
+                    .userId(user2.getId())
+                    .build();
+            roleService.add(role);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

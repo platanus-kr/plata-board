@@ -1,32 +1,49 @@
 package org.platanus.webboard.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "ARTICLES")
 public class Article {
-    private long id;
-    private long boardId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long boardId;
 
     @NotBlank
     private String title;
 
     @NotBlank
     private String content;
-    private long authorId;
+
+    private Long authorId;
+
     private LocalDateTime createdDate;
+
     private LocalDateTime modifiedDate;
+
     private boolean deleted;
-    private long recommend;
-    private long viewCount;
+
+    private Long recommend;
+
+    private Long viewCount;
 
     public static Article fromListDto(ArticleListDto a) {
         return Article.builder()
@@ -47,5 +64,21 @@ public class Article {
                 .title(a.getTitle())
                 .content(a.getContent())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", boardId=" + boardId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", authorId=" + authorId +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", deleted=" + deleted +
+                ", recommend=" + recommend +
+                ", viewCount=" + viewCount +
+                '}';
     }
 }

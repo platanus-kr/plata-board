@@ -1,13 +1,13 @@
 package org.platanus.webboard;
 
-import org.platanus.webboard.controller.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-//@ConfigurationPropertiesScan("org.platanus.webboard.config")
+@EnableJpaAuditing
 public class PlataBoardApplication {
 
     public static void main(String[] args) {
@@ -15,7 +15,7 @@ public class PlataBoardApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService) {
+    CommandLineRunner run() {
         return args -> {
             System.out.println("Out now!");
         };

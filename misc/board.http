@@ -23,11 +23,11 @@ Content-Type: application/x-www-form-urlencoded
 
 ### auth test
 GET http://localhost:8080/api/v1/test/auth
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 
 ### 게시글 작성
 POST http://localhost:8080/api/v1/board/1/write
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM5Mjg4NjUsInVzZXJJZCI6IjIifQ.qPzC6ExIbJOXYCoTZpns_JDPk3PF5KtvjSHlT_5gOS0
 Content-Type: application/json
 
 {
@@ -39,12 +39,14 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1/article/3
 
 ### 게시글 추천
-POST http://localhost:8080/api/v1/article/2/recommend
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+POST http://localhost:8080/api/v1/article/3/recommend
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM5Mjg4NjUsInVzZXJJZCI6IjIifQ.qPzC6ExIbJOXYCoTZpns_JDPk3PF5KtvjSHlT_5gOS0
+
+### Executing an update/delete query; nested exception is javax.persistence.TransactionRequiredException: Executing an update/delete query
 
 ### 게시글 수정
 POST http://localhost:8080/api/v1/article/3/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 Content-Type: application/json
 
 {
@@ -55,14 +57,14 @@ Content-Type: application/json
 
 ### 게시글 삭제
 DELETE http://localhost:8080/api/v1/article/4
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM4ODE2NzksInVzZXJJZCI6IjIifQ.UwdQdkPINuR7f4hubw4zrSq_cCcpkgmycd5A1JAngdM
 
 ### 코멘트 조회
 GET http://localhost:8080/api/v1/article/3/comments
 
 ### 코멘트 작성
 POST http://localhost:8080/api/v1/article/3/comment
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM5MjkxNjQsInVzZXJJZCI6IjIifQ.0qjH0qFbb7IYvi7FCSmpiZqcTk2vLwKhlG6H3T87paQ
 Content-Type: application/json
 
 {
@@ -71,7 +73,7 @@ Content-Type: application/json
 
 ### 코멘트 수정
 POST http://localhost:8080/api/v1/comment/16/update
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-WfsF
 Content-Type: application/json
 
 {
@@ -89,7 +91,7 @@ GET http://localhost:8080/api/v1/test/env
 ### 파일 업로드
 POST http://localhost:8080/api/v1/media
 Content-Type: multipart/form-data; boundary=PLATABOARDTEST
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM5MzExMzIsInVzZXJJZCI6IjIifQ.FcQfcQICmQTQsX94zQnlvfTZWiVxO-lmmkDVVWggHR8
 
 --PLATABOARDTEST
 Content-Disposition: form-data; name="expireDate"
@@ -116,7 +118,7 @@ Content-Type: application/xml
 GET http://localhost:8080/media/attach/1
 
 ### media get
-GET http://localhost:8080/media/image/2022/08/28/ec7b0c5d-88fb-461e-b284-d52a0dbfc793.jpg
+GET http://localhost:8080/media/image/2023/01/17/a516b03c-33fa-42f7-bd69-c5713d247b6a.jpg
 
 ### media delete
 DELETE http://localhost:8080/api/v1/media/1
@@ -124,7 +126,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwic
 
 ### media delete2
 DELETE http://localhost:8080/api/v1/media/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzIxNDEwMDAsInVzZXJJZCI6IjIifQ.AHhCGpq8SkhgFigpIWrY5a4Gl6BAxrz58sNHHfo-Wfs
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvbG9naW4iLCJleHAiOjE2NzM5MzExMzIsInVzZXJJZCI6IjIifQ.FcQfcQICmQTQsX94zQnlvfTZWiVxO-lmmkDVVWggHR8
 
 ### medie real delete (관리자 권한)
 DELETE http://localhost:8080/api/v1/media/fileDeleteFromStorage/1

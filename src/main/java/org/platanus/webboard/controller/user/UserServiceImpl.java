@@ -2,6 +2,7 @@ package org.platanus.webboard.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.domain.Role;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRepository;
@@ -29,13 +30,13 @@ public class UserServiceImpl implements UserService {
             // 회원 추가
             addedUser = add(user);
             // 회원 역할 추가
-            roleService.add(new Role(UserRole.ROLE_USER, user.getId()));
+            roleService.add(new Role(null, UserRole.ROLE_USER, user.getId()));
             // 관리자의 경우 관리자 역할 추가
             if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
-                roleService.add(new Role(UserRole.ROLE_ADMIN, user.getId()));
+                roleService.add(new Role(null, UserRole.ROLE_ADMIN, user.getId()));
             }
         } catch (Exception e) {
-            throw new RuntimeException("회원가입에 실패 했습니다.");
+            throw new RuntimeException(MessageConstant.USER_JOIN_FAILED);
         }
         return addedUser;
     }
@@ -43,39 +44,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public User add(User user) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
-            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_NICKNAME_LOG, user.getUsername(), user.getNickname());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_NICKNAME);
         }
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 아이디 입니다.", user.getUsername());
-            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_USERNAME_LOG, user.getUsername());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_USERNAME);
         }
         if (userRepository.findByEmail((user.getEmail())).isPresent()) {
-            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_EMAIL_LOG, user.getUsername(), user.getEmail());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_EMAIL);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setDeleted(false);
         user = userRepository.save(user);
-        log.info("User join #{}, {}", user.getId(), user.getUsername());
+        log.info(MessageConstant.USER_JOIN_SUCCESS_LOG, user.getId(), user.getUsername());
         return user;
     }
 
     @Override
     public User update(User user, User sessionUser) throws Exception {
         if (userRepository.findByNickname(user.getNickname()).isPresent() && !user.getNickname().equals(sessionUser.getNickname())) {
-            log.info("User join #{}: 이미 존재하는 닉네임 입니다. - {}", user.getUsername(), user.getNickname());
-            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_NICKNAME_LOG, user.getUsername(), user.getNickname());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_NICKNAME);
         }
         if (userRepository.findByEmail((user.getEmail())).isPresent() && !user.getEmail().equals(sessionUser.getEmail())) {
-            log.info("User join #{}: 이미 존재하는 이메일 입니다. - {}", user.getUsername(), user.getEmail());
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+            log.info(MessageConstant.USER_ALREADY_USE_EMAIL_LOG, user.getUsername(), user.getEmail());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_USE_EMAIL);
         }
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info("User update #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.error(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
 
@@ -84,8 +85,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.update(user) == 1)
             return userRepository.findById(user.getId()).get();
         else {
-            log.info("User update #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.error(MessageConstant.USER_UPDATE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_UPDATE_FAILED);
         }
     }
 
@@ -103,13 +104,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void revoke(User user) throws Exception {
         if (userRepository.findById(user.getId()).get().isDeleted()) {
-            log.info("User revoke #{}: 이미 탈퇴한 회원 입니다.", user.getId());
-            throw new IllegalArgumentException("이미 탈퇴한 회원입니다");
+            log.info(MessageConstant.USER_ALREADY_REVOKE_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_ALREADY_REVOKE);
         }
         user.setDeleted(true);
         if (userRepository.updateDeleteFlag(user) != 1) {
-            log.info("User revoke #{}: Repository Error.", user.getId());
-            throw new IllegalArgumentException("정보 변경에 문제가 생겼습니다.");
+            log.error(MessageConstant.USER_REVOKE_FAILED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_REVOKE_FAILED);
         }
         log.info("User revoke #{}", user.getId());
     }
@@ -118,8 +119,8 @@ public class UserServiceImpl implements UserService {
     // todo: 사용자를 지울 때 작성 글과 코멘트 전부를 삭제되도록 할 것
     public void delete(User user) throws Exception {
         if (!user.isDeleted()) {
-            log.info("User delete #{}: 탈퇴되지 않은 회원입니다.", user.getId());
-            throw new IllegalArgumentException("탈퇴되지 않은 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_DELETED_LOG, user.getId());
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_DELETED);
         }
         userRepository.delete(user);
     }
@@ -128,8 +129,8 @@ public class UserServiceImpl implements UserService {
     public User findById(long id) throws Exception {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findById #{}: 없는 회원 입니다.", id);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_ID_LOG, id);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_ID);
         }
         return user.get();
     }
@@ -138,8 +139,8 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) throws Exception {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByUsername - {}: 없는 회원 입니다.", username);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_USERNAME_LOG, username);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_USERNAME);
         }
         return user.get();
     }
@@ -150,8 +151,8 @@ public class UserServiceImpl implements UserService {
         log.info("Get principal : " + userDetails.getUsername());
         Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByUsername - {}: 없는 회원 입니다.", principal);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_USERNAME_LOG, principal);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_USERNAME);
         }
         return user.get();
     }
@@ -160,8 +161,8 @@ public class UserServiceImpl implements UserService {
     public User findByNickname(String nickname) throws Exception {
         Optional<User> user = userRepository.findByNickname(nickname);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByNickname - {}: 없는 회원 입니다.", nickname);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_NICKNAME_LOG, nickname);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_NICKNAME);
         }
         return user.get();
     }
@@ -170,8 +171,8 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) throws Exception {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty() || user.get().isDeleted()) {
-            log.info("User findByEmail - {}: 없는 회원 입니다.", email);
-            throw new IllegalArgumentException("없는 회원 입니다.");
+            log.info(MessageConstant.USER_NOT_FOUND_BY_EMAIL_LOG, email);
+            throw new IllegalArgumentException(MessageConstant.USER_NOT_FOUND_BY_EMAIL);
         }
         return user.get();
     }

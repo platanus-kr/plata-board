@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setModifiedDate(LocalDateTime.now());
         comment.setDeleted(false);
         comment = commentRepository.save(comment);
-        log.info("Comment write #{} by User #{}", comment.getId(), comment.getAuthorId());
+        log.info(MessageConstant.COMMENT_WRITE_SUCCESS_LOG, comment.getId(), comment.getAuthorId());
         return comment;
     }
 
@@ -39,43 +39,45 @@ public class CommentServiceImpl implements CommentService {
 //            throw new IllegalArgumentException("없는 댓글 입니다.");
 //        }
         if (comment.getAuthorId() != user.getId()) {
-            log.info("Comment update #{}: 작성자가 아닙니다. by User #{}", comment.getId(), user.getId());
+            log.info(MessageConstant.COMMENT_NOT_OWNER_LOG, comment.getId(), user.getId());
             throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_AUTHOR);
         }
         if (commentRepository.update(comment) != 1) {
-            log.info("Comment update #{}: Repository Error.", comment.getId());
+            log.error(MessageConstant.COMMENT_UPDATE_FAILED, comment.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
-        log.info("Comment update #{} by User #{}", comment.getId(), user.getId());
+        log.info(MessageConstant.COMMENT_UPDATE_SUCCESS_LOG, comment.getId(), user.getId());
         return comment;
     }
 
     @Override
     public boolean updateDeleteFlag(Comment comment, User user) throws Exception {
         if (commentRepository.findById(comment.getId()).get().isDeleted()) {
-            log.info("Comment deleteflag #{}: 이미 삭제된 댓글 입니다.", comment.getId());
+            log.info(MessageConstant.COMMENT_ALREADY_DELETE_FLAG_LOG, comment.getId());
             throw new IllegalArgumentException(MessageConstant.COMMENT_ALREADY_DELETED);
         }
         if (comment.getAuthorId() != user.getId()) {
-            log.info("Comment deleteflag #{}: 작성자가 아닙니다. by User #{}", comment.getId(), user.getId());
+            log.info(MessageConstant.COMMENT_NOT_OWNER_BY_DELETE_FLAG_LOG, comment.getId(), user.getId());
             throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_AUTHOR);
         }
         comment.setDeleted(true);
         if (commentRepository.updateDeleteFlag(comment) != 1) {
-            log.info("Comment deleteflag #{}: Repository Error.", comment.getId());
+            log.error(MessageConstant.COMMENT_FAILED_DELETE_FLAG_LOG, comment.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_ERROR);
         }
-        log.info("Comment deleteflag #{} by User #{}", comment.getId(), user.getId());
+        log.info(MessageConstant.COMMENT_SUCCESS_DELETE_FLAG_LOG, comment.getId(), user.getId());
         return true;
     }
 
     @Override
     public void delete(Comment comment) throws Exception {
-        if (commentRepository.delete(comment) != 1) {
-            log.info("Comment delete #{}: Repository Error.", comment.getId());
+        try {
+            commentRepository.delete(comment);
+        } catch (IllegalArgumentException e) {
+            log.info(MessageConstant.COMMENT_FAILED_DELETE_LOG, comment.getId());
             throw new IllegalArgumentException(MessageConstant.COMMON_DATABASE_DELETE_ERROR);
         }
-        log.info("Comment delete #{}", comment.getId());
+        log.info(MessageConstant.COMMENT_SUCCESS_DELETE_LOG, comment.getId());
     }
 
     @Override
@@ -109,7 +111,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment findById(long id) throws Exception {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isEmpty() || comment.get().isDeleted()) {
-            log.info("Comment findById #{}: 없는 댓글 입니다.", id);
+            log.info(MessageConstant.COMMENT_NOT_FOUND_BY_ID_LOG, id);
             throw new IllegalArgumentException(MessageConstant.COMMENT_NOT_FOUND);
         }
         return comment.get();
@@ -117,7 +119,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int countByArticleId(long articleId) {
-        return commentRepository.findCountByArticleId(articleId);
+        // 고쳐야 할 부분
+        return Math.toIntExact(commentRepository.countById(articleId));
     }
 
     @Override
