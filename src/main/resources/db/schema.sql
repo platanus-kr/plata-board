@@ -1,10 +1,9 @@
-DROP TABLE users;
-DROP TABLE roles;
-DROP TABLE boards;
-DROP TABLE articles;
-DROP TABLE articles_recommend;
-DROP TABLE files;
-
+# DROP TABLE users;
+# DROP TABLE roles;
+# DROP TABLE boards;
+# DROP TABLE articles;
+# DROP TABLE articles_recommend;
+# DROP TABLE files;
 
 
 -- users Table Create SQL

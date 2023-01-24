@@ -2,14 +2,14 @@
 
 Spring Boot 로 구현한 회원 관리와 파일 업로드 기능을 가진 기본 게시판.
 
-* * *
+---
 
 ## 어플리케이션 구성
 
 ```
 Java 11, Gradle 7.1.1
 Spring Boot 2.6.6
-Spring Data JDBC 2.6.3
+Spring Data JPA 2.6.6
 Spring Security 5.6.2, JWT 4.0.0
 MariaDB 10.x / H2 Database
 ```
@@ -26,7 +26,7 @@ MariaDB 10.x / H2 Database
 
 ✨ v2 추가 - **파일 첨부 기능** : 파일 업로드, http 서빙, 삭제
 
-* * *
+---
 
 ## 실행과 서비스 배포
 
@@ -58,6 +58,7 @@ java -jar build/libs/plata-board-0.0.2.jar
 로컬실행은 메모리DB로 서버가 종료되면 데이터가 모두 사라지는 대신 `production`로 구분된 이 환경은 MariaDB를 통해 데이터를 영속할 수 있습니다.
 
 <!-- 준비된 서버나 인스턴스가 없다면 [이 문서](https://platanus.me/post/1586) 를 통해서 참고할 수 있습니다. (CentOS 기준) -->
+
 Java 11버전과 MariaDB 10버전을 설치해 주시고 적절한 데이터베이스 하나만 만들어주시면 됩니다.
 
 #### DB 준비
@@ -105,7 +106,7 @@ sh gradlew bootJar
 java -jar build/libs/plata-baord-0.0.2.jar --spring.config.location=classpath:/application.properties --spring.profiles.active=release
 ```
 
-* * *
+---
 
 ## 지속적 배포
 
@@ -113,15 +114,15 @@ GitHub Actions 을 활용하여 Continuous Deploy 를 할 수 있습니다. mast
 
 GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
-|Secret| 설명                  |
-| --- |---------------------|
-|WEBBOARD_HOST| 호스트의 주소             |
-|WEBBOARD_PORT| 호스트의 SSH 포트         |
-|WEBBOARD_ID| 호스트의 계정             |
-|WEBBOARD_KEY| 호스트의 SSH KEY        |
-|DIST_PATH| 호스트에서 실행할 경로        |
+| Secret        | 설명                   |
+| ------------- | ---------------------- |
+| WEBBOARD_HOST | 호스트의 주소          |
+| WEBBOARD_PORT | 호스트의 SSH 포트      |
+| WEBBOARD_ID   | 호스트의 계정          |
+| WEBBOARD_KEY  | 호스트의 SSH KEY       |
+| DIST_PATH     | 호스트에서 실행할 경로 |
 
-* * *
+---
 
 ## 버전 히스토리
 
@@ -129,5 +130,4 @@ GitHub Secrets에 등록할 변수는 다음과 같습니다.
 
 **2022.08.27** version 2 : REST API, Spring Security, JWT
 
-**2022.12.31** version 2 (minor update) : Spring Data JPA 도입
-
+**2023.01.19** version 2 (minor update) : Spring Data JPA 도입
