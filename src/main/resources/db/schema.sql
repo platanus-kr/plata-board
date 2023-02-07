@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `roles`
     `ID`       INT         NOT NULL AUTO_INCREMENT,
     `ROLENAME` VARCHAR(50) NOT NULL,
     `USER_ID`  INT         NOT NULL,
-    CONSTRAINT PK_rolename_userid PRIMARY KEY (ROLENAME, USER_ID)
+    CONSTRAINT PK_rolename_userid PRIMARY KEY (ID)
 );
 
 -- boards Table Create SQL
