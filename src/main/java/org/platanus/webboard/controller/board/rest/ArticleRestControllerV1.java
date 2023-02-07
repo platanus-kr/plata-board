@@ -2,7 +2,6 @@ package org.platanus.webboard.controller.board.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.constant.MessageConstant;
@@ -47,7 +46,6 @@ public class ArticleRestControllerV1 {
      * @return
      * @throws JsonProcessingException
      */
-    @ApiOperation(value = "게시글 조회")
     @GetMapping("/{articleId}")
     public ResponseEntity<?> getArticle(@PathVariable("articleId") long articleId) {
         Article article;

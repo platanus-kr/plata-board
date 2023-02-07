@@ -21,6 +21,11 @@ import java.util.ArrayList;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 
+    /**
+     * Docket 설정 <br />
+     *
+     * @return
+     */
     @Bean
     public Docket boardApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -46,19 +51,16 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         );
     }
 
+    /**
+     * 인터셉터에 Swagger 관련 URI 허용 추가<br />
+     *
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        String baseUrl = StringUtils.trimTrailingCharacter(this.baseUrl, '/');
-
         registry.
                 addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .resourceChain(false);
-
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
