@@ -1,5 +1,6 @@
 package org.platanus.webboard.controller.file.rest;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.constant.MessageConstant;
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/media")
+@Api(tags = {"첨부파일 관련 RST API Controller"})
 public class FileRestControllerV1 {
 
     private final UserService userService;

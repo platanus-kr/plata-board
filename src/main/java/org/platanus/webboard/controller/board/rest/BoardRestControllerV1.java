@@ -1,5 +1,6 @@
 package org.platanus.webboard.controller.board.rest;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.security.dto.UserClaimDto;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/board")
+@Api(tags = {"게시판 관련 RST API Controller"})
 public class BoardRestControllerV1 {
     private final BoardService boardService;
     private final ArticleService articleService;

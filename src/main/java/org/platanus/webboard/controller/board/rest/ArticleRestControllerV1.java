@@ -1,6 +1,7 @@
 package org.platanus.webboard.controller.board.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.constant.MessageConstant;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")
+@Api(tags = {"게시글 관련 RST API Controller"})
 public class ArticleRestControllerV1 {
     private final BoardService boardService;
     private final ArticleService articleService;

@@ -1,5 +1,6 @@
 package org.platanus.webboard.controller.board.rest;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.property.PropertyEnvironment;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/test")
+@Api(tags = {"테스트 용도 RST API Controller"})
 public class TestRestController {
     private final PropertyEnvironment propertyEnvironment;
 

@@ -1,9 +1,9 @@
-# DROP TABLE users;
-# DROP TABLE roles;
-# DROP TABLE boards;
-# DROP TABLE articles;
-# DROP TABLE articles_recommend;
-# DROP TABLE files;
+-- DROP TABLE users;
+-- DROP TABLE roles;
+-- DROP TABLE boards;
+-- DROP TABLE articles;
+-- DROP TABLE articles_recommend;
+-- DROP TABLE files;
 
 
 -- users Table Create SQL
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `roles`
     `ID`       INT         NOT NULL AUTO_INCREMENT,
     `ROLENAME` VARCHAR(50) NOT NULL,
     `USER_ID`  INT         NOT NULL,
-    CONSTRAINT PK_rolename_userid PRIMARY KEY (ROLENAME, USER_ID)
+    CONSTRAINT PK_rolename_userid PRIMARY KEY (ID)
 );
 
 -- boards Table Create SQL
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `files`
     CONSTRAINT PK_files PRIMARY KEY (ID)
 );
 
-CREATE INDEX IDX_files_by_management_filename ON files
-    (`MANAGEMENT_FILENAME`);
+-- CREATE INDEX IDX_files_by_management_filename ON files
+--    (`MANAGEMENT_FILENAME`);
 
-CREATE INDEX IDX_files_by_user_id ON files
-    (`USER_ID`);
+-- CREATE INDEX IDX_files_by_user_id ON files
+--    (`USER_ID`);
