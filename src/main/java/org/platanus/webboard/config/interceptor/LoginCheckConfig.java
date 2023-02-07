@@ -29,7 +29,8 @@ public class LoginCheckConfig implements WebMvcConfigurer {
                         "/session_error",
                         "/api/**",
                         "/media/**",
-                        "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui","/configuration/security", "/swagger-ui.html", "/webjars/**"
+                        "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**",
+                        "/swagger-ui/**"
                 );
     }
 

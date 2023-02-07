@@ -77,7 +77,8 @@ public class SpringSecurityConfig {
         http.authorizeRequests().antMatchers("/board/**", "/article/**", "/login/**", "/user/**").permitAll();
         // Permit Swagger
         http.authorizeRequests()
-                .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui","/configuration/security", "/swagger-ui.html", "/webjars/**")
+                .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**")
+//                .antMatchers("/swagger-ui/**")
                 .permitAll();
         http.authorizeRequests().antMatchers("/api/migrate/**").hasAnyAuthority(UserRole.ROLE_ADMIN.getKey());
         http.authorizeRequests().antMatchers("/admin/**").denyAll();
