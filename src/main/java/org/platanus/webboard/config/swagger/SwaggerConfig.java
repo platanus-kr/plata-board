@@ -1,5 +1,6 @@
 package org.platanus.webboard.config.swagger;
 
+import org.platanus.webboard.config.constant.ConfigConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 
 @Configuration
-@Profile({"!production"})
+@Profile({ConfigConstant.PROPERTY_ENV_PROFILE_NOT_PRODUCTION})
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 

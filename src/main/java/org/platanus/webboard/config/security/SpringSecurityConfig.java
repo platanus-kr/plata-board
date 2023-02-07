@@ -1,7 +1,9 @@
 package org.platanus.webboard.config.security;
 
 import lombok.RequiredArgsConstructor;
+import org.platanus.webboard.config.constant.ConfigConstant;
 import org.platanus.webboard.domain.UserRole;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,9 @@ public class SpringSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationConfiguration authConfig;
+
+    @Value("${plataboard.environment.profile}")
+    private String profile;
 
     /**
      * WebSecurityConfigurerAdapter의 deprecated로 인한 AuthenticationManager Bean 주입. <br />
@@ -76,10 +81,11 @@ public class SpringSecurityConfig {
         // For Legacy Web Page
         http.authorizeRequests().antMatchers("/board/**", "/article/**", "/login/**", "/user/**").permitAll();
         // Permit Swagger
-        http.authorizeRequests()
-                .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**")
-//                .antMatchers("/swagger-ui/**")
-                .permitAll();
+        if (!profile.equals(ConfigConstant.PROPERTY_ENV_PROFILE_PRODUCTION)) {
+            http.authorizeRequests()
+                    .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**", "/swagger-ui/**")
+                    .permitAll();
+        }
         http.authorizeRequests().antMatchers("/api/migrate/**").hasAnyAuthority(UserRole.ROLE_ADMIN.getKey());
         http.authorizeRequests().antMatchers("/admin/**").denyAll();
         http.authorizeRequests().anyRequest().authenticated();
