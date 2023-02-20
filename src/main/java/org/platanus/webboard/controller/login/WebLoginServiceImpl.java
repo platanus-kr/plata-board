@@ -21,7 +21,7 @@ public class WebLoginServiceImpl implements WebLoginService {
     @Override
     public User login(String username, String password) throws Exception {
         User findUser = userService.findByUsername(username);
-        if (findUser != null && passwordEncoder.matches(findUser.getPassword(), password)) {
+        if (findUser != null && passwordEncoder.matches(password, findUser.getPassword())) {
             return findUser;
         }
         throw new IllegalArgumentException(MessageConstant.LOGIN_FAILED);
