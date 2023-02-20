@@ -26,16 +26,16 @@ public class TestRestController {
 
     @GetMapping("/auth")
     @HasUserRole
-    public ResponseEntity<?> doTest(@AuthenticationPrincipal UserClaimDto user) {
+    public String doTest(@AuthenticationPrincipal UserClaimDto user) {
         log.info("authTest OK");
         log.info(user.toString());
-        return ResponseEntity.ok("200");
+        return "200";
     }
 
     @GetMapping("/env")
-    public ResponseEntity<?> getEnd() {
+    public String getEnd() {
         log.info(profile);
         log.info(propertyEnvironment.getProfile());
-        return ResponseEntity.ok(propertyEnvironment.getProfile());
+        return propertyEnvironment.getProfile();
     }
 }

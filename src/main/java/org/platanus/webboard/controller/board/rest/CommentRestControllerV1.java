@@ -8,7 +8,8 @@ import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.CommentViewDto;
 import org.platanus.webboard.controller.board.dto.CommentWriteDto;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.BoardException;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Comment;
 import org.platanus.webboard.domain.User;
@@ -36,18 +37,16 @@ public class CommentRestControllerV1 {
      */
     @GetMapping("/{commentId}")
     @HasUserRole
-    public ResponseEntity<?> getComment(@PathVariable("commentId") long commentId) {
+    public CommentViewDto getComment(@PathVariable("commentId") long commentId) {
         Comment comment;
         User user;
         try {
             comment = commentService.findById(commentId);
             user = userService.findById(comment.getAuthorId());
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        CommentViewDto commentDto = CommentViewDto.from(comment, user.getNickname());
-        return ResponseEntity.ok(commentDto);
+        return CommentViewDto.from(comment, user.getNickname());
     }
 
     /**
@@ -59,7 +58,7 @@ public class CommentRestControllerV1 {
      */
     @PostMapping("/{commentId}/update")
     @HasUserRole
-    public ResponseEntity<?> updateComment(@PathVariable("commentId") long commentId,
+    public CommentWriteDto updateComment(@PathVariable("commentId") long commentId,
                                            @AuthenticationPrincipal UserClaimDto user,
                                            @Valid @RequestBody CommentWriteDto commentRequest) {
         User userFromClaim = User.fromUserClaimDto(user);
@@ -69,10 +68,9 @@ public class CommentRestControllerV1 {
             comment.setContent(commentRequest.getContent());
             comment = commentService.update(comment, userFromClaim);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok(comment);
+        return commentRequest;
     }
 
     /**
@@ -84,7 +82,7 @@ public class CommentRestControllerV1 {
      */
     @DeleteMapping("/{commentId}")
     @HasUserRole
-    public ResponseEntity<?> deleteComment(@PathVariable("commentId") long commentId,
+    public long deleteComment(@PathVariable("commentId") long commentId,
                                            @AuthenticationPrincipal UserClaimDto user) {
         User userFromClaim = User.fromUserClaimDto(user);
         Comment comment;
@@ -92,9 +90,8 @@ public class CommentRestControllerV1 {
             comment = commentService.findById(commentId);
             commentService.updateDeleteFlag(comment, userFromClaim);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return commentId;
     }
 }

@@ -73,6 +73,7 @@ public class MessageConstant {
     public static final String ARTICLE_NOT_OWNER_DELETE_FLAG_LOG = "Article deleteflag #{}: 작성자가 아닙니다.";
     public static final String ARTICLE_DELETE_FLAG_FAILED = "Article deleteflag #{}: Repository Error.";
     public static final String ARTICLE_DELETE_FLAG_SUCCESS = "Article deleteflag #{} by User #{}";
+    public static final String ARTICLE_EMPTY_COMMENTS = "게시글에 댓글이 없습니다";
 
     /* Common */
     public static final String COMMON_DATABASE_ERROR = "정보 변경에 문제가 생겼습니다.";

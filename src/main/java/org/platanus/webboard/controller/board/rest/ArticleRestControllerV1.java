@@ -13,8 +13,10 @@ import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.ArticleResponseDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
+import org.platanus.webboard.controller.board.dto.CommentViewDto;
 import org.platanus.webboard.controller.board.dto.CommentWriteDto;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.BoardException;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
 import org.platanus.webboard.domain.ArticleRecommend;
@@ -47,12 +49,10 @@ public class ArticleRestControllerV1 {
      * @throws JsonProcessingException
      */
     @GetMapping("/{articleId}")
-    public ResponseEntity<?> getArticle(@PathVariable("articleId") long articleId) {
+    public ArticleResponseDto getArticle(@PathVariable("articleId") long articleId) {
         Article article;
         String authorNickname;
-        List<Comment> commentsResponse;
         String boardName;
-        String boardId;
         long recommendCount;
         try {
             article = articleService.findById(articleId);
@@ -60,12 +60,10 @@ public class ArticleRestControllerV1 {
             boardName = boardService.findById(article.getBoardId()).getName();
             recommendCount = articleRecommendService.countByArticleId(article.getId());
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
         if (article.getId() < 0) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(MessageConstant.ARTICLE_NOT_FOUND).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(MessageConstant.ARTICLE_NOT_FOUND);
         }
         ArticleResponseDto resDto;
         resDto = ArticleResponseDto.builder()
@@ -80,7 +78,8 @@ public class ArticleRestControllerV1 {
                 .modifiedDate(article.getModifiedDate())
                 .recommend(recommendCount)
                 .build();
-        return ResponseEntity.ok(resDto);
+        //return ResponseEntity.ok(resDto);
+        return resDto;
     }
 
     /**
@@ -93,7 +92,7 @@ public class ArticleRestControllerV1 {
      */
     @PostMapping("/{articleId}/update")
     @HasUserRole
-    public ResponseEntity<?> updateArticle(@PathVariable("articleId") long articleId,
+    public ArticleWriteDto updateArticle(@PathVariable("articleId") long articleId,
                                            @AuthenticationPrincipal UserClaimDto user,
                                            @Valid @RequestBody ArticleWriteDto articleRequest) {
         User userFromClaim = User.fromUserClaimDto(user);
@@ -104,10 +103,9 @@ public class ArticleRestControllerV1 {
             article.setContent(articleRequest.getContent());
             articleService.update(article, userFromClaim);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return articleRequest;
     }
 
     /**
@@ -119,7 +117,7 @@ public class ArticleRestControllerV1 {
      */
     @DeleteMapping("/{articleId}")
     @HasUserRole
-    public ResponseEntity<?> deleteArticle(@PathVariable("articleId") long articleId,
+    public long deleteArticle(@PathVariable("articleId") long articleId,
                                            @AuthenticationPrincipal UserClaimDto user) {
         User userFromClaim = User.fromUserClaimDto(user);
         Article article;
@@ -128,10 +126,9 @@ public class ArticleRestControllerV1 {
             article = articleService.findById(articleId);
             articleService.updateDeleteFlag(article, userFromClaim);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return articleId;
     }
 
 
@@ -142,15 +139,17 @@ public class ArticleRestControllerV1 {
      * @return
      */
     @GetMapping("/{articleId}/comments")
-    public ResponseEntity<?> getComment(@PathVariable("articleId") long articleId) {
+    public List<Comment> getComment(@PathVariable("articleId") long articleId) {
         List<Comment> comments;
         try {
             comments = commentService.findCommentsByArticleId(articleId);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok(comments);
+        //if (comments.size() < 1) {
+        //    throw new BoardException(MessageConstant.ARTICLE_EMPTY_COMMENTS);
+        //}
+        return comments;
     }
 
     /**
@@ -163,7 +162,7 @@ public class ArticleRestControllerV1 {
      */
     @PostMapping("/{articleId}/comment")
     @HasUserRole
-    public ResponseEntity<?> writeComment(@PathVariable("articleId") long articleId,
+    public CommentWriteDto writeComment(@PathVariable("articleId") long articleId,
                                           @AuthenticationPrincipal UserClaimDto user,
                                           @Valid @RequestBody CommentWriteDto commentRequest) {
         Comment comment = Comment.builder()
@@ -174,10 +173,9 @@ public class ArticleRestControllerV1 {
         try {
             comment = commentService.write(comment);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok(comment);
+        return commentRequest;
     }
 
     /**
@@ -189,7 +187,7 @@ public class ArticleRestControllerV1 {
      */
     @PostMapping("/{articleId}/recommend")
     @HasUserRole
-    public ResponseEntity<?> recommendArticle(@PathVariable("articleId") long articleId,
+    public long recommendArticle(@PathVariable("articleId") long articleId,
                                               @AuthenticationPrincipal UserClaimDto user) {
         ArticleRecommend articleRecommend = ArticleRecommend.builder()
                 .articleId(articleId)
@@ -198,13 +196,8 @@ public class ArticleRestControllerV1 {
         try {
             articleRecommendService.save(articleRecommend);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder()
-                    .errorId(999)
-                    .errorCode("")
-                    .errorMessage(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return articleId;
     }
 }

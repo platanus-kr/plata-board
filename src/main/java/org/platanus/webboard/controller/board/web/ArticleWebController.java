@@ -9,7 +9,7 @@ import org.platanus.webboard.controller.board.CommentService;
 import org.platanus.webboard.controller.board.dto.ArticleResponseDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.CommentWriteDto;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.board.utils.MarkdownParser;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;

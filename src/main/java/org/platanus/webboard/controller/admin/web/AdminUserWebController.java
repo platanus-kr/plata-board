@@ -2,7 +2,7 @@ package org.platanus.webboard.controller.admin.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.User;
 import org.platanus.webboard.domain.UserRole;
