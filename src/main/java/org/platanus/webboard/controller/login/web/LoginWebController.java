@@ -3,7 +3,7 @@ package org.platanus.webboard.controller.login.web;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.platanus.webboard.config.interceptor.SessionConst;
-import org.platanus.webboard.controller.login.LoginService;
+import org.platanus.webboard.controller.login.WebLoginService;
 import org.platanus.webboard.controller.login.dto.UserLoginDto;
 import org.platanus.webboard.controller.login.dto.UserSessionDto;
 import org.platanus.webboard.domain.User;
@@ -23,7 +23,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 public class LoginWebController {
-    private final LoginService loginService;
+    private final WebLoginService loginService;
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("login") UserLoginDto login) {
