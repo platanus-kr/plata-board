@@ -8,11 +8,14 @@ import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.ArticleService;
 import org.platanus.webboard.controller.board.BoardService;
 import org.platanus.webboard.controller.board.dto.ArticleListDto;
+import org.platanus.webboard.controller.board.dto.ArticleResponseDto;
 import org.platanus.webboard.controller.board.dto.ArticleWriteDto;
 import org.platanus.webboard.controller.board.dto.ArticlesResponseDto;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.BoardException;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.Article;
+import org.platanus.webboard.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,8 +43,7 @@ public class BoardRestControllerV1 {
      * @throws Exception
      */
     @GetMapping(value = "/{id}")
-    @ResponseBody
-    public ResponseEntity<?> list(@PathVariable("id") long boardId,
+    public ArticlesResponseDto list(@PathVariable("id") long boardId,
                                   @RequestParam(value = "page", defaultValue = "1", required = false) int pageNum) {
         String boardName;
         Page<ArticleListDto> articles;
@@ -49,15 +51,13 @@ public class BoardRestControllerV1 {
             boardName = boardService.findById(boardId).getName();
             articles = articleService.findPageOfArticlesByBoardId(boardId, pageNum - 1);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        ArticlesResponseDto responseDto = ArticlesResponseDto.builder()
+        return ArticlesResponseDto.builder()
                 .boardId(boardId)
                 .boardName(boardName)
                 .articles(articles)
                 .build();
-        return ResponseEntity.ok(responseDto);
     }
 
     /**
@@ -70,19 +70,20 @@ public class BoardRestControllerV1 {
      */
     @PostMapping(value = "/{id}/write")
     @HasUserRole
-    public ResponseEntity<?> write(@PathVariable("id") long boardId,
+    public ArticleResponseDto write(@PathVariable("id") long boardId,
                                    @AuthenticationPrincipal UserClaimDto user,
                                    @Valid @RequestBody ArticleWriteDto articleRequest) {
         Article article = Article.fromWriteDto(articleRequest);
         article.setBoardId(boardId);
         article.setAuthorId(user.getId());
         Article writtenArticle;
+        User findUser;
         try {
+            findUser = userService.findById(user.getId());
             writtenArticle = articleService.write(article);
         } catch (Exception e) {
-            ErrorDto errorDto = ErrorDto.builder().errorId(999).errorMessage(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(errorDto);
+            throw new BoardException(e.getMessage());
         }
-        return ResponseEntity.ok(writtenArticle.getId());
+        return ArticleResponseDto.fromView(writtenArticle, findUser.getNickname());
     }
 }

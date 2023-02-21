@@ -17,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -31,7 +35,14 @@ public class SpringSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationConfiguration authConfig;
-
+    private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
+            // Put your public API here
+            new AntPathRequestMatcher("/css/**"),
+            new AntPathRequestMatcher("/h2-console/**")
+            );
+    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);
+    
+    
     @Value("${plataboard.environment.profile}")
     private String profile;
 
@@ -60,13 +71,14 @@ public class SpringSecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         UserAuthenticationFilter authFilter = new UserAuthenticationFilter(authenticationManager(authConfig));
         authFilter.setFilterProcessesUrl("/api/login");
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+        //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         // Permit Front Controller
         http.authorizeRequests().antMatchers("/").permitAll();
         // Permit Static Resources
         http.authorizeRequests().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
+        // Permit uploaded media files
+        http.authorizeRequests().antMatchers("/media/**").permitAll();
         // Permit Login Controller
         http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh").permitAll();
         // Permit Test Controller
@@ -83,7 +95,7 @@ public class SpringSecurityConfig {
         // Permit Swagger
         if (!profile.equals(ConfigConstant.PROPERTY_ENV_PROFILE_PRODUCTION)) {
             http.authorizeRequests()
-                    .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**", "/swagger-ui/**")
+                    .antMatchers("/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**", "/swagger-ui/**", "/h2-console/**")
                     .permitAll();
         }
         http.authorizeRequests().antMatchers("/api/migrate/**").hasAnyAuthority(UserRole.ROLE_ADMIN.getKey());
@@ -91,13 +103,14 @@ public class SpringSecurityConfig {
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authFilter);
         http.addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); // successHandler..
+        http.cors().and().csrf().disable();
         return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .antMatchers("/h2-console/**", "/media/**");
+                .antMatchers("/h2-console/**", "/media/**", "/css/**", "/resources/**");
     }
 
 }

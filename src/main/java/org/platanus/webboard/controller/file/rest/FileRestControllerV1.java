@@ -7,7 +7,7 @@ import org.platanus.webboard.config.constant.MessageConstant;
 import org.platanus.webboard.config.security.dto.UserClaimDto;
 import org.platanus.webboard.config.security.permission.HasAdminRole;
 import org.platanus.webboard.config.security.permission.HasUserRole;
-import org.platanus.webboard.controller.board.dto.ErrorDto;
+import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.file.FileService;
 import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileUploadDto;

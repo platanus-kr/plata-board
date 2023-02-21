@@ -1,4 +1,4 @@
-package org.platanus.webboard.controller.board.dto;
+package org.platanus.webboard.controller.board.exception;
 
 import lombok.Builder;
 import lombok.Getter;

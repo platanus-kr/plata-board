@@ -11,7 +11,7 @@ GET http://localhost:8080/api/v1/article/4
 GET http://localhost:8080/api/v1/comment/1
 
 ### 게시글의 댓글 조회
-GET http://localhost:8080/api/v1/article/1/comments
+GET http://localhost:8080/api/v1/article/1231412/comments
 
 ### 관리자 로그인
 POST http://localhost:8080/api/login?username=admin&password=admin
