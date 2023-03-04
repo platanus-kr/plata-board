@@ -28,27 +28,11 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
      */
     @Bean
     public Docket boardApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("REST API v1")
-                .select()
-                .apis(RequestHandlerSelectors.
-                        basePackage("org.platanus.webboard"))
-                .paths(PathSelectors.ant("/api/v1/**"))
-                .build()
-                .apiInfo(apiInfo());
+        return new Docket(DocumentationType.SWAGGER_2).groupName("REST API v1").select().apis(RequestHandlerSelectors.basePackage("org.platanus.webboard")).paths(PathSelectors.ant("/api/v1/**")).build().apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "Plata Board",
-                "Plata board API Document",
-                "version 2.1",
-                "https://bbs.canxan.com",
-                new Contact("Contact Me", "https://platanus.me", "platanus.kr@gmail.com"),
-                "MIT",
-                "#",
-                new ArrayList<>()
-        );
+        return new ApiInfo("Plata Board", "Plata board API Document", "version 2.1", "https://bbs.canxan.com", new Contact("Contact Me", "https://platanus.me", "platanus.kr@gmail.com"), "MIT", "#", new ArrayList<>());
     }
 
     /**
@@ -58,9 +42,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.
-                addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
+        registry.addResourceHandler("/swagger-ui/**").addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
+//        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
