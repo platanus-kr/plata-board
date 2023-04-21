@@ -10,7 +10,9 @@ import org.platanus.webboard.config.security.permission.HasUserRole;
 import org.platanus.webboard.controller.board.exception.ErrorDto;
 import org.platanus.webboard.controller.file.FileService;
 import org.platanus.webboard.controller.file.dto.FileDeleteDto;
-import org.platanus.webboard.controller.file.dto.FileUploadDto;
+import org.platanus.webboard.controller.file.dto.FileUploadRequestDto;
+import org.platanus.webboard.controller.file.dto.FileUploadResponseDto;
+import org.platanus.webboard.controller.file.exception.FileException;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.File;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +46,7 @@ public class FileRestControllerV1 {
     @PostMapping
     @ResponseBody
     @HasUserRole
-    public ResponseEntity<?> uploadFile(@ModelAttribute FileUploadDto uploadDto,
+    public FileUploadResponseDto uploadFile(@ModelAttribute FileUploadRequestDto uploadDto,
                                         @AuthenticationPrincipal UserClaimDto user) {
         List<File> uploadedFiles;
         uploadDto.setUserId(user.getId());
@@ -56,9 +58,10 @@ public class FileRestControllerV1 {
                     .errorCode(MessageConstant.FILE_STORE_UPLOAD_ERROR_CODE)
                     .errorMessage(MessageConstant.FILE_STORE_UPLOAD_ERROR_MSG)
                     .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            //return ResponseEntity.badRequest().body(errorDto);
+            throw new FileException(MessageConstant.FILE_STORE_UPLOAD_ERROR_MSG);
         }
-        return ResponseEntity.ok().body(uploadedFiles);
+        return FileUploadResponseDto.builder().uploadedFiles(uploadedFiles).build();
     }
 
     /**
@@ -74,7 +77,7 @@ public class FileRestControllerV1 {
     @DeleteMapping("/{fileId}")
     @ResponseBody
     @HasUserRole
-    public ResponseEntity<?> updateDeleteFlag(@PathVariable Long fileId,
+    public ResponseEntity<Void> updateDeleteFlag(@PathVariable Long fileId,
                                               @AuthenticationPrincipal UserClaimDto user) {
         if (fileId < 1 || fileId == null) {
             ErrorDto errorDto = ErrorDto.builder()
@@ -82,7 +85,8 @@ public class FileRestControllerV1 {
                     .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
                     .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID)
                     .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            //return ResponseEntity.badRequest().body(errorDto);
+            throw new FileException(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID);
         }
         FileDeleteDto fileDto = FileDeleteDto.builder()
                 .fileId(fileId)
@@ -97,9 +101,10 @@ public class FileRestControllerV1 {
                     .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
                     .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE)
                     .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            //return ResponseEntity.badRequest().body(errorDto);
+            throw new FileException(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE);
         }
-        return ResponseEntity.ok().body("200");
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -114,7 +119,7 @@ public class FileRestControllerV1 {
     @DeleteMapping("/fileDeleteFromStorage/{fileId}")
     @ResponseBody
     @HasAdminRole
-    public ResponseEntity<?> realFileDelete(@PathVariable Long fileId,
+    public ResponseEntity<Void> realFileDelete(@PathVariable Long fileId,
                                             @AuthenticationPrincipal UserClaimDto user) {
         if (fileId < 1 || fileId == null) {
             ErrorDto errorDto = ErrorDto.builder()
@@ -122,7 +127,8 @@ public class FileRestControllerV1 {
                     .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
                     .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID)
                     .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            //return ResponseEntity.badRequest().body(errorDto);
+            throw new FileException(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_ID);
         }
         FileDeleteDto fileDto = FileDeleteDto.builder()
                 .fileId(fileId)
@@ -138,8 +144,9 @@ public class FileRestControllerV1 {
                     .errorCode(MessageConstant.FILE_STORE_DELETE_ERROR_CODE)
                     .errorMessage(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE)
                     .build();
-            return ResponseEntity.badRequest().body(errorDto);
+            //return ResponseEntity.badRequest().body(errorDto);
+            throw new FileException(MessageConstant.FILE_STORE_DELETE_ERROR_NOT_FOUND_FILE);
         }
-        return ResponseEntity.ok().body("200");
+        return ResponseEntity.ok().build();
     }
 }
