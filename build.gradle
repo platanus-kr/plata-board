@@ -47,6 +47,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
+    testImplementation 'com.google.guava:guava:31.1-jre'
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
 jar {
