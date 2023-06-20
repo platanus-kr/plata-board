@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class FileUploadDto {
+public class FileUploadRequestDto {
     /**
      * 파일을 업로드 유저, 소유자.
      */

@@ -7,7 +7,7 @@ import org.platanus.webboard.config.property.PropertyEnvironment;
 import org.platanus.webboard.controller.file.dto.FileDeleteDto;
 import org.platanus.webboard.controller.file.dto.FileDownloadDto;
 import org.platanus.webboard.controller.file.dto.FileStoreDto;
-import org.platanus.webboard.controller.file.dto.FileUploadDto;
+import org.platanus.webboard.controller.file.dto.FileUploadRequestDto;
 import org.platanus.webboard.controller.user.UserService;
 import org.platanus.webboard.domain.File;
 import org.platanus.webboard.domain.FileRepository;
@@ -33,7 +33,7 @@ public class FileServiceImpl implements FileService {
     private final UserService userService;
 
     @Override
-    public List<File> uploadFiles(FileUploadDto attachDto) throws IOException {
+    public List<File> uploadFiles(FileUploadRequestDto attachDto) throws IOException {
         if (attachDto.getUserId() < 1) {
             return null;
         }
