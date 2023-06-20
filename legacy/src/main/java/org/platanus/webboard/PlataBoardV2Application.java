@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class PlataBoardApplication {
+public class PlataBoardV2Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(PlataBoardApplication.class, args);
+        SpringApplication.run(PlataBoardV2Application.class, args);
     }
 
     @Bean
