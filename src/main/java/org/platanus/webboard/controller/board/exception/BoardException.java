@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class BoardException extends RuntimeException {
-	private String message;
-	
-	public BoardException(String message) {
-		this.message = message;
-	}
+    private String message;
+
+    public BoardException(String message) {
+        this.message = message;
+    }
 }
